@@ -1,0 +1,33 @@
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\bin\Debug\Sc Test.exe
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\bin\Debug\Sc Test.pdb
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\bin\Debug\DMDangle.dll
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\bin\Debug\DMDangle.pdb
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc Test.csprojResolveAssemblyReference.cache
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc_Test.Form1.resources
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc_Test.Properties.Resources.resources
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc Test.csproj.GenerateResource.Cache
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc Test.exe
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\Sc Test\obj\x86\Debug\Sc Test.pdb
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc Test.csprojResolveAssemblyReference.cache
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc_Test.Form1.resources
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc_Test.Properties.Resources.resources
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc Test.csproj.GenerateResource.Cache
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\bin\Debug\Sc Test.exe.config
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\bin\Debug\Sc Test.exe
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\bin\Debug\Sc Test.pdb
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\bin\Debug\DMDongle.dll
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\bin\Debug\DMDongle.pdb
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc Test.exe
+D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\Sc Test\obj\x86\Debug\Sc Test.pdb
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.exe.config
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.exe
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.pdb
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\bin\Debug\DMDongle.dll
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\bin\Debug\DMDongle.pdb
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc_Test.Form1.resources
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc_Test.Properties.Resources.resources
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.exe
+C:\Users\DELL-15\Desktop\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.pdb

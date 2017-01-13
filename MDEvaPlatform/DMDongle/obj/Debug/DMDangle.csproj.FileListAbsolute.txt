@@ -1,0 +1,5 @@
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\DMDangle\bin\Debug\DMDangle.dll
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\DMDangle\bin\Debug\DMDangle.pdb
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\DMDangle\obj\Debug\DMDangle.dll
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\DMDangle\obj\Debug\DMDangle.pdb
+C:\Users\IBM-201\Documents\Visual Studio 2010\Projects\DMDangle\DMDangle\obj\Debug\DMDangle.csprojResolveAssemblyReference.cache
