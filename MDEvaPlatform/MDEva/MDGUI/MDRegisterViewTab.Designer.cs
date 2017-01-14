@@ -53,7 +53,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.dgvSearch);
             this.splitContainer1.Panel1.Controls.Add(this.pnlSearchTop);
             this.splitContainer1.Panel1MinSize = 260;
-            this.splitContainer1.Size = new System.Drawing.Size(921, 492);
+            this.splitContainer1.Size = new System.Drawing.Size(921, 454);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -66,7 +66,7 @@
             this.dgvSearch.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -75,13 +75,13 @@
             this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSearch.ColumnHeadersVisible = false;
             this.dgvSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSearch.Location = new System.Drawing.Point(0, 78);
+            this.dgvSearch.Location = new System.Drawing.Point(0, 72);
             this.dgvSearch.MultiSelect = false;
             this.dgvSearch.Name = "dgvSearch";
             this.dgvSearch.ReadOnly = true;
             this.dgvSearch.RowHeadersVisible = false;
             this.dgvSearch.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvSearch.Size = new System.Drawing.Size(260, 414);
+            this.dgvSearch.Size = new System.Drawing.Size(260, 382);
             this.dgvSearch.TabIndex = 23;
             this.dgvSearch.SelectionChanged += new System.EventHandler(this.dgvSearch_SelectionChanged);
             // 
@@ -94,15 +94,15 @@
             this.pnlSearchTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSearchTop.Location = new System.Drawing.Point(0, 0);
             this.pnlSearchTop.Name = "pnlSearchTop";
-            this.pnlSearchTop.Size = new System.Drawing.Size(260, 78);
+            this.pnlSearchTop.Size = new System.Drawing.Size(260, 72);
             this.pnlSearchTop.TabIndex = 24;
             // 
             // btnClear
             // 
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.Location = new System.Drawing.Point(182, 33);
+            this.btnClear.Location = new System.Drawing.Point(182, 30);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(68, 25);
+            this.btnClear.Size = new System.Drawing.Size(68, 23);
             this.btnClear.TabIndex = 17;
             this.btnClear.Text = "Clear";
             this.btnClear.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
@@ -112,28 +112,28 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 13);
+            this.label1.Location = new System.Drawing.Point(22, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.Size = new System.Drawing.Size(47, 12);
             this.label1.TabIndex = 16;
             this.label1.Text = "Search:";
             // 
             // tbSearch
             // 
             this.tbSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbSearch.Location = new System.Drawing.Point(22, 34);
+            this.tbSearch.Location = new System.Drawing.Point(22, 31);
             this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(154, 20);
+            this.tbSearch.Size = new System.Drawing.Size(154, 21);
             this.tbSearch.TabIndex = 13;
             this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
             // MDRegisterViewTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Name = "MDRegisterViewTab";
-            this.Size = new System.Drawing.Size(921, 492);
+            this.Size = new System.Drawing.Size(921, 454);
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);

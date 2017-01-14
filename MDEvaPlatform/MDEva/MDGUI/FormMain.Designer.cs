@@ -70,7 +70,7 @@
             this.MenuItemHelp});
             this.menu_main.Location = new System.Drawing.Point(0, 0);
             this.menu_main.Name = "menu_main";
-            this.menu_main.Size = new System.Drawing.Size(1073, 24);
+            this.menu_main.Size = new System.Drawing.Size(890, 24);
             this.menu_main.TabIndex = 4;
             this.menu_main.Text = "menuStrip1";
             // 
@@ -93,7 +93,7 @@
             // MenuItemFile_Open
             // 
             this.MenuItemFile_Open.Name = "MenuItemFile_Open";
-            this.MenuItemFile_Open.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Open.Size = new System.Drawing.Size(216, 22);
             this.MenuItemFile_Open.Text = "&Open";
             this.MenuItemFile_Open.ToolTipText = "Add";
             this.MenuItemFile_Open.Click += new System.EventHandler(this.MenuItemFile_Open_Click);
@@ -101,7 +101,7 @@
             // MenuItemFile_Close
             // 
             this.MenuItemFile_Close.Name = "MenuItemFile_Close";
-            this.MenuItemFile_Close.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Close.Size = new System.Drawing.Size(216, 22);
             this.MenuItemFile_Close.Text = "&Close";
             this.MenuItemFile_Close.ToolTipText = "Close";
             this.MenuItemFile_Close.Click += new System.EventHandler(this.MenuItemFile_Close_Click);
@@ -109,31 +109,31 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(174, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
             // 
             // MenuItemFile_Import
             // 
             this.MenuItemFile_Import.Name = "MenuItemFile_Import";
-            this.MenuItemFile_Import.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Import.Size = new System.Drawing.Size(216, 22);
             this.MenuItemFile_Import.Text = "&Import";
             this.MenuItemFile_Import.Click += new System.EventHandler(this.MenuItemFile_Import_Click);
             // 
             // MenuItemFile_Export
             // 
             this.MenuItemFile_Export.Name = "MenuItemFile_Export";
-            this.MenuItemFile_Export.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Export.Size = new System.Drawing.Size(216, 22);
             this.MenuItemFile_Export.Text = "&Export";
             this.MenuItemFile_Export.Click += new System.EventHandler(this.MenuItemFile_Export_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(174, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(213, 6);
             // 
             // MenuItemFile_Exit
             // 
             this.MenuItemFile_Exit.Name = "MenuItemFile_Exit";
-            this.MenuItemFile_Exit.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Exit.Size = new System.Drawing.Size(216, 22);
             this.MenuItemFile_Exit.Text = "E&xit";
             this.MenuItemFile_Exit.ToolTipText = "Exit";
             this.MenuItemFile_Exit.Click += new System.EventHandler(this.MenuItemFile_Exit_Click);
@@ -227,9 +227,9 @@
             this.statusBar_VID,
             this.statusBar_PID,
             this.statusBar_BoardType});
-            this.statusBar.Location = new System.Drawing.Point(0, 543);
+            this.statusBar.Location = new System.Drawing.Point(0, 499);
             this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(1073, 24);
+            this.statusBar.Size = new System.Drawing.Size(890, 24);
             this.statusBar.TabIndex = 7;
             this.statusBar.Text = "statusStrip1";
             // 
@@ -280,20 +280,18 @@
             this.tabCtrlRegView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabCtrlRegView.Location = new System.Drawing.Point(0, 24);
-            this.tabCtrlRegView.Margin = new System.Windows.Forms.Padding(30, 3, 3, 3);
-            this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 515);
+            this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 475);
             this.tabCtrlRegView.Name = "tabCtrlRegView";
             this.tabCtrlRegView.SelectedIndex = 0;
-            this.tabCtrlRegView.Size = new System.Drawing.Size(1073, 519);
+            this.tabCtrlRegView.Size = new System.Drawing.Size(890, 475);
             this.tabCtrlRegView.TabIndex = 8;
-            this.tabCtrlRegView.SelectedIndexChanged += new System.EventHandler(this.tabCtrlRegView_SelectedIndexChanged);
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1073, 567);
+            this.ClientSize = new System.Drawing.Size(890, 523);
             this.Controls.Add(this.tabCtrlRegView);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menu_main);
