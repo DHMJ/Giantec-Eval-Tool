@@ -229,6 +229,16 @@ namespace GeneralRegConfigPlatform.MDGUI
                     ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
             }
 
+            if (selectedRegAddr.Count > 1)
+            {
+                selectedRegAddr.Sort();
+                while (selectedRegAddr[selectedRegAddr.Count - 1] == selectedRegAddr[selectedRegAddr.Count - 2])
+                {
+                    selectedRegAddr.RemoveAt(selectedRegAddr.Count - 1);
+                    if (selectedRegAddr.Count == 1)
+                        break;
+                }
+            }
             //foreach (byte val in selectedRegAddr)
             //{
             //    Console.WriteLine("0x" + val.ToString("X2"));
@@ -236,7 +246,14 @@ namespace GeneralRegConfigPlatform.MDGUI
             if (dvgSelRC[0].Cells[0].Value.ToString() != "")
                 this.txtDescriptions.Text = regMap[selectedRegAddr[0]].RegName;
             else
-                this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+            {
+                // try to do: if selected from bottom will crash !!!!!
+                if(regMap[selectedRegAddr[0]].Contain(dvgSelRC[0].Cells[2].Value.ToString()))
+                    this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+                else
+                    this.txtDescriptions.Text = 
+                        regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+            }
         }
 
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

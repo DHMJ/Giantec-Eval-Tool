@@ -271,6 +271,17 @@ namespace MD.MDCommon
             this.regValue = (byte)temp;
         }
 
+        public bool Contain(string _bfName)
+        {
+            bool ret = false;
+            foreach (BitField bf in bfList)
+            {
+                if (bf.BFName == _bfName)
+                    return true;
+            }
+            return ret;
+        }
+
         #endregion Methods
     }
 

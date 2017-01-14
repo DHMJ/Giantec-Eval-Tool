@@ -16,7 +16,7 @@ namespace GeneralRegConfigPlatform.GUI
     public partial class FormMain : Form
     {
         public FormMain()
-        {
+        {            
             InitializeComponent();
         }
 
@@ -63,7 +63,9 @@ namespace GeneralRegConfigPlatform.GUI
 
         private void MenuItemFile_Close_Click(object sender, EventArgs e)
         {
-
+            this.tabCtrlRegView.TabPages.Clear();
+            this.DataSet = null;
+            this.DS_Excel = null;
         }
 
         private void MenuItemFile_Import_Click(object sender, EventArgs e)
@@ -184,11 +186,6 @@ namespace GeneralRegConfigPlatform.GUI
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                
             }
-        }
-
-        private void tabCtrlRegView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
 
