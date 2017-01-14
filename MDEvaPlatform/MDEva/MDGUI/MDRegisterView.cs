@@ -19,6 +19,11 @@ namespace GeneralRegConfigPlatform.MDGUI
         List<byte> regAddrList = new List<byte> { };
         List<byte> selectedRegAddr = new List<byte>();
         byte[] regData;
+
+        // Test define delegate to make row selected change can be mapped to left list select
+        public delegate void RowSelectedChangeEventHandler(object sender, EventArgs e);
+        public event RowSelectedChangeEventHandler RowSelectedChangeEvent;
+
         public MDRegisterView(DataTable _dt, RegisterMap _regmap, DMDongle.comm _uart)
         {
             InitializeComponent();
@@ -240,19 +245,28 @@ namespace GeneralRegConfigPlatform.MDGUI
             } 
 
             // Fill in Description text with Bitfield or Register descriptions.
+            string selectedBFName = "";
             if (dvgSelRC[0].Cells[0].Value.ToString() != "")
                 this.txtDescriptions.Text = regMap[selectedRegAddr[0]].RegName;
             else
             {
                 // try to do: if selected from bottom will crash !!!!!
                 if (regMap[selectedRegAddr[0]].Contain(dvgSelRC[0].Cells[2].Value.ToString()))
+                {
+                    selectedBFName = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFName;
                     this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+                }
                 else
+                {
+                    selectedBFName = regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFName;
                     this.txtDescriptions.Text =
                         regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+                }
             }
 
-
+            // Make the left search item auto changed to the same BF selected in this dvg
+            if (RowSelectedChangeEvent != null)
+                RowSelectedChangeEvent(selectedBFName as object, e);
         }
 
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

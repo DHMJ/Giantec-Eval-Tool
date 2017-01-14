@@ -62,6 +62,7 @@
     <Compile Include="MDCommon\RegTable.Designer.cs">
       <DependentUpon>RegTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="MDCommon\TestCreateEvent.cs" />
     <Compile Include="MDDataBase\MDDataProcess.cs" />
     <Compile Include="MDGUI\MDDataGridView.cs">
       <SubType>Component</SubType>

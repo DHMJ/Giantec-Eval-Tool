@@ -45,6 +45,29 @@ namespace GeneralRegConfigPlatform.MDGUI
             CollectBFNames(dt_reg);
             UpdateSearchedItems(this.tbSearch.Text);
             this.dgvSearch.DataSource = dtSearch;
+
+            // Added Row Selected Change Event
+            mdRegView.RowSelectedChangeEvent += new MDRegisterView.RowSelectedChangeEventHandler(mdRegView_RowSelectedChangeEvent);
+        }
+
+        void mdRegView_RowSelectedChangeEvent(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow dvgRow in dgvSearch.Rows)
+            {
+                if (dvgRow.Cells[0].Value.ToString() == sender.ToString())
+                {
+                    // delete event binding to avoid infinite jump
+                    this.dgvSearch.SelectionChanged -= new System.EventHandler(this.dgvSearch_SelectionChanged);
+                    dgvSearch.ClearSelection();
+                    dvgRow.Selected = true;
+                    // Made the selected row displayed in the middle of the list if possible
+                    int rowCounts = dgvSearch.Height / dgvSearch.Rows[0].Height;
+                    dgvSearch.FirstDisplayedScrollingRowIndex = (dgvSearch.Rows.IndexOf(dvgRow) - rowCounts / 2) > 0 ?
+                        (dgvSearch.Rows.IndexOf(dvgRow) - rowCounts / 2) : 0;
+
+                    this.dgvSearch.SelectionChanged += new System.EventHandler(this.dgvSearch_SelectionChanged);
+                }
+            }
         }
 
         private void CollectBFNames(DataTable _dt)
