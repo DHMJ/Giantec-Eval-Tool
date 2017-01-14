@@ -126,8 +126,8 @@ namespace GeneralRegConfigPlatform.MDDataBase
                     if (tempRowItems[0].ToString() != "" && tempRowItems[0].ToString().Contains("Reg"))
                     {
                         tempReg = _regMap[tempRowItems[0].ToString()];
-                        // Add row for register: RegaAddress, "", "","", RegValue
-                        tempDT.Rows.Add(new object[]{tempReg.RegAddress.ToString("X2"), "","","", tempReg.RegValue.ToString("X2")});
+                        // Add row for register: RegAddress, "", RegName,"", RegValue
+                        tempDT.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
                     }
 
                     if (tempReg == null)
@@ -139,7 +139,7 @@ namespace GeneralRegConfigPlatform.MDDataBase
                     tempBF = tempReg[tempRowItems[2].ToString()];
                     // Initialize bit field
                     tempBF.InitiBF(tempRowItems[1].ToString(),tempRowItems[2].ToString(), 
-                        tempRowItems[3].ToString(), tempReg.RegValue.ToString("X2"));
+                        tempRowItems[3].ToString().Replace("\n","\r\n"), tempReg.RegValue.ToString("X2"));
 
                     // Add row for bitfield: "", BIT, Name, BFValue, ""
                     tempDT.Rows.Add(new object[] { "",tempRowItems[1].ToString(), tempRowItems[2].ToString(), tempBF.BFValue, ""});

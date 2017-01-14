@@ -199,7 +199,6 @@ namespace GeneralRegConfigPlatform.MDGUI
         private void mdDVG1_SelectionChanged(object sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection dvgSelRC = mdDVG1.SelectedRows;
-            // (sender as DataGridView).SelectedRows;
             selectedRegAddr.Clear();
 
             if (dvgSelRC.Count == 0)
@@ -238,22 +237,22 @@ namespace GeneralRegConfigPlatform.MDGUI
                     if (selectedRegAddr.Count == 1)
                         break;
                 }
-            }
-            //foreach (byte val in selectedRegAddr)
-            //{
-            //    Console.WriteLine("0x" + val.ToString("X2"));
-            //}
+            } 
+
+            // Fill in Description text with Bitfield or Register descriptions.
             if (dvgSelRC[0].Cells[0].Value.ToString() != "")
                 this.txtDescriptions.Text = regMap[selectedRegAddr[0]].RegName;
             else
             {
                 // try to do: if selected from bottom will crash !!!!!
-                if(regMap[selectedRegAddr[0]].Contain(dvgSelRC[0].Cells[2].Value.ToString()))
+                if (regMap[selectedRegAddr[0]].Contain(dvgSelRC[0].Cells[2].Value.ToString()))
                     this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
                 else
-                    this.txtDescriptions.Text = 
+                    this.txtDescriptions.Text =
                         regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
             }
+
+
         }
 
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -353,6 +352,17 @@ namespace GeneralRegConfigPlatform.MDGUI
 
             e.Handled = !(str.Contains(e.KeyChar.ToString()));
             //}                        
+        }
+
+        private void mdDVG1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if (mdDVG1.Rows[e.RowIndex].Cells[0].Value.ToString() != "")
+            {
+                for (int ix = 0; ix < mdDVG1.Rows[e.RowIndex].Cells.Count; ix++)
+                {
+                    mdDVG1.Rows[e.RowIndex].Cells[ix].Style.BackColor = Color.LightGray;
+                }
+            }
         }
     }
 }

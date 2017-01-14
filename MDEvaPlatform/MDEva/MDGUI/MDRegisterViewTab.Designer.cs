@@ -35,6 +35,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tbSearch = new System.Windows.Forms.TextBox();
+            this.panel_RevervedSpace = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -45,12 +46,16 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Window;
             this.splitContainer1.Panel1.Controls.Add(this.dgvSearch);
+            this.splitContainer1.Panel1.Controls.Add(this.panel_RevervedSpace);
             this.splitContainer1.Panel1.Controls.Add(this.pnlSearchTop);
             this.splitContainer1.Panel1MinSize = 260;
             this.splitContainer1.Size = new System.Drawing.Size(921, 454);
@@ -75,14 +80,15 @@
             this.dgvSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSearch.ColumnHeadersVisible = false;
             this.dgvSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSearch.Location = new System.Drawing.Point(0, 72);
+            this.dgvSearch.Location = new System.Drawing.Point(24, 72);
             this.dgvSearch.MultiSelect = false;
             this.dgvSearch.Name = "dgvSearch";
             this.dgvSearch.ReadOnly = true;
             this.dgvSearch.RowHeadersVisible = false;
             this.dgvSearch.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvSearch.Size = new System.Drawing.Size(260, 382);
+            this.dgvSearch.Size = new System.Drawing.Size(236, 382);
             this.dgvSearch.TabIndex = 23;
+            this.dgvSearch.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSearch_CellFormatting);
             this.dgvSearch.SelectionChanged += new System.EventHandler(this.dgvSearch_SelectionChanged);
             // 
             // pnlSearchTop
@@ -127,6 +133,15 @@
             this.tbSearch.TabIndex = 13;
             this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
+            // panel_RevervedSpace
+            // 
+            this.panel_RevervedSpace.BackColor = System.Drawing.SystemColors.Window;
+            this.panel_RevervedSpace.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel_RevervedSpace.Location = new System.Drawing.Point(0, 72);
+            this.panel_RevervedSpace.Name = "panel_RevervedSpace";
+            this.panel_RevervedSpace.Size = new System.Drawing.Size(24, 382);
+            this.panel_RevervedSpace.TabIndex = 25;
+            // 
             // MDRegisterViewTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -152,5 +167,6 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbSearch;
+        private System.Windows.Forms.Panel panel_RevervedSpace;
     }
 }

@@ -82,7 +82,12 @@ namespace GeneralRegConfigPlatform.MDGUI
         private void dgvSearch_SelectionChanged(object sender, EventArgs e)
         {
             if(dgvSearch.SelectedCells.Count >0)
-                mdRegView.JumpToSelected(dgvSearch.SelectedCells[0].Value.ToString());                
+                mdRegView.JumpToSelected(dgvSearch.SelectedCells[0].Value.ToString());
+        }
+
+        private void dgvSearch_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            e.Value = "  " + e.Value.ToString().TrimStart();
         }
     }
 }
