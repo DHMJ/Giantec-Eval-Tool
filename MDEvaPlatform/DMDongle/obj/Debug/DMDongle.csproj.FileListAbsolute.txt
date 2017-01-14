@@ -2,7 +2,8 @@ D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\DMDongle\bin\Debu
 D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\DMDongle\bin\Debug\DMDongle.pdb
 D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\DMDongle\obj\Debug\DMDongle.dll
 D:\Projects\GeneralEvaGUI\GeneralRegisterConfigurationPlatform\DMDongle\obj\Debug\DMDongle.pdb
-C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\Debug\DMDongle.dll
-C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\Debug\DMDongle.pdb
-C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\Debug\DMDongle.dll
-C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\Debug\DMDongle.pdb
+C:\Users\DELL-15\Desktop\MDEvaPlatform\DMDongle\bin\Debug\DMDongle.dll
+C:\Users\DELL-15\Desktop\MDEvaPlatform\DMDongle\bin\Debug\DMDongle.pdb
+C:\Users\DELL-15\Desktop\MDEvaPlatform\DMDongle\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\DELL-15\Desktop\MDEvaPlatform\DMDongle\obj\Debug\DMDongle.dll
+C:\Users\DELL-15\Desktop\MDEvaPlatform\DMDongle\obj\Debug\DMDongle.pdb

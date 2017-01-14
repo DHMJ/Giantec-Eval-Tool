@@ -84,9 +84,63 @@ namespace GeneralRegConfigPlatform.MDDataBase
                     rw = RWProperty.RW;
                 
                 _regmap.Add(new Register(regGroup, items[1].ToString(), items[2].ToString(), rw, items[12].ToString(), bfs));
+                
+                #region Comment out data table create
+                //if (drc[ix].ItemArray[0].ToString() != "")
+                //{
+                //    Console.WriteLine(drc[ix].ItemArray[0].ToString());
+                //    ds_customer.Tables.Add(new DataTable(drc[ix].ItemArray[0].ToString().Trim('\n')));
+                //    tempDT = ds_customer.Tables[ds_customer.Tables.Count - 1];
+                //    tempDT.Columns.Add("Address");
+                //    tempDT.Columns.Add("BFName");
+                //    tempDT.Columns.Add("BFValue");
+                //    //tempDT.Columns.Add("Bit6");
+                //    //tempDT.Columns.Add("Bit5");
+                //    //tempDT.Columns.Add("Bit4");
+                //    //tempDT.Columns.Add("Bit3");
+                //    //tempDT.Columns.Add("Bit2");
+                //    //tempDT.Columns.Add("Bit1");
+                //    //tempDT.Columns.Add("Bit0");
+                //    tempDT.Columns.Add("Value");
+                //}
+
+                //for (int bf_ix = 0; bf_ix < 8; bf_ix++)
+                //{
+                //    DataRow dr = tempDT.NewRow();
+
+                //    // Reg Address
+                //    if (bf_ix == 0)
+                //        dr.ItemArray[0] = drc[ix].ItemArray[2];
+                //    else
+                //        dr.ItemArray[0] = "";
+                //    // Reg Value
+                //    if (bf_ix == 7)
+                //        dr.ItemArray[10] = drc[ix].ItemArray[12];
+                //    else
+                //        dr.ItemArray[10] = "";
+                                  
+                //    for(
+                //    dr.ItemArray[1] = drc[ix].ItemArray[1];
+                //    dr.ItemArray[2] = drc[ix].ItemArray[3 + bf_ix];
+                //    dr.ItemArray[3] = drc[ix].ItemArray[12];
+                //    tempDT.Rows.Add(dr);
+                //}
+                #endregion 
             }
 
             return _regmap;
+
+            //foreach(DataRow dr in dt.Columns[0].Table.Rows)
+            //{
+            //    if (dr.ItemArray[0].ToString() == "Status \nReg")
+            //    {
+            //        Console.WriteLine(dr.Table.Rows[0][0].ToString());
+            //        for (int ix_cl = 0; ix_cl < dr.Table.Rows.Count; ix_cl++)
+            //        {
+            //            Console.WriteLine(dr.Table.Rows[ix_cl][0]);
+            //        }
+            //    }
+            //}
         }
 
         private void CreateBF_DT(RegisterMap _regMap)
@@ -150,17 +204,14 @@ namespace GeneralRegConfigPlatform.MDDataBase
 
         private void CreateCustomerDT()
         {
-            if (!ds_display.Tables.Contains("Customer"))
-            {
-                DataTable tempDT = new DataTable("Customer");
-                tempDT.Columns.Add("ADDR(Hex)");
-                tempDT.Columns.Add("BIT");
-                tempDT.Columns.Add("Name");
-                tempDT.Columns.Add("BFValue(Hex)");
-                tempDT.Columns.Add("RegValue(Hex)");
-
-                ds_display.Tables.Add(tempDT);
-            }
+            DataTable tempDT = new DataTable("Customer");
+            tempDT.Columns.Add("ADDR(Hex)");
+            tempDT.Columns.Add("BIT");
+            tempDT.Columns.Add("Name");
+            tempDT.Columns.Add("BFValue(Hex)");
+            tempDT.Columns.Add("RegValue(Hex)");
+                        
+            ds_display.Tables.Add(tempDT);
         }
 
 

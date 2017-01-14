@@ -43,9 +43,9 @@
             // 
             // btn_ImportRegMap
             // 
-            this.btn_ImportRegMap.Location = new System.Drawing.Point(47, 68);
+            this.btn_ImportRegMap.Location = new System.Drawing.Point(47, 74);
             this.btn_ImportRegMap.Name = "btn_ImportRegMap";
-            this.btn_ImportRegMap.Size = new System.Drawing.Size(75, 23);
+            this.btn_ImportRegMap.Size = new System.Drawing.Size(75, 25);
             this.btn_ImportRegMap.TabIndex = 0;
             this.btn_ImportRegMap.Text = "Import";
             this.btn_ImportRegMap.UseVisualStyleBackColor = true;
@@ -81,7 +81,7 @@
             this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(627, 452);
+            this.dataGridView1.Size = new System.Drawing.Size(627, 493);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
@@ -94,10 +94,10 @@
             this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(122, 11);
+            this.tabControl1.Location = new System.Drawing.Point(122, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(645, 491);
+            this.tabControl1.Size = new System.Drawing.Size(645, 532);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -108,7 +108,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(637, 462);
+            this.tabPage1.Size = new System.Drawing.Size(637, 503);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
@@ -117,16 +117,16 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(637, 462);
+            this.tabPage2.Size = new System.Drawing.Size(637, 503);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 514);
+            this.ClientSize = new System.Drawing.Size(1058, 557);
             this.Controls.Add(this.btn_ImportRegMap);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
