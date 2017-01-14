@@ -375,6 +375,8 @@ namespace GeneralRegConfigPlatform.MDGUI
                 for (int ix = 0; ix < mdDVG1.Rows[e.RowIndex].Cells.Count; ix++)
                 {
                     mdDVG1.Rows[e.RowIndex].Cells[ix].Style.BackColor = Color.LightGray;
+                    mdDVG1.Rows[e.RowIndex].Cells[ix].Style.Font = new System.Drawing.Font("Calibri", 12F, 
+                        System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
             }
         }
