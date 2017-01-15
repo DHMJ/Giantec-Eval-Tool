@@ -162,8 +162,7 @@ namespace GeneralRegConfigPlatform.MDDataBase
                 ds_display.Tables.Add(tempDT);
             }
         }
-
-
+        
         public RegisterMap RegMap
         { 
             get { return regMap; } 

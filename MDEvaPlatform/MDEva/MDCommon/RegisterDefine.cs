@@ -8,7 +8,7 @@ namespace MD.MDCommon
 {
     public class BitField
     {
-        uint mask;
+        uint mask;        
         /// <summary>
         /// Initialize bit field and set default bit field value.
         /// </summary>
@@ -16,18 +16,18 @@ namespace MD.MDCommon
         /// <param name="name">the name of this bit field</param>
         /// <param name="description">bit field description, include each bit value description</param>
         /// <param name="value">default register value</param>
-        public BitField(string bits, string name, string description, string value)
+        public BitField(string _bits, string name, string description, string value)
         {
             // Set name firstly is good for init when register init. Can update bf later.
             bfName = name;
 
             char[] trimChar = "[]".ToCharArray();
-            string tempBIT = bits.Trim(trimChar);
-            if (tempBIT == null || tempBIT.Length == 0 || name == "")
+            bits = _bits.Trim(trimChar);
+            if (bits == null || bits.Length == 0 || name == "")
                 return;
 
-            bool result = int.TryParse(tempBIT.Substring(0, 1),out startBit);
-            result = int.TryParse(tempBIT.Substring(tempBIT.Length - 1, 1), out endBit);
+            bool result = int.TryParse(bits.Substring(0, 1),out startBit);
+            result = int.TryParse(bits.Substring(bits.Length - 1, 1), out endBit);
             bitLength = endBit - startBit + 1;
 
             bfDesc = description;
@@ -42,18 +42,18 @@ namespace MD.MDCommon
             bitValueMeaning = new string[(int)Math.Pow(2, bitLength)];
         }
 
-        public void InitiBF(string bits, string name, string description, string value)
+        public void InitiBF(string _bits, string name, string description, string value)
         {
             // Set name firstly is good for init when register init. Can update bf later.
             bfName = name;
 
             char[] trimChar = "[]".ToCharArray();
-            string tempBIT = bits.Trim(trimChar);
-            if (tempBIT == null || tempBIT.Length == 0 || name == "")
+            bits = _bits.Trim(trimChar);
+            if (bits == null || bits.Length == 0 || name == "")
                 return;
 
-            bool result = int.TryParse(tempBIT.Substring(0, 1), out endBit);
-            result = int.TryParse(tempBIT.Substring(tempBIT.Length - 1, 1), out startBit);
+            bool result = int.TryParse(bits.Substring(0, 1), out endBit);
+            result = int.TryParse(bits.Substring(bits.Length - 1, 1), out startBit);
             bitLength = endBit - startBit + 1;
 
             bfDesc = description;
@@ -74,6 +74,12 @@ namespace MD.MDCommon
         {
             uint mask = ((uint)Math.Pow(2, _len) - 1) << _startIx;
             return mask;
+        }
+
+        private string bits;
+        public string BITs
+        {
+            get { return this.bits; }
         }
 
         private int startBit;
@@ -193,6 +199,11 @@ namespace MD.MDCommon
                     UpdateBFValue();
                 }
             }
+        }
+
+        public int BFCount
+        {
+            get { return this.bfList.Count; }
         }
 
         public BitField this[string name]

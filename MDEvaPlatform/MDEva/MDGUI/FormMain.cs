@@ -181,7 +181,7 @@ namespace GeneralRegConfigPlatform.GUI
             for (int ix_tab = 0; ix_tab < _ds.Tables.Count; ix_tab++)
             {
                 this.tabCtrlRegView.TabPages.Add(_ds.Tables[ix_tab].TableName);
-                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab], DataSet.RegMap, mySerialPort);
+                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab],_ds.Tables["Customer"], DataSet.RegMap, mySerialPort);
                 this.tabCtrlRegView.TabPages[ix_tab].Controls.Add(newTab);
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                

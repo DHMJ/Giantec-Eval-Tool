@@ -14,6 +14,7 @@ namespace GeneralRegConfigPlatform.MDGUI
     public partial class MDRegisterView : UserControl
     {
         DataTable dt_reg;
+        DataTable dt_Customer;
         RegisterMap regMap;
         DMDongle.comm serialPort;
         List<byte> regAddrList = new List<byte> { };
@@ -24,11 +25,12 @@ namespace GeneralRegConfigPlatform.MDGUI
         public delegate void RowSelectedChangeEventHandler(object sender, EventArgs e);
         public event RowSelectedChangeEventHandler RowSelectedChangeEvent;
 
-        public MDRegisterView(DataTable _dt, RegisterMap _regmap, DMDongle.comm _uart)
+        public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle.comm _uart)
         {
             InitializeComponent();
             //mdDVG1.ClearSelection();
             dt_reg = _dt;
+            dt_Customer = _dtCustomer;
             regMap = _regmap;
             serialPort = _uart;
             CollectCurrentRegList(_dt);
@@ -51,18 +53,67 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         void rightClickMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            switch (e.ClickedItem.Name)
+            switch (e.ClickedItem.Text)
             {
-                case "Read":
+                case "&Read":
                     btn_SelectedRead_Click(null, null);
                     break;
-                case "Write":
+                case "&Write":
                     break;
-                case "Add to customer tab":
+                case "&Add to customer tab":
+                    for (int ix_reg = 0; ix_reg < selectedRegAddr.Count; ix_reg++)
+                    {
+                        Register tempReg = regMap[selectedRegAddr[ix_reg]];
+                        // Judge if this register already in the customer tab
+                        if (IfTableContainReg(dt_Customer, tempReg.RegAddress))
+                            continue;
+                        // Add row for register: RegAddress, "", RegName,"", RegValue
+                        dt_Customer.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
+                        for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
+                        {
+                            //Add row for bitfield: "", BIT, Name, BFValue, ""
+                            dt_Customer.Rows.Add(new object[] { "", tempReg[ix_bf].BITs, tempReg[ix_bf].BFName, tempReg[ix_bf].BFValue, "" });
+                        }
+                    }   
+                    break;
+                case "&Delete from this tab":
+                    for (int ix_reg = 0; ix_reg < selectedRegAddr.Count; ix_reg++)
+                    {
+                        regAddrList.Remove(selectedRegAddr[ix_reg]);
+                    }
+                    
+                    dt_Customer.Rows.Clear();
+                    //dt_RowChanged(null, new DataRowChangeEventArgs(null,DataRowAction.Delete));
+                    for (int ix_reg = 0; ix_reg < regAddrList.Count; ix_reg++)
+                    {
+                        Register tempReg = regMap[regAddrList[ix_reg]];
+                        // Add row for register: RegAddress, "", RegName,"", RegValue
+                        dt_Customer.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
+                        for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
+                        {
+                            //Add row for bitfield: "", BIT, Name, BFValue, ""
+                            dt_Customer.Rows.Add(new object[] { "", tempReg[ix_bf].BITs, tempReg[ix_bf].BFName, tempReg[ix_bf].BFValue, "" });
+                        }
+                    }
+
                     break;
                 default:
                     break;
             }
+        }
+
+        private bool IfTableContainReg(DataTable dt, byte regAddr)
+        {            
+            foreach (DataRow dr in dt.Rows)
+            {
+                if (dr[0].ToString() == "")
+                    continue;
+
+                if (byte.Parse(dr[0].ToString(),System.Globalization.NumberStyles.HexNumber) == regAddr)
+                    return true;
+            }
+
+            return false;
         }
 
         public MDRegisterView()
@@ -108,15 +159,17 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
-        private void CollectCurrentRegList(DataTable _dt)
+        public void CollectCurrentRegList(DataTable _dt)
         {
-            regAddrList.Clear();
+            //regAddrList.Clear();
+            byte tempAddr = 0;
             foreach (DataRow dr in _dt.Rows)
             {
                 if (dr[0].ToString() != "")
                 {
-                    regAddrList.Add(byte.Parse(dr[0].ToString().Replace("0x", ""),
-                        System.Globalization.NumberStyles.HexNumber));
+                    tempAddr = byte.Parse(dr[0].ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    if(!regAddrList.Contains(tempAddr))
+                        regAddrList.Add(tempAddr);
                 }
             }
             regData = new byte[regAddrList.Count];
@@ -178,14 +231,29 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         void dt_RowChanged(object sender, DataRowChangeEventArgs e)
         {
-            //Console.WriteLine(e.Row.ItemArray[0]);
-            if (e.Row.ItemArray[0].ToString() != "")
+            if (dt_reg.TableName == "Customer")
             {
-                // update reg value with ItemArray[0] regAddr
+                if (e.Action == DataRowAction.Add)
+                {
+                    CollectCurrentRegList(dt_reg);
+                }
             }
-            else
+
+            if (e.Action == DataRowAction.Delete)
             {
-                // update reg value with BF name and BF value
+                return;
+            }
+
+            if (e.Action == DataRowAction.Change)
+            {
+                if (e.Row.ItemArray[0].ToString() != "")
+                {
+                    // update reg value with ItemArray[0] regAddr
+                }
+                else
+                {
+                    // update reg value with BF name and BF value
+                }
             }
         }
 
@@ -211,7 +279,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
             // Find selected rows which contain regAddr in the first column.
             foreach (DataGridViewRow dvgRow in dvgSelRC)
-            {
+            {                
                 //if (dvgRow.Cells[0].Value != null && dvgRow.Cells[0].Value.ToString() != "")
                 if (dvgRow.Cells[0].Value.ToString() != "")
                 {
