@@ -174,7 +174,7 @@
             // rightClickMenu
             // 
             this.rightClickMenu.Name = "contextMenuStrip1";
-            this.rightClickMenu.Size = new System.Drawing.Size(153, 26);
+            this.rightClickMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // mdDVG1
             // 

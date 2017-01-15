@@ -21,9 +21,14 @@ namespace GeneralRegConfigPlatform.MDGUI
         List<byte> selectedRegAddr = new List<byte>();
         byte[] regData;
 
-        // Test define delegate to make row selected change can be mapped to left list select
+        // Define delegate to make row selected change can be mapped to left list select
         public delegate void RowSelectedChangeEventHandler(object sender, EventArgs e);
         public event RowSelectedChangeEventHandler RowSelectedChangeEvent;
+
+        public MDRegisterView()
+        {
+            InitializeComponent();
+        }
 
         public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle.comm _uart)
         {
@@ -41,6 +46,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 this.rightClickMenu.Items.Add("&Read");
                 this.rightClickMenu.Items.Add("&Write");
                 this.rightClickMenu.Items.Add("&Delete from this tab");
+                this.rightClickMenu.Items.Add("&Sort");
             }
             else
             {
@@ -67,6 +73,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                         // Judge if this register already in the customer tab
                         if (IfTableContainReg(dt_Customer, tempReg.RegAddress))
                             continue;
+
                         // Add row for register: RegAddress, "", RegName,"", RegValue
                         dt_Customer.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
                         for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
@@ -81,27 +88,18 @@ namespace GeneralRegConfigPlatform.MDGUI
                     {
                         regAddrList.Remove(selectedRegAddr[ix_reg]);
                     }
-                    
-                    dt_Customer.Rows.Clear();
-                    //dt_RowChanged(null, new DataRowChangeEventArgs(null,DataRowAction.Delete));
-                    for (int ix_reg = 0; ix_reg < regAddrList.Count; ix_reg++)
-                    {
-                        Register tempReg = regMap[regAddrList[ix_reg]];
-                        // Add row for register: RegAddress, "", RegName,"", RegValue
-                        dt_Customer.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
-                        for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
-                        {
-                            //Add row for bitfield: "", BIT, Name, BFValue, ""
-                            dt_Customer.Rows.Add(new object[] { "", tempReg[ix_bf].BITs, tempReg[ix_bf].BFName, tempReg[ix_bf].BFValue, "" });
-                        }
-                    }
 
+                    ReCreatDataTable();
+                    break;
+                case "&Sort":
+                    ReCreatDataTable();
                     break;
                 default:
                     break;
             }
         }
 
+        #region Funcs
         private bool IfTableContainReg(DataTable dt, byte regAddr)
         {            
             foreach (DataRow dr in dt.Rows)
@@ -115,12 +113,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
             return false;
         }
-
-        public MDRegisterView()
-        {
-            InitializeComponent();
-        }
-
+        
         private void InitDVG()
         {
             mdDVG1.ShowCellToolTips = true;
@@ -172,7 +165,17 @@ namespace GeneralRegConfigPlatform.MDGUI
                         regAddrList.Add(tempAddr);
                 }
             }
+            regAddrList.Sort();
             regData = new byte[regAddrList.Count];
+        }
+
+        private void BindingDVG(DataTable dt)
+        {
+            mdDVG1.AutoGenerateColumns = true;
+            mdDVG1.Dock = DockStyle.Fill;
+            this.mdDVG1.DataSource = dt;
+            dt.RowChanged += new DataRowChangeEventHandler(dt_RowChanged);
+            InitDVG();
         }
 
         public void JumpToSelected(string selStr)
@@ -191,6 +194,72 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
+        public byte GetRegAddrWithBFColumn(int currentRowIx)
+        {
+            if (mdDVG1 == null || mdDVG1.Rows.Count == 0)
+                return 0;
+
+            while (currentRowIx > 0 && mdDVG1[0, currentRowIx].Value.ToString() == "")
+            {
+                currentRowIx--;
+            }
+            return byte.Parse(mdDVG1[0, currentRowIx].Value.ToString().Replace("0x", ""));
+        }
+
+        public void UpdateSelectedRegList(DataGridViewSelectedRowCollection dgvSelectedRC)
+        {
+            int ix;
+            byte tempAddr;
+            string tempBFName;
+            foreach (DataGridViewRow dgvRow in dgvSelectedRC)
+            {
+                if (dgvRow.Cells[0].Value.ToString() != "")
+                {
+                    tempAddr = byte.Parse(dgvRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
+                    if (!selectedRegAddr.Contains(tempAddr))
+                    {
+                        selectedRegAddr.Add(tempAddr);
+                        continue;
+                    }
+                }
+                else
+                {
+                    tempBFName = dgvRow.Cells[2].Value.ToString();
+                    foreach(Register tempReg in regMap.RegList)
+                    {
+                        if (tempReg.Contain(tempBFName))
+                        {
+                            if (!selectedRegAddr.Contains(tempReg.RegAddress))
+                            {
+                                selectedRegAddr.Add(tempReg.RegAddress);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            selectedRegAddr.Sort();
+        }
+
+        private void ReCreatDataTable()
+        {
+            dt_Customer.Rows.Clear();
+            //dt_RowChanged(null, new DataRowChangeEventArgs(null,DataRowAction.Delete));
+            for (int ix_reg = 0; ix_reg < regAddrList.Count; ix_reg++)
+            {
+                Register tempReg = regMap[regAddrList[ix_reg]];
+                // Add row for register: RegAddress, "", RegName,"", RegValue
+                dt_Customer.Rows.Add(new object[] { tempReg.RegAddress.ToString("X2"), "", tempReg.RegName, "", tempReg.RegValue.ToString("X2") });
+                for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
+                {
+                    //Add row for bitfield: "", BIT, Name, BFValue, ""
+                    dt_Customer.Rows.Add(new object[] { "", tempReg[ix_bf].BITs, tempReg[ix_bf].BFName, tempReg[ix_bf].BFValue, "" });
+                }
+            }
+        }
+        #endregion Funcs
+
+        #region Events
         private void btnReadAll_Click(object sender, EventArgs e)
         {
             if (serialPort.IsOpen)
@@ -218,15 +287,6 @@ namespace GeneralRegConfigPlatform.MDGUI
             {
  
             }
-        }
-
-        private void BindingDVG(DataTable dt)
-        {
-            mdDVG1.AutoGenerateColumns = true;
-            mdDVG1.Dock = DockStyle.Fill;
-            this.mdDVG1.DataSource = dt;
-            dt.RowChanged += new DataRowChangeEventHandler(dt_RowChanged);
-            InitDVG();
         }
 
         void dt_RowChanged(object sender, DataRowChangeEventArgs e)
@@ -257,78 +317,67 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
-        public byte GetRegAddrWithBFColumn(int currentRowIx)
-        {
-            if (mdDVG1 == null || mdDVG1.Rows.Count == 0)
-                return 0;
-
-            while (currentRowIx > 0 && mdDVG1[0, currentRowIx].Value.ToString() == "")
-            {
-                currentRowIx--;
-            }
-            return byte.Parse(mdDVG1[0, currentRowIx].Value.ToString().Replace("0x", ""));
-        }
-
         private void mdDVG1_SelectionChanged(object sender, EventArgs e)
         {
-            DataGridViewSelectedRowCollection dvgSelRC = mdDVG1.SelectedRows;
+            DataGridViewSelectedRowCollection dgvSelRC = mdDVG1.SelectedRows;
             selectedRegAddr.Clear();
 
-            if (dvgSelRC.Count == 0)
+            if (dgvSelRC.Count == 0)
                 return;
-
+            
+            UpdateSelectedRegList(dgvSelRC);
             // Find selected rows which contain regAddr in the first column.
-            foreach (DataGridViewRow dvgRow in dvgSelRC)
-            {                
-                //if (dvgRow.Cells[0].Value != null && dvgRow.Cells[0].Value.ToString() != "")
-                if (dvgRow.Cells[0].Value.ToString() != "")
-                {
-                    selectedRegAddr.Add(byte.Parse(dvgRow.Cells[0].Value.ToString().Replace("0x", ""),
-                        System.Globalization.NumberStyles.HexNumber));
-                }
-            }
+            //foreach (DataGridViewRow dvgRow in dgvSelRC)
+            //{                
+            //    //if (dvgRow.Cells[0].Value != null && dvgRow.Cells[0].Value.ToString() != "")
+            //    if (dvgRow.Cells[0].Value.ToString() != "")
+            //    {
+            //        selectedRegAddr.Add(byte.Parse(dvgRow.Cells[0].Value.ToString().Replace("0x", ""),
+            //            System.Globalization.NumberStyles.HexNumber));
+            //    }
+            //}
 
-            // Find regAddr of the selected rows belong to if the first row doesn't have regAddr info
-            //if (dvgSelRC[0].Cells[0].Value != null && dvgSelRC[0].Cells[0].Value.ToString() == "") 
-            if (dvgSelRC[0].Cells[0].Value.ToString() == "")
-            {
-                int firstRowIx = mdDVG1.Rows.IndexOf(dvgSelRC[0]);
-                while (firstRowIx > 0 && mdDVG1.Rows[firstRowIx].Cells[0].Value.ToString() == "")
-                {
-                    firstRowIx--;
-                }
-                selectedRegAddr.Add(byte.Parse(mdDVG1.Rows[firstRowIx].Cells[0].Value.
-                    ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
-            }
+            //// Find regAddr of the selected rows belong to if the first row doesn't have regAddr info
+            ////if (dvgSelRC[0].Cells[0].Value != null && dvgSelRC[0].Cells[0].Value.ToString() == "") 
+            //if (dgvSelRC[0].Cells[0].Value.ToString() == "")
+            //{
+            //    int firstRowIx = mdDVG1.Rows.IndexOf(dgvSelRC[0]);
+            //    while (firstRowIx > 0 && mdDVG1.Rows[firstRowIx].Cells[0].Value.ToString() == "")
+            //    {
+            //        firstRowIx--;
+            //    }
+            //    selectedRegAddr.Add(byte.Parse(mdDVG1.Rows[firstRowIx].Cells[0].Value.
+            //        ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
+            //}
 
-            if (selectedRegAddr.Count > 1)
-            {
-                selectedRegAddr.Sort();
-                while (selectedRegAddr[selectedRegAddr.Count - 1] == selectedRegAddr[selectedRegAddr.Count - 2])
-                {
-                    selectedRegAddr.RemoveAt(selectedRegAddr.Count - 1);
-                    if (selectedRegAddr.Count == 1)
-                        break;
-                }
-            } 
+            //if (selectedRegAddr.Count > 1)
+            //{
+            //    selectedRegAddr.Sort();
+            //    while (selectedRegAddr[selectedRegAddr.Count - 1] == selectedRegAddr[selectedRegAddr.Count - 2])
+            //    {
+            //        selectedRegAddr.RemoveAt(selectedRegAddr.Count - 1);
+            //        if (selectedRegAddr.Count == 1)
+            //            break;
+            //    }
+            //} 
 
             // Fill in Description text with Bitfield or Register descriptions.
             string selectedBFName = "";
-            if (dvgSelRC[0].Cells[0].Value.ToString() != "")
+            if (dgvSelRC[0].Cells[0].Value.ToString() != "")
                 this.txtDescriptions.Text = regMap[selectedRegAddr[0]].RegName;
             else
             {
                 // try to do: if selected from bottom will crash !!!!!
-                if (regMap[selectedRegAddr[0]].Contain(dvgSelRC[0].Cells[2].Value.ToString()))
+                if (regMap[selectedRegAddr[0]].Contain(dgvSelRC[0].Cells[2].Value.ToString()))
                 {
-                    selectedBFName = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFName;
-                    this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+                    selectedBFName = regMap[selectedRegAddr[0]][dgvSelRC[0].Cells[2].Value.ToString()].BFName;
+                    this.txtDescriptions.Text = regMap[selectedRegAddr[0]][dgvSelRC[0].Cells[2].Value.ToString()].BFDesc;
                 }
                 else
                 {
-                    selectedBFName = regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFName;
+                    selectedBFName = regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dgvSelRC[0].Cells[2].Value.ToString()].BFName;
                     this.txtDescriptions.Text =
-                        regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dvgSelRC[0].Cells[2].Value.ToString()].BFDesc;
+                        regMap[selectedRegAddr[selectedRegAddr.Count - 1]][dgvSelRC[0].Cells[2].Value.ToString()].BFDesc;
                 }
             }
 
@@ -448,5 +497,6 @@ namespace GeneralRegConfigPlatform.MDGUI
                 }
             }
         }
+        #endregion Events
     }
 }

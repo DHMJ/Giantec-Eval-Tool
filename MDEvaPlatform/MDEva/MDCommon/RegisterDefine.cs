@@ -556,6 +556,10 @@ namespace MD.MDCommon
             }
         }
 
+        public List<Register> RegList
+        {
+            get { return this.RegistersList; }
+        }
     }
 
     public class RegTap
