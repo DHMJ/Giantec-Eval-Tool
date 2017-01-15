@@ -194,7 +194,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
-        public byte GetRegAddrWithBFColumn(int currentRowIx)
+        public int GetRegRowIx(int currentRowIx)
         {
             if (mdDVG1 == null || mdDVG1.Rows.Count == 0)
                 return 0;
@@ -203,7 +203,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             {
                 currentRowIx--;
             }
-            return byte.Parse(mdDVG1[0, currentRowIx].Value.ToString().Replace("0x", ""));
+            return currentRowIx;
         }
 
         public void UpdateSelectedRegList(DataGridViewSelectedRowCollection dgvSelectedRC)
@@ -257,6 +257,17 @@ namespace GeneralRegConfigPlatform.MDGUI
                 }
             }
         }
+
+        private void UpdateBFValueCells(int ix_reg, byte regAddr)
+        {
+            Register tempReg = regMap[regAddr];
+            DataGridViewRow tempDGVRow;
+            for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
+            {
+                tempDGVRow = mdDVG1.Rows[ix_reg + 1 + ix_bf];
+                tempDGVRow.Cells[3].Value = tempReg.GetBFValue(tempDGVRow.Cells[2].Value.ToString());
+            }
+        }
         #endregion Funcs
 
         #region Events
@@ -264,20 +275,23 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (serialPort.IsOpen)
             {
-                serialPort.readRegBurst(regAddrList[0], regData, (byte)regAddrList.Count);
+                //serialPort.readRegBurst(regAddrList[0], regData, (byte)regAddrList.Count);
+                for (int ix = 0; ix < regAddrList.Count; ix++)
+                {
+                    regMap[regAddrList[ix]].RegValue = serialPort.readSingleReg(regAddrList[ix]);
+                }
             }
-
-            // single read way
-            //writeRegBurst(byte startregaddr, byte[] data, byte count)
-            //readRegBurst(
+            ReCreatDataTable();
         }
 
         private void btnWriteAll_Click(object sender, EventArgs e)
         {
-            // single write way
-            for (int ix = 0; ix < regAddrList.Count; ix++)
+            if (serialPort.IsOpen)
             {
-                regData[ix] = regMap[regAddrList[ix]].RegValue;
+                for (int ix = 0; ix < regAddrList.Count; ix++)
+                {
+                    serialPort.writeSingleReg(regAddrList[ix], regMap[regAddrList[ix]].RegValue);
+                }
             }
         }
 
@@ -285,7 +299,11 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (serialPort.IsOpen)
             {
- 
+                for (int ix = 0; ix < regAddrList.Count; ix++)
+                {
+                    regMap[selectedRegAddr[ix]].RegValue = serialPort.readSingleReg(selectedRegAddr[ix]);
+                    // todo update GUI display
+                }
             }
         }
 
@@ -389,6 +407,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Just make the diplay value have a 0x prefix, real cell value is the value you enter in
+            
             if ((e.ColumnIndex < 1 || e.ColumnIndex > 2) && (e.Value.ToString() != ""))
             {
                 e.Value = "0x" + e.Value.ToString().Replace("0x", "");
@@ -409,21 +428,39 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void mdDVG1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            byte tempAddr;
+            DataGridViewRow tempRow = mdDVG1.Rows[e.RowIndex];
             switch (e.ColumnIndex)
             {
                 case 3:         //Bit field value changed
-                    // todo: write reg[GetRegAddrWithBFColumn(e.RowIndex)]
-                    //Console.WriteLine(mdDVG1[0, e.RowIndex].Value.ToString());
-                    Console.WriteLine(GetRegAddrWithBFColumn(e.RowIndex).ToString("X2"));
+                    // Update displayed RegValue and regmap
+                    int regRowIx = GetRegRowIx(e.RowIndex);
+                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""));
+                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString(), System.Globalization.NumberStyles.HexNumber));
+                    this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+                    mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
+                    this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+
+                    // writeto HW
+                    if (serialPort.IsOpen)
+                        serialPort.writeSingleReg(tempAddr, regMap[tempAddr].RegValue);
                     break;
                 case 4:         //Reg Value changed
-                    //Console.WriteLine(mdDVG1[0, e.RowIndex].Value.ToString());
-                    // todo: write this reg to hw
+                    // Update regmap and BF value in GUI display
+                    tempAddr = byte.Parse(tempRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
+                    this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+
+                    regMap[tempAddr].RegValue = byte.Parse(tempRow.Cells[4].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    UpdateBFValueCells(e.RowIndex, tempAddr);
+                    this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+
+                    // write to HW
+                    if (serialPort.IsOpen)
+                        serialPort.writeSingleReg(tempAddr, regMap[tempAddr].RegValue);
                     break;
                 default:
                     break;
             }
-
         }
 
         private void mdDVG1_KeyPress(object sender, KeyPressEventArgs e)
@@ -498,5 +535,43 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
         #endregion Events
+
+        private void mdDVG1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            //Console.WriteLine("Enter Cell Validataing");
+            uint tempData;
+            byte tempAddr;
+            DataGridViewRow tempRow = mdDVG1.Rows[e.RowIndex];
+            if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString() == "")
+            {
+                return;
+            }
+
+            if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString().Length > 4)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            switch (e.ColumnIndex)
+            {
+                case 3:         //Bit field value changing
+                    int regRowIx = GetRegRowIx(e.RowIndex);
+                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    tempData = uint.Parse(mdDVG1[e.ColumnIndex, e.RowIndex].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    if(tempData > regMap[tempAddr][tempRow.Cells[2].Value.ToString()].BFMaxValue)
+                        e.Cancel = true;                    
+                    break;
+                case 4:         //Reg Value changed
+                    tempData = uint.Parse(tempRow.Cells[4].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    tempAddr = byte.Parse(tempRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
+                     if(tempData > regMap[tempAddr].RegMaxValue)
+                         e.Cancel = true;
+                    break;
+                default:
+                    break;
+            }
+
+        }
     }
 }

@@ -44,8 +44,8 @@
             this.columnBinary = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnHex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlRegViewDVG = new System.Windows.Forms.Panel();
-            this.rightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mdDVG1 = new GeneralRegConfigPlatform.GUI.MDDataGridView();
+            this.rightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pnlRegViewTop.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlRegViewDVG.SuspendLayout();
@@ -171,11 +171,6 @@
             this.pnlRegViewDVG.Size = new System.Drawing.Size(617, 350);
             this.pnlRegViewDVG.TabIndex = 9;
             // 
-            // rightClickMenu
-            // 
-            this.rightClickMenu.Name = "contextMenuStrip1";
-            this.rightClickMenu.Size = new System.Drawing.Size(61, 4);
-            // 
             // mdDVG1
             // 
             this.mdDVG1.AllowUserToAddRows = false;
@@ -195,11 +190,17 @@
             this.mdDVG1.Size = new System.Drawing.Size(617, 350);
             this.mdDVG1.TabIndex = 0;
             this.mdDVG1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.mdDVG1_CellFormatting);
+            this.mdDVG1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.mdDVG1_CellValidating);
             this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
             this.mdDVG1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.mdDVG1_EditingControlShowing);
             this.mdDVG1.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.mdDVG1_RowPrePaint);
             this.mdDVG1.SelectionChanged += new System.EventHandler(this.mdDVG1_SelectionChanged);
             this.mdDVG1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.mdDVG1_KeyPress);
+            // 
+            // rightClickMenu
+            // 
+            this.rightClickMenu.Name = "contextMenuStrip1";
+            this.rightClickMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // MDRegisterView
             // 

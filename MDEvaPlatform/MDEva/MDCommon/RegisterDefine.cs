@@ -70,10 +70,15 @@ namespace MD.MDCommon
             //Console.WriteLine(BFValueInRegValue.ToString("X2"));
         }
 
-        public uint maskGen(int _startIx, int _len)
+        private uint maskGen(int _startIx, int _len)
         {
             uint mask = ((uint)Math.Pow(2, _len) - 1) << _startIx;
             return mask;
+        }
+
+        public uint BFMask
+        {
+            get { return this.mask; }
         }
 
         private string bits;
@@ -105,12 +110,18 @@ namespace MD.MDCommon
         { 
             get { return bfValue; }
             // Due to set the bif field value with reg value, mask is needed
-            set { bfValue = (value & mask) >> startBit; } 
+            set { bfValue = value; } 
+        }
+
+        public uint BFMaxValue
+        {
+            get { return (uint)Math.Pow(2, bitLength) - 1; }
         }
 
         public uint BFValueInRegValue
         {
             get { return bfValue << startBit; }
+            set { bfValue = (value & mask) >> startBit; } 
         }
 
         private string bfName;
@@ -206,6 +217,11 @@ namespace MD.MDCommon
             get { return this.bfList.Count; }
         }
 
+        public byte RegMaxValue
+        {
+            get { return byte.MaxValue; }
+        }
+
         public BitField this[string name]
         {
             get
@@ -244,30 +260,13 @@ namespace MD.MDCommon
        {
            return bfList[_bfIx].BFValue;
        }
-        
-        public void UpdateBFValue(string _bfName)
-        {
-            this[_bfName].BFValue = this.regValue;
-            //foreach (BitField bf in bfList)
-            //{
-            //    if (bf.BFName == _bfName)
-            //    {
-            //        bf.BFValue = this.regValue;
-            //    }
-            //}
-        }
-
-        public void UpdateBFValue(int _bfIx)
-        {
-            bfList[_bfIx].BFValue = this.regValue;
-        }
-
+                
         private void UpdateBFValue()
         {
             // Can just update bf value with reg value, will mask inside BitField property
             foreach (BitField bf in bfList)
             {
-                bf.BFValue = this.regValue;
+                bf.BFValueInRegValue = this.regValue;
             }
         }
 
@@ -278,6 +277,18 @@ namespace MD.MDCommon
             {
                 temp += bfList[ix].BFValueInRegValue;
             }
+
+            this.regValue = (byte)temp;
+        }
+
+        public void UpdataRegValue(string _bfName, uint _bfValue)
+        {
+            uint temp = regValue;
+            BitField tempBF = this[_bfName];
+            tempBF.BFValue = _bfValue;
+
+            temp &= ~tempBF.BFMask;
+            temp |= tempBF.BFValueInRegValue;
 
             this.regValue = (byte)temp;
         }
