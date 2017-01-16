@@ -436,7 +436,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                     // Update displayed RegValue and regmap
                     int regRowIx = GetRegRowIx(e.RowIndex);
                     tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""));
-                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString().Replace("0x",""), System.Globalization.NumberStyles.HexNumber));
+                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString(), System.Globalization.NumberStyles.HexNumber));
                     this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
                     mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
