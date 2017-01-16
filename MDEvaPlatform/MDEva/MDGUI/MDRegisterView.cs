@@ -542,6 +542,9 @@ namespace GeneralRegConfigPlatform.MDGUI
             uint tempData;
             byte tempAddr;
             DataGridViewRow tempRow = mdDVG1.Rows[e.RowIndex];
+            if (e.ColumnIndex < 3)
+                return;
+
             if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString() == "")
             {
                 return;
