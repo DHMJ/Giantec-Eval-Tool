@@ -36,7 +36,7 @@ namespace GeneralRegConfigPlatform.GUI
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Title = "Please select regmap excel file...";
             ofd.Filter = "xlsx(*.xlsx)|*.xlsx|xls(*.xls)|*.xls|All Files(*.*)|*.*";
-            ofd.RestoreDirectory = true;
+            //ofd.RestoreDirectory = true;
             ofd.ReadOnlyChecked = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -85,13 +85,13 @@ namespace GeneralRegConfigPlatform.GUI
             OpenFileDialog importFile = new OpenFileDialog();
             importFile.Title = "Import registe setting and update to GUI...";
             importFile.Filter = "MDCFG(.mdcfg)|*.mdcfg|All File(*.*)|*.*";
-            importFile.RestoreDirectory = true;
+            //importFile.RestoreDirectory = true;
             if(importFile.ShowDialog() == DialogResult.OK)
             {
                 string filename = importFile.FileName;
                 foreach(Register reg in regMap.RegList)
                 {
-                    GetPrivateProfileString(reg.RegName, "Register Value", "00", tempValue, 256, filename);
+                    GetPrivateProfileString(reg.RegName, "Value", "00", tempValue, 256, filename);
                     reg.RegValue = byte.Parse(tempValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
                 }                
             }
@@ -103,14 +103,14 @@ namespace GeneralRegConfigPlatform.GUI
             SaveFileDialog exportFile = new SaveFileDialog();
             exportFile.Title = "Export all the register setting to local file...";
             exportFile.Filter = "MDCFG(.mdcfg)|*.mdcfg|All File(*.*)|*.*";
-            exportFile.RestoreDirectory = true;
+            //exportFile.RestoreDirectory = true;
             if (exportFile.ShowDialog() == DialogResult.OK)
             {
                 string filename = exportFile.FileName;
                 foreach (Register reg in regMap.RegList)
                 {
-                    WritePrivateProfileString(reg.RegName, "Register Address", "0x" + reg.RegAddress.ToString("X2"), filename);
-                    WritePrivateProfileString(reg.RegName, "Register Value", "0x" + reg.RegValue.ToString("X2"), filename);
+                    WritePrivateProfileString(reg.RegName, "Address", "0x" + reg.RegAddress.ToString("X2"), filename);
+                    WritePrivateProfileString(reg.RegName, "Value", "0x" + reg.RegValue.ToString("X2"), filename);
                 }
             }
         }
