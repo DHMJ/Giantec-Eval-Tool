@@ -65,6 +65,13 @@ namespace GeneralRegConfigPlatform.MDGUI
                     btn_SelectedRead_Click(null, null);
                     break;
                 case "&Write":
+                    if (serialPort.IsOpen)
+                    {
+                        for (int ix = 0; ix < selectedRegAddr.Count; ix++)
+                        {
+                            regMap[selectedRegAddr[ix]].RegValue = serialPort.readSingleReg(selectedRegAddr[ix]);
+                        }
+                    }
                     break;
                 case "&Add to customer tab":
                     for (int ix_reg = 0; ix_reg < selectedRegAddr.Count; ix_reg++)
@@ -268,6 +275,21 @@ namespace GeneralRegConfigPlatform.MDGUI
                 tempDGVRow.Cells[3].Value = tempReg.GetBFValue(tempDGVRow.Cells[2].Value.ToString());
             }
         }
+
+        private void UpdateRegValueCell(byte regAddr)
+        {
+            foreach (DataGridViewRow dgvRow in mdDVG1.Rows)
+            {
+                if (dgvRow.Cells[0].Value.ToString() != "")
+                {
+                    if (byte.Parse(dgvRow.Cells[0].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber) == regAddr)
+                    {
+                        dgvRow.Cells[4].Value = regAddr.ToString("X2");
+                        return;
+                    }
+                }
+            }
+        }
         #endregion Funcs
 
         #region Events
@@ -299,10 +321,10 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (serialPort.IsOpen)
             {
-                for (int ix = 0; ix < regAddrList.Count; ix++)
+                for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                 {
                     regMap[selectedRegAddr[ix]].RegValue = serialPort.readSingleReg(selectedRegAddr[ix]);
-                    // todo update GUI display
+                    UpdateRegValueCell(selectedRegAddr[ix]);
                 }
             }
         }
@@ -436,7 +458,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                     // Update displayed RegValue and regmap
                     int regRowIx = GetRegRowIx(e.RowIndex);
                     tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""));
-                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString(), System.Globalization.NumberStyles.HexNumber));
+                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString().Replace("0x",""), System.Globalization.NumberStyles.HexNumber));
                     this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
                     mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
