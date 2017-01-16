@@ -8,20 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.Collections;
-using System.Runtime.InteropServices;
 using GeneralRegConfigPlatform.MDDataBase;
 using GeneralRegConfigPlatform.MDGUI;
-using MD.MDCommon;
 
 namespace GeneralRegConfigPlatform.GUI
 {
     public partial class FormMain : Form
     {
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
         public FormMain()
         {            
             InitializeComponent();
@@ -29,23 +22,19 @@ namespace GeneralRegConfigPlatform.GUI
 
         DataSet DS_Excel;
         MDDataSet DataSet;
-        RegisterMap regMap;
         DMDongle.comm mySerialPort = new DMDongle.comm();
         private void MenuItemFile_Open_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Title = "Please select regmap excel file...";
             ofd.Filter = "xlsx(*.xlsx)|*.xlsx|xls(*.xls)|*.xls|All Files(*.*)|*.*";
-            ofd.RestoreDirectory = true;
             ofd.ReadOnlyChecked = true;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 DS_Excel = ImportExcel(ofd.FileName);
-                if (DS_Excel == null)
-                    return;
 
                 DataSet = new MDDataSet(DS_Excel);
-                regMap = DataSet.RegMap;
+
                 // Init tabs with created data tables
                 CreateTabs(DataSet.DS_Display);
 
@@ -81,38 +70,12 @@ namespace GeneralRegConfigPlatform.GUI
 
         private void MenuItemFile_Import_Click(object sender, EventArgs e)
         {
-            StringBuilder tempValue = new StringBuilder(255);
-            OpenFileDialog importFile = new OpenFileDialog();
-            importFile.Title = "Import registe setting and update to GUI...";
-            importFile.Filter = "MDCFG(.mdcfg)|*.mdcfg|All File(*.*)|*.*";
-            importFile.RestoreDirectory = true;
-            if(importFile.ShowDialog() == DialogResult.OK)
-            {
-                string filename = importFile.FileName;
-                foreach(Register reg in regMap.RegList)
-                {
-                    GetPrivateProfileString(reg.RegName, "Register Value", "00", tempValue, 256, filename);
-                    reg.RegValue = byte.Parse(tempValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                }                
-            }
-            //todo update GUI    
+
         }
 
         private void MenuItemFile_Export_Click(object sender, EventArgs e)
         {
-            SaveFileDialog exportFile = new SaveFileDialog();
-            exportFile.Title = "Export all the register setting to local file...";
-            exportFile.Filter = "MDCFG(.mdcfg)|*.mdcfg|All File(*.*)|*.*";
-            exportFile.RestoreDirectory = true;
-            if (exportFile.ShowDialog() == DialogResult.OK)
-            {
-                string filename = exportFile.FileName;
-                foreach (Register reg in regMap.RegList)
-                {
-                    WritePrivateProfileString(reg.RegName, "Register Address", "0x" + reg.RegAddress.ToString("X2"), filename);
-                    WritePrivateProfileString(reg.RegName, "Register Value", "0x" + reg.RegValue.ToString("X2"), filename);
-                }
-            }
+
         }
 
         private void MenuItemFile_Exit_Click(object sender, EventArgs e)
@@ -178,6 +141,34 @@ namespace GeneralRegConfigPlatform.GUI
                     myData.Fill(ds, tName);//填充数据
                 }
                 objConn.Close();
+
+                //string tableName = (string)result[0];
+                //string strSql = "select * from [" + tableName + "$]";
+                ////获取Excel指定Sheet表中的信息
+                //OleDbCommand objCmd = new OleDbCommand(strSql, objConn);
+                //OleDbDataAdapter myData = new OleDbDataAdapter(strSql, objConn);
+                //myData.Fill(ds, tableName);//填充数据
+                //objConn.Close();
+
+                //dtExcel即为excel文件中指定表中存储的信息
+                //dtExcel = ds.Tables[tableName];
+
+                ////string test = dtExcel.Rows[0][0].ToString();
+
+                //foreach (DataColumn dc in dtExcel.Columns)
+                //{
+                //    foreach (DataRow dr in dc.Table.Rows)
+                //    {
+                //        if (dr.Table.Rows[0][0].ToString() == "Status Reg")
+                //        {
+                //            Console.WriteLine(dr.Table.Rows[0][0].ToString());
+                //            for (int ix_cl = 0; ix_cl < dr.Table.Rows.Count; ix_cl++)
+                //            {
+                //                Console.WriteLine(dr.Table.Rows[ix_cl][0]);
+                //            }
+                //        }
+                //    }
+                //}
 
                 return ds;
             }
