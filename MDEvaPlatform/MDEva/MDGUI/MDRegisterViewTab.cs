@@ -143,7 +143,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void dgvSearch_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            e.Value = "  " + e.Value.ToString().TrimStart();
+            e.Value = "   " + e.Value.ToString().TrimStart();
         }
 
         private void dgvSearch_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
