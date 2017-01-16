@@ -272,7 +272,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
             {
                 tempDGVRow = mdDVG1.Rows[ix_reg + 1 + ix_bf];
-                tempDGVRow.Cells[3].Value = tempReg.GetBFValue(tempDGVRow.Cells[2].Value.ToString());
+                tempDGVRow.Cells[3].Value = tempReg.GetBFValue(tempDGVRow.Cells[2].Value.ToString()).ToString("X2");
             }
         }
 
