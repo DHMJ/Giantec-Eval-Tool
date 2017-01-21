@@ -27,6 +27,12 @@ namespace GeneralRegConfigPlatform.MDGUI
             this.splitContainer1.Panel2MinSize = this.Width - 260;
         }
 
+        public void UpdateAllGUI_Tab()
+        {
+            mdRegView.UpdateGUIAll();
+            UpdateSearchedItems("");
+        }
+
         public MDRegisterViewTab(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
         {
             InitializeComponent();
@@ -108,7 +114,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
-        private void UpdateSearchedItems(string keyWords)
+        public void UpdateSearchedItems(string keyWords)
         {
             dtSearch.Rows.Clear();
             foreach (string str in bfNameList)

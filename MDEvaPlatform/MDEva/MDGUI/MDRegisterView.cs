@@ -210,6 +210,14 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
+        public void UpdateGUIAll()
+        {
+            for (int ix = 0; ix < regAddrList.Count; ix++)
+            {
+                UpdateRegValueCell(regAddrList[ix]);
+            }
+        }
+
         public int GetRegRowIx(int currentRowIx)
         {
             if (mdDVG1 == null || mdDVG1.Rows.Count == 0)

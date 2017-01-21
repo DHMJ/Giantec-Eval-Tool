@@ -31,6 +31,7 @@ namespace GeneralRegConfigPlatform.GUI
         DataSet DS_Excel;
         MDDataSet DataSet;
         RegisterMap regMap;
+        List<MDRegisterViewTab> AllTables = new List<MDRegisterViewTab> { };
         DMDongle myUART = new DMDongle();
         private void MenuItemFile_Open_Click(object sender, EventArgs e)
         {
@@ -82,6 +83,12 @@ namespace GeneralRegConfigPlatform.GUI
 
         private void MenuItemFile_Import_Click(object sender, EventArgs e)
         {
+            if (AllTables.Count == 0)
+            {
+                MessageBox.Show("Please open project first!!!");
+                return;
+            }
+
             StringBuilder tempValue = new StringBuilder(255);
             OpenFileDialog importFile = new OpenFileDialog();
             importFile.Title = "Import registe setting and update to GUI...";
@@ -96,11 +103,21 @@ namespace GeneralRegConfigPlatform.GUI
                     reg.RegValue = byte.Parse(tempValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
                 }                
             }
-            //todo update GUI    
+            //todo update GUI 
+            for (int ix = 0; ix < AllTables.Count; ix++)
+            {
+                AllTables[ix].UpdateAllGUI_Tab();
+            }
         }
 
         private void MenuItemFile_Export_Click(object sender, EventArgs e)
         {
+            if (AllTables.Count == 0)
+            {
+                MessageBox.Show("Please open project first!!!");
+                return;
+            }
+
             SaveFileDialog exportFile = new SaveFileDialog();
             exportFile.Title = "Export all the register setting to local file...";
             exportFile.Filter = "MDCFG(.mdcfg)|*.mdcfg|All File(*.*)|*.*";
@@ -188,11 +205,13 @@ namespace GeneralRegConfigPlatform.GUI
         private void CreateTabs(DataSet _ds)
         {
             this.tabCtrlRegView.TabPages.Clear();
+            AllTables.Clear();
             for (int ix_tab = 0; ix_tab < _ds.Tables.Count; ix_tab++)
             {
                 this.tabCtrlRegView.TabPages.Add(_ds.Tables[ix_tab].TableName);
                 MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab],_ds.Tables["Customer"], DataSet.RegMap, myUART);
                 this.tabCtrlRegView.TabPages[ix_tab].Controls.Add(newTab);
+                AllTables.Add(newTab);
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                
             }
