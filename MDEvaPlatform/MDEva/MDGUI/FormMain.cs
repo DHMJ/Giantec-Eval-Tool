@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using GeneralRegConfigPlatform.MDDataBase;
 using GeneralRegConfigPlatform.MDGUI;
 using MD.MDCommon;
+using DMCommunication;
 
 namespace GeneralRegConfigPlatform.GUI
 {
@@ -30,7 +31,7 @@ namespace GeneralRegConfigPlatform.GUI
         DataSet DS_Excel;
         MDDataSet DataSet;
         RegisterMap regMap;
-        DMDongle.comm mySerialPort = new DMDongle.comm();
+        DMDongle myUART = new DMDongle();
         private void MenuItemFile_Open_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -190,7 +191,7 @@ namespace GeneralRegConfigPlatform.GUI
             for (int ix_tab = 0; ix_tab < _ds.Tables.Count; ix_tab++)
             {
                 this.tabCtrlRegView.TabPages.Add(_ds.Tables[ix_tab].TableName);
-                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab],_ds.Tables["Customer"], DataSet.RegMap, mySerialPort);
+                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab],_ds.Tables["Customer"], DataSet.RegMap, myUART);
                 this.tabCtrlRegView.TabPages[ix_tab].Controls.Add(newTab);
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                

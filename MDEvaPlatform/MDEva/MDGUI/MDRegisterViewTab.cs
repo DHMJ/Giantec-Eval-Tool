@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MD.MDCommon;
+using DMCommunication;
 
 namespace GeneralRegConfigPlatform.MDGUI
 {
@@ -26,7 +27,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             this.splitContainer1.Panel2MinSize = this.Width - 260;
         }
 
-        public MDRegisterViewTab(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle.comm _sp)
+        public MDRegisterViewTab(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
         {
             InitializeComponent();
             
@@ -42,7 +43,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             this.splitContainer1.Panel2MinSize = this.Width - 260;
 
             // Add MDRegisterView control
-            mdRegView = new MDRegisterView(dt_reg,_dtCustomer, _regmap, _sp);
+            mdRegView = new MDRegisterView(dt_reg,_dtCustomer, _regmap, _uart);
             this.splitContainer1.Panel2.Controls.Add(mdRegView);
             mdRegView.Dock = DockStyle.Left;
 

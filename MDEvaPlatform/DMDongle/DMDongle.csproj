@@ -8,7 +8,7 @@
     <ProjectGuid>{5426FF81-F369-4709-8C8E-A4A87D7F3C51}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DMDongle</RootNamespace>
+    <RootNamespace>DMCommunication</RootNamespace>
     <AssemblyName>DMDongle</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

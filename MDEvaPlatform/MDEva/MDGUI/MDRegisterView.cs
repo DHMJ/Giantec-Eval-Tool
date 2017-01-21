@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MD.MDCommon;
-using DMDongle;
+using DMCommunication;
 
 namespace GeneralRegConfigPlatform.MDGUI
 {
@@ -16,7 +16,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         DataTable dt_reg;
         DataTable dt_Customer;
         RegisterMap regMap;
-        DMDongle.comm serialPort;
+        DMDongle uart;
         List<byte> regAddrList = new List<byte> { };
         List<byte> selectedRegAddr = new List<byte>();
         byte[] regData;
@@ -30,14 +30,14 @@ namespace GeneralRegConfigPlatform.MDGUI
             InitializeComponent();
         }
 
-        public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle.comm _uart)
+        public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
         {
             InitializeComponent();
             //mdDVG1.ClearSelection();
             dt_reg = _dt;
             dt_Customer = _dtCustomer;
             regMap = _regmap;
-            serialPort = _uart;
+            uart = _uart;
             CollectCurrentRegList(_dt);
             BindingDVG(dt_reg);
 
@@ -64,13 +64,22 @@ namespace GeneralRegConfigPlatform.MDGUI
                 case "&Read":
                     btn_SelectedRead_Click(null, null);
                     break;
-                case "&Write":
-                    if (serialPort.IsOpen)
+                case "&Write":                    
+                    if (uart.IsOpen)
                     {
+                        byte[] regAddr = new byte[selectedRegAddr.Count];
+                        byte[] regData = new byte[selectedRegAddr.Count];
                         for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                         {
-                            regMap[selectedRegAddr[ix]].RegValue = serialPort.readSingleReg(selectedRegAddr[ix]);
+                            regAddr[ix] = selectedRegAddr[ix];
                         }
+                        if (uart.readRegBlockSingle(regAddr, regData, regAddr.Length))
+                        {
+                            for (int ix = 0; ix < selectedRegAddr.Count; ix++)
+                            {
+                                regMap[selectedRegAddr[ix]].RegValue = regData[ix];
+                            }
+                        }                        
                     }
                     break;
                 case "&Add to customer tab":
@@ -295,36 +304,58 @@ namespace GeneralRegConfigPlatform.MDGUI
         #region Events
         private void btnReadAll_Click(object sender, EventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (uart.IsOpen)
             {
-                //serialPort.readRegBurst(regAddrList[0], regData, (byte)regAddrList.Count);
+                byte[] rdRegAddr = new byte[regAddrList.Count];
+                byte[] rdData = new byte[regAddrList.Count];
                 for (int ix = 0; ix < regAddrList.Count; ix++)
                 {
-                    regMap[regAddrList[ix]].RegValue = serialPort.readSingleReg(regAddrList[ix]);
+                    rdRegAddr[ix] = regAddrList[ix];
+                }
+                if (uart.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
+                {
+                    // if read succeeded,then update regmap data and GUI display
+                    for (int ix = 0; ix < rdData.Length; ix++)
+                    {
+                        regMap[rdRegAddr[ix]].RegValue = rdData[ix];
+                        UpdateRegValueCell(rdRegAddr[ix]);
+                    }
                 }
             }
-            ReCreatDataTable();
         }
 
         private void btnWriteAll_Click(object sender, EventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (uart.IsOpen)
             {
+                byte[] wrData = new byte[regAddrList.Count * 2];
                 for (int ix = 0; ix < regAddrList.Count; ix++)
                 {
-                    serialPort.writeSingleReg(regAddrList[ix], regMap[regAddrList[ix]].RegValue);
+                    wrData[2 * ix] = regAddrList[ix];
+                    wrData[2 * ix + 1] = regMap[regAddrList[ix]].RegValue;
                 }
+                uart.writeRegBlockSingle(wrData,regAddrList.Count);
             }
         }
 
         private void btn_SelectedRead_Click(object sender, EventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (uart.IsOpen)
             {
+                byte[] rdRegAddr = new byte[selectedRegAddr.Count];
+                byte[] rdData = new byte[selectedRegAddr.Count];
                 for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                 {
-                    regMap[selectedRegAddr[ix]].RegValue = serialPort.readSingleReg(selectedRegAddr[ix]);
-                    UpdateRegValueCell(selectedRegAddr[ix]);
+                    rdRegAddr[ix] = selectedRegAddr[ix];
+                }
+                if (uart.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
+                {
+                    // if read succeeded,then update regmap data and GUI display
+                    for (int ix = 0; ix < rdData.Length; ix++)
+                    {
+                        regMap[rdRegAddr[ix]].RegValue = rdData[ix];
+                        UpdateRegValueCell(rdRegAddr[ix]);
+                    }
                 }
             }
         }
@@ -463,9 +494,9 @@ namespace GeneralRegConfigPlatform.MDGUI
                     mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
 
-                    // writeto HW
-                    if (serialPort.IsOpen)
-                        serialPort.writeSingleReg(tempAddr, regMap[tempAddr].RegValue);
+                    //// writeto HW, comment now because doesn't auto update.
+                    //if (uart.IsOpen)
+                    //    uart.writeRegSingle(tempAddr, regMap[tempAddr].RegValue);
                     break;
                 case 4:         //Reg Value changed
                     // Update regmap and BF value in GUI display
@@ -476,9 +507,9 @@ namespace GeneralRegConfigPlatform.MDGUI
                     UpdateBFValueCells(e.RowIndex, tempAddr);
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
 
-                    // write to HW
-                    if (serialPort.IsOpen)
-                        serialPort.writeSingleReg(tempAddr, regMap[tempAddr].RegValue);
+                    //// writeto HW, comment now because doesn't auto update.
+                    //if (uart.IsOpen)
+                    //    uart.writeRegSingle(tempAddr, regMap[tempAddr].RegValue);
                     break;
                 default:
                     break;

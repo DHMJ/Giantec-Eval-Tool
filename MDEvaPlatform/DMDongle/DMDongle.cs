@@ -5,7 +5,7 @@ using System.Text;
 using System.IO.Ports;
 using System.Text.RegularExpressions;
 
-namespace DMDongle
+namespace DMCommunication
 {
     public class DMDongle
     {
@@ -47,24 +47,24 @@ namespace DMDongle
         private byte Pilot;
         private byte commMode;
 
-        private SerialPort com = new SerialPort();
+        private SerialPort uart = new SerialPort();
 
         //----------------------DONGLE FUNCTIONS--------------------------------
-        public bool dongleInit(string portname)
+        public bool dongleInit(string portname, VCPGROUP vg, byte devaddr, byte pilot)
         {
-
             if (!IsOpen)
             {
-                com.PortName = portname;
-                com.BaudRate = 115200;
-                com.DataBits = 8;
-                com.Parity = Parity.None;
-                com.StopBits = StopBits.One;
+                uart.PortName = portname;
+                uart.BaudRate = 115200;
+                uart.DataBits = 8;
+                uart.Parity = Parity.None;
+                uart.StopBits = StopBits.One;
 
                 try
                 {
-                    com.Open();
+                    uart.Open();
                     IsOpen = true;
+                    commInit(vg, devaddr, pilot);
                     //return true;
                 }
                 catch (Exception ex)
@@ -78,7 +78,7 @@ namespace DMDongle
 
         public void dongleDeInit()
         {
-            com.Close();
+            uart.Close();
             IsOpen = false;
         }
 
@@ -104,10 +104,10 @@ namespace DMDongle
             WriteBuf[1] = (byte)commMode;
             WriteBuf[2] = 0x06;
             WriteBuf[3] = DevAddr;
-            com.Write(WriteBuf, 0, 4);
+            uart.Write(WriteBuf, 0, 4);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -115,8 +115,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x06 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -127,10 +127,10 @@ namespace DMDongle
             WriteBuf[1] = (byte)commMode;
             WriteBuf[2] = 0x05;
             WriteBuf[3] = Pilot;
-            com.Write(WriteBuf, 0, 4);
+            uart.Write(WriteBuf, 0, 4);
 
             timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -138,8 +138,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x05 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -149,23 +149,28 @@ namespace DMDongle
             return true;
         }
 
-        public bool writeRegSingle(byte[] data, byte count)
+        public bool writeRegSingle(byte regAddr, byte regData)
+        {
+            return writeRegBlockSingle(new byte[] { regAddr, regData }, 0x1);
+        }
+
+        public bool writeRegBlockSingle(byte[] data, int count)
         {
             byte[] buf = new byte[count * 2 + 4];
             buf[0] = 0x5A;
             buf[1] = commMode;
             buf[2] = 0x01;         //writesingle
-            buf[3] = count;      //reg addr
+            buf[3] = (byte)count;      //reg addr
             for (byte i = 0; i < count; i++)
             {
                 buf[4 + i*2] = data[i*2 + 0];         //length = 1
                 buf[5 + i*2] = data[i*2 + 1];      //reg value
             }
 
-            com.Write(buf, 0, count * 2 + 4);
+            uart.Write(buf, 0, count * 2 + 4);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -173,8 +178,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x01 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -184,31 +189,42 @@ namespace DMDongle
             return true;
         }
 
-        public bool readRegSingle(byte[] addr, byte[] data, byte count)
+        public bool readRegSingle(byte regAddr, out byte regData)
+        {
+            byte[] boockData = new byte[1];
+            regData = 0;
+            bool ret = readRegBlockSingle(new byte[] { regAddr }, boockData, 1);
+            if(ret == true)
+                regData = boockData[0];
+
+            return ret;
+        }
+
+        public bool readRegBlockSingle(byte[] addr, byte[] data, int count)
         {
             byte[] buf = new byte[4 + count];
             buf[0] = 0x5A;
             buf[1] = commMode;
             buf[2] = 0x02;
-            buf[3] = count;
+            buf[3] = (byte)count;
             for(byte i = 0; i < count; i++)
                 buf[4 + i] = addr[i];
             //buf[5] = regaddr;
 
 
-            com.Write(buf, 0, 4 + count);
+            uart.Write(buf, 0, 4 + count);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
             }
 
-            if (timeOutCounter != 0 && com.BytesToRead != 0)
+            if (timeOutCounter != 0 && uart.BytesToRead != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x02)
                     return false;
                 else
@@ -222,21 +238,21 @@ namespace DMDongle
                 return false;
         }
 
-        public bool writeRegBurst(byte startregaddr, byte[] data, byte count)
+        public bool writeRegBurst(byte startregaddr, byte[] data, int count)
         {
             byte[] buf = new byte[5 + count];
             buf[0] = 0x5A;
             buf[1] = commMode;
             buf[2] = 0x03;
             buf[3] = startregaddr;
-            buf[4] = count;
+            buf[4] = (byte)count;
 
             for (int i = 0; i < count; i++)
                 buf[5 + i] = data[i];
-            com.Write(buf, 0, 5 + count);
+            uart.Write(buf, 0, 5 + count);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -244,8 +260,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x03 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -255,34 +271,34 @@ namespace DMDongle
             return true;
         }
 
-        public bool readRegBurst(byte startregaddr, byte[] data, byte count)
+        public bool readRegBurst(byte startregaddr, byte[] data, int count)
         {
             byte[] buf = new byte[5];
             buf[0] = 0x5A;
             buf[1] = commMode;
             buf[2] = 0x04;
             buf[3] = startregaddr;
-            buf[4] = count;
+            buf[4] = (byte)count;
 
-            com.Write(buf, 0, 5);
+            uart.Write(buf, 0, 5);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
             }
 
             int validData = 0;
-            if (count > (byte)(com.BytesToRead))
-                validData = com.BytesToRead;
+            if (count > (byte)(uart.BytesToRead))
+                validData = uart.BytesToRead;
             else
                 validData = count;
 
-            if (timeOutCounter != 0 && com.BytesToRead != 0)
+            if (timeOutCounter != 0 && uart.BytesToRead != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)commMode || readBuf[2] != 0x04)
                     return false;
                 else
@@ -305,10 +321,10 @@ namespace DMDongle
             buf[2] = 0x01;              //set io
             buf[3] = (byte)group;       //group
             buf[4] = (byte)pin;         //pin
-            com.Write(buf, 0, 5);
+            uart.Write(buf, 0, 5);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -316,8 +332,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.GPIO || readBuf[2] != 0x01 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -335,10 +351,10 @@ namespace DMDongle
             buf[2] = 0x02;              //reset io
             buf[3] = (byte)group;       //group
             buf[4] = (byte)pin;         //pin
-            com.Write(buf, 0, 5);
+            uart.Write(buf, 0, 5);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -346,8 +362,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.GPIO || readBuf[2] != 0x02 || readBuf[3] != 0xCC)
                     return false;
             }
@@ -365,10 +381,10 @@ namespace DMDongle
             buf[2] = 0x03;         //toggle io
             buf[3] = (byte)group;      //group
             buf[4] = (byte)pin;         //pin
-            com.Write(buf, 0, 5);
+            uart.Write(buf, 0, 5);
 
             uint timeOutCounter = 200;
-            while (com.BytesToRead == 0 && timeOutCounter > 0)
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
             {
                 timeOutCounter--;
                 System.Threading.Thread.Sleep(10);
@@ -376,8 +392,8 @@ namespace DMDongle
 
             if (timeOutCounter != 0)
             {
-                byte[] readBuf = new byte[com.BytesToRead];
-                com.Read(readBuf, 0, com.BytesToRead);
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
                 if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.GPIO || readBuf[2] != 0x03 || readBuf[3] != 0xCC)
                     return false;
             }
