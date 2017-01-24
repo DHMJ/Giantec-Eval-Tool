@@ -31,6 +31,7 @@ namespace GeneralRegConfigPlatform.GUI
         DataSet DS_Excel;
         MDDataSet DataSet;
         RegisterMap regMap;
+        FormDongle myDongleForm;
         List<MDRegisterViewTab> AllTables = new List<MDRegisterViewTab> { };
         DMDongle myUART = new DMDongle();
         private void MenuItemFile_Open_Click(object sender, EventArgs e)
@@ -215,6 +216,15 @@ namespace GeneralRegConfigPlatform.GUI
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                
             }
+        }
+
+        private void selectDongleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            myDongleForm = new FormDongle(myUART);
+            myDongleForm.ShowDialog();
+
+            //Add firmware read info here, and update to GUI
+            
         }
 
 

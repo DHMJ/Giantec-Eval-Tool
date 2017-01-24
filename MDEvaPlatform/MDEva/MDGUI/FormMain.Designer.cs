@@ -54,6 +54,8 @@
             this.statusBar_PID = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar_BoardType = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabCtrlRegView = new System.Windows.Forms.TabControl();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectDongleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +69,7 @@
             this.MenuItemView,
             this.MenuItemWindow,
             this.MenuItemI2CMode,
+            this.toolsToolStripMenuItem,
             this.MenuItemHelp});
             this.menu_main.Location = new System.Drawing.Point(0, 0);
             this.menu_main.Name = "menu_main";
@@ -214,7 +217,7 @@
             // MenuItemHelp_About
             // 
             this.MenuItemHelp_About.Name = "MenuItemHelp_About";
-            this.MenuItemHelp_About.Size = new System.Drawing.Size(105, 22);
+            this.MenuItemHelp_About.Size = new System.Drawing.Size(152, 22);
             this.MenuItemHelp_About.Text = "&About";
             this.MenuItemHelp_About.ToolTipText = "About";
             // 
@@ -227,7 +230,7 @@
             this.statusBar_VID,
             this.statusBar_PID,
             this.statusBar_BoardType});
-            this.statusBar.Location = new System.Drawing.Point(0, 594);
+            this.statusBar.Location = new System.Drawing.Point(0, 546);
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size(1081, 24);
             this.statusBar.TabIndex = 7;
@@ -280,18 +283,33 @@
             this.tabCtrlRegView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabCtrlRegView.Location = new System.Drawing.Point(0, 24);
-            this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 515);
+            this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 475);
             this.tabCtrlRegView.Name = "tabCtrlRegView";
             this.tabCtrlRegView.SelectedIndex = 0;
-            this.tabCtrlRegView.Size = new System.Drawing.Size(1081, 570);
+            this.tabCtrlRegView.Size = new System.Drawing.Size(1081, 522);
             this.tabCtrlRegView.TabIndex = 8;
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectDongleToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // selectDongleToolStripMenuItem
+            // 
+            this.selectDongleToolStripMenuItem.Name = "selectDongleToolStripMenuItem";
+            this.selectDongleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.selectDongleToolStripMenuItem.Text = "Select Dongle";
+            this.selectDongleToolStripMenuItem.Click += new System.EventHandler(this.selectDongleToolStripMenuItem_Click);
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1081, 618);
+            this.ClientSize = new System.Drawing.Size(1081, 570);
             this.Controls.Add(this.tabCtrlRegView);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menu_main);
@@ -334,5 +352,7 @@
         private System.Windows.Forms.TabControl tabCtrlRegView;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Import;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Export;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectDongleToolStripMenuItem;
     }
 }

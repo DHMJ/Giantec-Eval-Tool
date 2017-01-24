@@ -64,6 +64,12 @@
     </Compile>
     <Compile Include="MDCommon\TestCreateEvent.cs" />
     <Compile Include="MDDataBase\MDDataProcess.cs" />
+    <Compile Include="MDGUI\FormDongle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MDGUI\FormDongle.Designer.cs">
+      <DependentUpon>FormDongle.cs</DependentUpon>
+    </Compile>
     <Compile Include="MDGUI\MDDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MDCommon\RegTable.resx">
       <DependentUpon>RegTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MDGUI\FormDongle.resx">
+      <DependentUpon>FormDongle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDGUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

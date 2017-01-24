@@ -36,21 +36,21 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             InitializeComponent();
 
-            string[] str = SerialPort.GetPortNames();
-            if (str == null)
-            {
-                //本机没有串口！
-                this.cbPortName.SelectedIndex = 0;
-            }
-            else
-            {
-                this.cbPortName.Items.Clear();
+            //string[] str = SerialPort.GetPortNames();
+            //if (str == null)
+            //{
+            //    //本机没有串口！
+            //    this.cbPortName.SelectedIndex = 0;
+            //}
+            //else
+            //{
+            //    this.cbPortName.Items.Clear();
 
-                for (int i = 0; i < str.Length; i++)
-                    this.cbPortName.Items.Add(str[i]);
+            //    for (int i = 0; i < str.Length; i++)
+            //        this.cbPortName.Items.Add(str[i]);
 
-                this.cbPortName.SelectedIndex = 0;
-            }
+            //    this.cbPortName.SelectedIndex = 0;
+            //}
 
             //mdDVG1.ClearSelection();
             dt_reg = _dt;

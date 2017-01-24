@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRegViewTop = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnWriteSel = new System.Windows.Forms.Button();
+            this.cbPortName = new System.Windows.Forms.ComboBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnWriteAll = new System.Windows.Forms.Button();
             this.btn_SelectedRead = new System.Windows.Forms.Button();
@@ -47,8 +49,6 @@
             this.pnlRegViewDVG = new System.Windows.Forms.Panel();
             this.mdDVG1 = new GeneralRegConfigPlatform.GUI.MDDataGridView();
             this.rightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cbPortName = new System.Windows.Forms.ComboBox();
-            this.btnWriteSel = new System.Windows.Forms.Button();
             this.pnlRegViewTop.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlRegViewDVG.SuspendLayout();
@@ -62,7 +62,7 @@
             this.pnlRegViewTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlRegViewTop.Location = new System.Drawing.Point(0, 0);
             this.pnlRegViewTop.Name = "pnlRegViewTop";
-            this.pnlRegViewTop.Size = new System.Drawing.Size(617, 77);
+            this.pnlRegViewTop.Size = new System.Drawing.Size(617, 71);
             this.pnlRegViewTop.TabIndex = 8;
             // 
             // panel1
@@ -77,27 +77,49 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(305, 77);
+            this.panel1.Size = new System.Drawing.Size(305, 71);
             this.panel1.TabIndex = 21;
+            // 
+            // btnWriteSel
+            // 
+            this.btnWriteSel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnWriteSel.Location = new System.Drawing.Point(213, 40);
+            this.btnWriteSel.Name = "btnWriteSel";
+            this.btnWriteSel.Size = new System.Drawing.Size(68, 23);
+            this.btnWriteSel.TabIndex = 23;
+            this.btnWriteSel.Text = "Write Sel";
+            this.btnWriteSel.UseVisualStyleBackColor = true;
+            // 
+            // cbPortName
+            // 
+            this.cbPortName.FormattingEnabled = true;
+            this.cbPortName.Items.AddRange(new object[] {
+            "NULL"});
+            this.cbPortName.Location = new System.Drawing.Point(21, 9);
+            this.cbPortName.Name = "cbPortName";
+            this.cbPortName.Size = new System.Drawing.Size(68, 20);
+            this.cbPortName.TabIndex = 22;
+            this.cbPortName.Visible = false;
             // 
             // btnConnect
             // 
             this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnConnect.Location = new System.Drawing.Point(21, 43);
+            this.btnConnect.Location = new System.Drawing.Point(21, 40);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(68, 25);
+            this.btnConnect.Size = new System.Drawing.Size(68, 23);
             this.btnConnect.TabIndex = 21;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Visible = false;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // btnWriteAll
             // 
             this.btnWriteAll.AutoSize = true;
             this.btnWriteAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnWriteAll.Location = new System.Drawing.Point(117, 43);
+            this.btnWriteAll.Location = new System.Drawing.Point(117, 40);
             this.btnWriteAll.Name = "btnWriteAll";
-            this.btnWriteAll.Size = new System.Drawing.Size(69, 25);
+            this.btnWriteAll.Size = new System.Drawing.Size(69, 23);
             this.btnWriteAll.TabIndex = 20;
             this.btnWriteAll.Text = "Write All";
             this.btnWriteAll.UseVisualStyleBackColor = true;
@@ -107,9 +129,9 @@
             // 
             this.btn_SelectedRead.AutoSize = true;
             this.btn_SelectedRead.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_SelectedRead.Location = new System.Drawing.Point(213, 10);
+            this.btn_SelectedRead.Location = new System.Drawing.Point(213, 9);
             this.btn_SelectedRead.Name = "btn_SelectedRead";
-            this.btn_SelectedRead.Size = new System.Drawing.Size(68, 25);
+            this.btn_SelectedRead.Size = new System.Drawing.Size(68, 23);
             this.btn_SelectedRead.TabIndex = 19;
             this.btn_SelectedRead.Text = "Read Sel";
             this.btn_SelectedRead.UseVisualStyleBackColor = true;
@@ -118,9 +140,9 @@
             // btnReadAll
             // 
             this.btnReadAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnReadAll.Location = new System.Drawing.Point(118, 10);
+            this.btnReadAll.Location = new System.Drawing.Point(118, 9);
             this.btnReadAll.Name = "btnReadAll";
-            this.btnReadAll.Size = new System.Drawing.Size(68, 25);
+            this.btnReadAll.Size = new System.Drawing.Size(68, 23);
             this.btnReadAll.TabIndex = 18;
             this.btnReadAll.Text = "Read All";
             this.btnReadAll.UseVisualStyleBackColor = true;
@@ -135,14 +157,14 @@
             this.txtDescriptions.Multiline = true;
             this.txtDescriptions.Name = "txtDescriptions";
             this.txtDescriptions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtDescriptions.Size = new System.Drawing.Size(306, 77);
+            this.txtDescriptions.Size = new System.Drawing.Size(306, 71);
             this.txtDescriptions.TabIndex = 1;
             // 
             // columnAddress
             // 
             this.columnAddress.DataPropertyName = "Address";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.columnAddress.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.columnAddress.DefaultCellStyle = dataGridViewCellStyle1;
             this.columnAddress.FillWeight = 1.401298E-45F;
             this.columnAddress.HeaderText = "Address";
             this.columnAddress.MinimumWidth = 60;
@@ -161,8 +183,8 @@
             // 
             // columnBinary
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.columnBinary.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.columnBinary.DefaultCellStyle = dataGridViewCellStyle2;
             this.columnBinary.FillWeight = 1.401298E-45F;
             this.columnBinary.HeaderText = "Data (Binary)";
             this.columnBinary.MinimumWidth = 129;
@@ -172,8 +194,8 @@
             // columnHex
             // 
             this.columnHex.DataPropertyName = "Value";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.columnHex.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.columnHex.DefaultCellStyle = dataGridViewCellStyle3;
             this.columnHex.FillWeight = 1.401298E-45F;
             this.columnHex.HeaderText = "Value";
             this.columnHex.MinimumWidth = 50;
@@ -183,9 +205,9 @@
             // 
             this.pnlRegViewDVG.Controls.Add(this.mdDVG1);
             this.pnlRegViewDVG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlRegViewDVG.Location = new System.Drawing.Point(0, 77);
+            this.pnlRegViewDVG.Location = new System.Drawing.Point(0, 71);
             this.pnlRegViewDVG.Name = "pnlRegViewDVG";
-            this.pnlRegViewDVG.Size = new System.Drawing.Size(617, 379);
+            this.pnlRegViewDVG.Size = new System.Drawing.Size(617, 350);
             this.pnlRegViewDVG.TabIndex = 9;
             // 
             // mdDVG1
@@ -200,11 +222,11 @@
             this.mdDVG1.Location = new System.Drawing.Point(0, 0);
             this.mdDVG1.Name = "mdDVG1";
             this.mdDVG1.RowHeadersVisible = false;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.mdDVG1.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.mdDVG1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.mdDVG1.RowTemplate.Height = 23;
             this.mdDVG1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.mdDVG1.Size = new System.Drawing.Size(617, 379);
+            this.mdDVG1.Size = new System.Drawing.Size(617, 350);
             this.mdDVG1.TabIndex = 0;
             this.mdDVG1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.mdDVG1_CellFormatting);
             this.mdDVG1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.mdDVG1_CellValidating);
@@ -219,34 +241,14 @@
             this.rightClickMenu.Name = "contextMenuStrip1";
             this.rightClickMenu.Size = new System.Drawing.Size(61, 4);
             // 
-            // cbPortName
-            // 
-            this.cbPortName.FormattingEnabled = true;
-            this.cbPortName.Items.AddRange(new object[] {
-            "NULL"});
-            this.cbPortName.Location = new System.Drawing.Point(21, 10);
-            this.cbPortName.Name = "cbPortName";
-            this.cbPortName.Size = new System.Drawing.Size(68, 21);
-            this.cbPortName.TabIndex = 22;
-            // 
-            // btnWriteSel
-            // 
-            this.btnWriteSel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnWriteSel.Location = new System.Drawing.Point(213, 43);
-            this.btnWriteSel.Name = "btnWriteSel";
-            this.btnWriteSel.Size = new System.Drawing.Size(68, 25);
-            this.btnWriteSel.TabIndex = 23;
-            this.btnWriteSel.Text = "Write Sel";
-            this.btnWriteSel.UseVisualStyleBackColor = true;
-            // 
             // MDRegisterView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlRegViewDVG);
             this.Controls.Add(this.pnlRegViewTop);
             this.Name = "MDRegisterView";
-            this.Size = new System.Drawing.Size(617, 456);
+            this.Size = new System.Drawing.Size(617, 421);
             this.pnlRegViewTop.ResumeLayout(false);
             this.pnlRegViewTop.PerformLayout();
             this.panel1.ResumeLayout(false);

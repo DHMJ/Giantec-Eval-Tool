@@ -62,3 +62,4 @@ C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.MDGUI.MDRegisterViewTab.resources
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.Properties.Resources.resources
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.MDGUI.FormDongle.resources
