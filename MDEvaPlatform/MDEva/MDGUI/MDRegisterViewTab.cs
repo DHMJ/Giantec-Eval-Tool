@@ -25,6 +25,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             // fix the two panel size
             this.splitContainer1.Panel1MinSize = 260;
             this.splitContainer1.Panel2MinSize = this.Width - 260;
+
         }
 
         public void UpdateAllGUI_Tab()

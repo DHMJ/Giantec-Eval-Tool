@@ -6,8 +6,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO.Ports;
 using MD.MDCommon;
 using DMCommunication;
+using GeneralRegConfigPlatform.GUI;
 
 namespace GeneralRegConfigPlatform.MDGUI
 {
@@ -16,7 +18,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         DataTable dt_reg;
         DataTable dt_Customer;
         RegisterMap regMap;
-        DMDongle uart;
+        DMDongle dg;
         List<byte> regAddrList = new List<byte> { };
         List<byte> selectedRegAddr = new List<byte>();
         byte[] regData;
@@ -33,11 +35,28 @@ namespace GeneralRegConfigPlatform.MDGUI
         public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
         {
             InitializeComponent();
+
+            string[] str = SerialPort.GetPortNames();
+            if (str == null)
+            {
+                //本机没有串口！
+                this.cbPortName.SelectedIndex = 0;
+            }
+            else
+            {
+                this.cbPortName.Items.Clear();
+
+                for (int i = 0; i < str.Length; i++)
+                    this.cbPortName.Items.Add(str[i]);
+
+                this.cbPortName.SelectedIndex = 0;
+            }
+
             //mdDVG1.ClearSelection();
             dt_reg = _dt;
             dt_Customer = _dtCustomer;
             regMap = _regmap;
-            uart = _uart;
+            dg = _uart;
             CollectCurrentRegList(_dt);
             BindingDVG(dt_reg);
 
@@ -64,8 +83,8 @@ namespace GeneralRegConfigPlatform.MDGUI
                 case "&Read":
                     btn_SelectedRead_Click(null, null);
                     break;
-                case "&Write":                    
-                    if (uart.IsOpen)
+                case "&Write":
+                    if (dg.IsOpen)
                     {
                         byte[] regAddr = new byte[selectedRegAddr.Count];
                         byte[] regData = new byte[selectedRegAddr.Count];
@@ -73,13 +92,13 @@ namespace GeneralRegConfigPlatform.MDGUI
                         {
                             regAddr[ix] = selectedRegAddr[ix];
                         }
-                        if (uart.readRegBlockSingle(regAddr, regData, regAddr.Length))
+                        if (dg.readRegBlockSingle(regAddr, regData, regAddr.Length))
                         {
                             for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                             {
                                 regMap[selectedRegAddr[ix]].RegValue = regData[ix];
                             }
-                        }                        
+                        }
                     }
                     break;
                 case "&Add to customer tab":
@@ -97,7 +116,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                             //Add row for bitfield: "", BIT, Name, BFValue, ""
                             dt_Customer.Rows.Add(new object[] { "", tempReg[ix_bf].BITs, tempReg[ix_bf].BFName, tempReg[ix_bf].BFValue, "" });
                         }
-                    }   
+                    }
                     break;
                 case "&Delete from this tab":
                     for (int ix_reg = 0; ix_reg < selectedRegAddr.Count; ix_reg++)
@@ -117,19 +136,19 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         #region Funcs
         private bool IfTableContainReg(DataTable dt, byte regAddr)
-        {            
+        {
             foreach (DataRow dr in dt.Rows)
             {
                 if (dr[0].ToString() == "")
                     continue;
 
-                if (byte.Parse(dr[0].ToString(),System.Globalization.NumberStyles.HexNumber) == regAddr)
+                if (byte.Parse(dr[0].ToString(), System.Globalization.NumberStyles.HexNumber) == regAddr)
                     return true;
             }
 
             return false;
         }
-        
+
         private void InitDVG()
         {
             mdDVG1.ShowCellToolTips = true;
@@ -177,7 +196,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 if (dr[0].ToString() != "")
                 {
                     tempAddr = byte.Parse(dr[0].ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    if(!regAddrList.Contains(tempAddr))
+                    if (!regAddrList.Contains(tempAddr))
                         regAddrList.Add(tempAddr);
                 }
             }
@@ -204,7 +223,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     mdDVG1.ClearSelection();
                     dvgRow.Selected = true;
-                    mdDVG1.FirstDisplayedScrollingRowIndex = (mdDVG1.Rows.IndexOf(dvgRow) - rowCounts / 2) > 0 ? 
+                    mdDVG1.FirstDisplayedScrollingRowIndex = (mdDVG1.Rows.IndexOf(dvgRow) - rowCounts / 2) > 0 ?
                         (mdDVG1.Rows.IndexOf(dvgRow) - rowCounts / 2) : 0;
                 }
             }
@@ -249,7 +268,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 else
                 {
                     tempBFName = dgvRow.Cells[2].Value.ToString();
-                    foreach(Register tempReg in regMap.RegList)
+                    foreach (Register tempReg in regMap.RegList)
                     {
                         if (tempReg.Contain(tempBFName))
                         {
@@ -312,7 +331,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         #region Events
         private void btnReadAll_Click(object sender, EventArgs e)
         {
-            if (uart.IsOpen)
+            if (dg.IsOpen)
             {
                 byte[] rdRegAddr = new byte[regAddrList.Count];
                 byte[] rdData = new byte[regAddrList.Count];
@@ -320,7 +339,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     rdRegAddr[ix] = regAddrList[ix];
                 }
-                if (uart.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
+                if (dg.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
                 {
                     // if read succeeded,then update regmap data and GUI display
                     for (int ix = 0; ix < rdData.Length; ix++)
@@ -334,7 +353,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void btnWriteAll_Click(object sender, EventArgs e)
         {
-            if (uart.IsOpen)
+            if (dg.IsOpen)
             {
                 byte[] wrData = new byte[regAddrList.Count * 2];
                 for (int ix = 0; ix < regAddrList.Count; ix++)
@@ -342,13 +361,13 @@ namespace GeneralRegConfigPlatform.MDGUI
                     wrData[2 * ix] = regAddrList[ix];
                     wrData[2 * ix + 1] = regMap[regAddrList[ix]].RegValue;
                 }
-                uart.writeRegBlockSingle(wrData,regAddrList.Count);
+                dg.writeRegBlockSingle(wrData, regAddrList.Count);
             }
         }
 
         private void btn_SelectedRead_Click(object sender, EventArgs e)
         {
-            if (uart.IsOpen)
+            if (dg.IsOpen)
             {
                 byte[] rdRegAddr = new byte[selectedRegAddr.Count];
                 byte[] rdData = new byte[selectedRegAddr.Count];
@@ -356,7 +375,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     rdRegAddr[ix] = selectedRegAddr[ix];
                 }
-                if (uart.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
+                if (dg.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
                 {
                     // if read succeeded,then update regmap data and GUI display
                     for (int ix = 0; ix < rdData.Length; ix++)
@@ -403,7 +422,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
             if (dgvSelRC.Count == 0)
                 return;
-            
+
             UpdateSelectedRegList(dgvSelRC);
             // Find selected rows which contain regAddr in the first column.
             //foreach (DataGridViewRow dvgRow in dgvSelRC)
@@ -468,7 +487,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Just make the diplay value have a 0x prefix, real cell value is the value you enter in
-            
+
             if ((e.ColumnIndex < 1 || e.ColumnIndex > 2) && (e.Value.ToString() != ""))
             {
                 e.Value = "0x" + e.Value.ToString().Replace("0x", "");
@@ -496,8 +515,8 @@ namespace GeneralRegConfigPlatform.MDGUI
                 case 3:         //Bit field value changed
                     // Update displayed RegValue and regmap
                     int regRowIx = GetRegRowIx(e.RowIndex);
-                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""),System.Globalization.NumberStyles.HexNumber);
-                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString().Replace("0x",""), System.Globalization.NumberStyles.HexNumber));
+                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
                     this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
                     mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
@@ -590,7 +609,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 for (int ix = 0; ix < mdDVG1.Rows[e.RowIndex].Cells.Count; ix++)
                 {
                     mdDVG1.Rows[e.RowIndex].Cells[ix].Style.BackColor = Color.LightGray;
-                    mdDVG1.Rows[e.RowIndex].Cells[ix].Style.Font = new System.Drawing.Font("Calibri", 12F, 
+                    mdDVG1.Rows[e.RowIndex].Cells[ix].Style.Font = new System.Drawing.Font("Calibri", 12F,
                         System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
             }
@@ -623,19 +642,31 @@ namespace GeneralRegConfigPlatform.MDGUI
                     int regRowIx = GetRegRowIx(e.RowIndex);
                     tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
                     tempData = uint.Parse(mdDVG1[e.ColumnIndex, e.RowIndex].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    if(tempData > regMap[tempAddr][tempRow.Cells[2].Value.ToString()].BFMaxValue)
-                        e.Cancel = true;                    
+                    if (tempData > regMap[tempAddr][tempRow.Cells[2].Value.ToString()].BFMaxValue)
+                        e.Cancel = true;
                     break;
                 case 4:         //Reg Value changed
                     tempData = uint.Parse(tempRow.Cells[4].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
                     tempAddr = byte.Parse(tempRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
-                     if(tempData > regMap[tempAddr].RegMaxValue)
-                         e.Cancel = true;
+                    if (tempData > regMap[tempAddr].RegMaxValue)
+                        e.Cancel = true;
                     break;
                 default:
                     break;
             }
 
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (dg.dongleInit(this.cbPortName.Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }

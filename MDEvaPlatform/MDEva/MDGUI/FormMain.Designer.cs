@@ -326,7 +326,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp;
         private System.Windows.Forms.ToolStripMenuItem MenuItemHelp_About;
         private System.Windows.Forms.StatusStrip statusBar;
-        private System.Windows.Forms.ToolStripStatusLabel statusBar_DeviceConnected;
+        public System.Windows.Forms.ToolStripStatusLabel statusBar_DeviceConnected;
         private System.Windows.Forms.ToolStripStatusLabel statusBar_VID;
         private System.Windows.Forms.ToolStripStatusLabel statusBar_PID;
         private System.Windows.Forms.ToolStripStatusLabel statusBar_FWVersion;
