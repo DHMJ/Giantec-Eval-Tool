@@ -38,6 +38,9 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_ExitWithoutSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectDongleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptWriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemView = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemView_List = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemView_Output = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,10 +57,21 @@
             this.statusBar_PID = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar_BoardType = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabCtrlRegView = new System.Windows.Forms.TabControl();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectDongleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel_GPIO = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.rbt_RSTB_Off = new System.Windows.Forms.RadioButton();
+            this.rbt_RSTB_On = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbt_Valid_off = new System.Windows.Forms.RadioButton();
+            this.rbt_Valid_on = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
+            this.panel_GPIO.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu_main
@@ -66,10 +80,10 @@
             this.menu_main.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menu_main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemFile,
+            this.toolsToolStripMenuItem,
             this.MenuItemView,
             this.MenuItemWindow,
             this.MenuItemI2CMode,
-            this.toolsToolStripMenuItem,
             this.MenuItemHelp});
             this.menu_main.Location = new System.Drawing.Point(0, 0);
             this.menu_main.Name = "menu_main";
@@ -148,6 +162,30 @@
             this.MenuItemFile_ExitWithoutSave.Text = "Exit &Without Saving";
             this.MenuItemFile_ExitWithoutSave.Click += new System.EventHandler(this.MenuItemFile_ExitWithoutSave_Click);
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectDongleToolStripMenuItem,
+            this.scriptWriteToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // selectDongleToolStripMenuItem
+            // 
+            this.selectDongleToolStripMenuItem.Name = "selectDongleToolStripMenuItem";
+            this.selectDongleToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.selectDongleToolStripMenuItem.Text = "Select Dongle";
+            this.selectDongleToolStripMenuItem.Click += new System.EventHandler(this.selectDongleToolStripMenuItem_Click);
+            this.selectDongleToolStripMenuItem.MouseEnter += new System.EventHandler(this.selectDongleToolStripMenuItem_MouseEnter);
+            // 
+            // scriptWriteToolStripMenuItem
+            // 
+            this.scriptWriteToolStripMenuItem.Name = "scriptWriteToolStripMenuItem";
+            this.scriptWriteToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.scriptWriteToolStripMenuItem.Text = "Script Write";
+            this.scriptWriteToolStripMenuItem.Click += new System.EventHandler(this.scriptWriteToolStripMenuItem_Click);
+            // 
             // MenuItemView
             // 
             this.MenuItemView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -217,7 +255,7 @@
             // MenuItemHelp_About
             // 
             this.MenuItemHelp_About.Name = "MenuItemHelp_About";
-            this.MenuItemHelp_About.Size = new System.Drawing.Size(152, 22);
+            this.MenuItemHelp_About.Size = new System.Drawing.Size(105, 22);
             this.MenuItemHelp_About.Text = "&About";
             this.MenuItemHelp_About.ToolTipText = "About";
             // 
@@ -281,35 +319,125 @@
             // tabCtrlRegView
             // 
             this.tabCtrlRegView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Left;
             this.tabCtrlRegView.Location = new System.Drawing.Point(0, 24);
             this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 475);
             this.tabCtrlRegView.Name = "tabCtrlRegView";
             this.tabCtrlRegView.SelectedIndex = 0;
-            this.tabCtrlRegView.Size = new System.Drawing.Size(1081, 522);
+            this.tabCtrlRegView.Size = new System.Drawing.Size(903, 522);
             this.tabCtrlRegView.TabIndex = 8;
             // 
-            // toolsToolStripMenuItem
+            // panel_GPIO
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectDongleToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            this.panel_GPIO.BackColor = System.Drawing.SystemColors.Control;
+            this.panel_GPIO.Controls.Add(this.panel2);
+            this.panel_GPIO.Controls.Add(this.label2);
+            this.panel_GPIO.Controls.Add(this.panel1);
+            this.panel_GPIO.Controls.Add(this.label1);
+            this.panel_GPIO.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_GPIO.Location = new System.Drawing.Point(903, 24);
+            this.panel_GPIO.Name = "panel_GPIO";
+            this.panel_GPIO.Size = new System.Drawing.Size(178, 522);
+            this.panel_GPIO.TabIndex = 9;
             // 
-            // selectDongleToolStripMenuItem
+            // panel2
             // 
-            this.selectDongleToolStripMenuItem.Name = "selectDongleToolStripMenuItem";
-            this.selectDongleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.selectDongleToolStripMenuItem.Text = "Select Dongle";
-            this.selectDongleToolStripMenuItem.Click += new System.EventHandler(this.selectDongleToolStripMenuItem_Click);
+            this.panel2.Controls.Add(this.rbt_RSTB_Off);
+            this.panel2.Controls.Add(this.rbt_RSTB_On);
+            this.panel2.Location = new System.Drawing.Point(23, 100);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(71, 47);
+            this.panel2.TabIndex = 4;
+            // 
+            // rbt_RSTB_Off
+            // 
+            this.rbt_RSTB_Off.AutoSize = true;
+            this.rbt_RSTB_Off.Checked = true;
+            this.rbt_RSTB_Off.Location = new System.Drawing.Point(3, 25);
+            this.rbt_RSTB_Off.Name = "rbt_RSTB_Off";
+            this.rbt_RSTB_Off.Size = new System.Drawing.Size(41, 16);
+            this.rbt_RSTB_Off.TabIndex = 1;
+            this.rbt_RSTB_Off.TabStop = true;
+            this.rbt_RSTB_Off.Text = "Low";
+            this.rbt_RSTB_Off.UseVisualStyleBackColor = true;
+            // 
+            // rbt_RSTB_On
+            // 
+            this.rbt_RSTB_On.AutoSize = true;
+            this.rbt_RSTB_On.Location = new System.Drawing.Point(3, 3);
+            this.rbt_RSTB_On.Name = "rbt_RSTB_On";
+            this.rbt_RSTB_On.Size = new System.Drawing.Size(47, 16);
+            this.rbt_RSTB_On.TabIndex = 0;
+            this.rbt_RSTB_On.Text = "High";
+            this.rbt_RSTB_On.UseVisualStyleBackColor = true;
+            this.rbt_RSTB_On.CheckedChanged += new System.EventHandler(this.rbt_RSTB_On_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(21, 85);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "RSTB";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rbt_Valid_off);
+            this.panel1.Controls.Add(this.rbt_Valid_on);
+            this.panel1.Location = new System.Drawing.Point(20, 22);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(71, 47);
+            this.panel1.TabIndex = 2;
+            // 
+            // rbt_Valid_off
+            // 
+            this.rbt_Valid_off.AutoSize = true;
+            this.rbt_Valid_off.Checked = true;
+            this.rbt_Valid_off.Location = new System.Drawing.Point(3, 25);
+            this.rbt_Valid_off.Name = "rbt_Valid_off";
+            this.rbt_Valid_off.Size = new System.Drawing.Size(41, 16);
+            this.rbt_Valid_off.TabIndex = 1;
+            this.rbt_Valid_off.TabStop = true;
+            this.rbt_Valid_off.Text = "Low";
+            this.rbt_Valid_off.UseVisualStyleBackColor = true;
+            // 
+            // rbt_Valid_on
+            // 
+            this.rbt_Valid_on.AutoSize = true;
+            this.rbt_Valid_on.Location = new System.Drawing.Point(3, 3);
+            this.rbt_Valid_on.Name = "rbt_Valid_on";
+            this.rbt_Valid_on.Size = new System.Drawing.Size(47, 16);
+            this.rbt_Valid_on.TabIndex = 0;
+            this.rbt_Valid_on.Text = "High";
+            this.rbt_Valid_on.UseVisualStyleBackColor = true;
+            this.rbt_Valid_on.CheckedChanged += new System.EventHandler(this.rbt_Valid_on_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Valid";
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(903, 24);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 522);
+            this.splitter1.TabIndex = 10;
+            this.splitter1.TabStop = false;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1081, 570);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.panel_GPIO);
             this.Controls.Add(this.tabCtrlRegView);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menu_main);
@@ -319,6 +447,12 @@
             this.menu_main.PerformLayout();
             this.statusBar.ResumeLayout(false);
             this.statusBar.PerformLayout();
+            this.panel_GPIO.ResumeLayout(false);
+            this.panel_GPIO.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,6 +487,17 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Import;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Export;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.Panel panel_GPIO;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.RadioButton rbt_RSTB_Off;
+        private System.Windows.Forms.RadioButton rbt_RSTB_On;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton rbt_Valid_off;
+        private System.Windows.Forms.RadioButton rbt_Valid_on;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem scriptWriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectDongleToolStripMenuItem;
+        private System.Windows.Forms.Splitter splitter1;
     }
 }

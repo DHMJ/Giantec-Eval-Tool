@@ -13,6 +13,7 @@ using GeneralRegConfigPlatform.MDDataBase;
 using GeneralRegConfigPlatform.MDGUI;
 using MD.MDCommon;
 using DMCommunication;
+using System.IO.Ports;
 
 namespace GeneralRegConfigPlatform.GUI
 {
@@ -220,14 +221,80 @@ namespace GeneralRegConfigPlatform.GUI
 
         private void selectDongleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            myDongleForm = new FormDongle(myUART);
-            myDongleForm.ShowDialog();
+
+            //myDongleForm = new FormDongle(myUART);
+            //myDongleForm.ShowDialog();
 
             //Add firmware read info here, and update to GUI
             
         }
 
+        private void selectDongleToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            this.selectDongleToolStripMenuItem.DropDownItems.Clear();
+
+            string[] str = SerialPort.GetPortNames();
+            if (str == null)
+            {
+                //本机没有串口！
+                this.selectDongleToolStripMenuItem.DropDownItems.Add("NULL");
+                //this.selectDongleToolStripMenuItem.DropDownItems[0].Select();
+            }
+            else
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    this.selectDongleToolStripMenuItem.DropDownItems.Add(str[i]);
+                    this.selectDongleToolStripMenuItem.DropDownItems[i].Click += new EventHandler(DongleItem_Click);
+                }
+
+                //this.cbPortName.SelectedIndex = 0;
+            }
+        }
 
 
+
+
+        public void DongleItem_Click(object sender, EventArgs e)
+        {
+            (sender as ToolStripDropDownItem).Select();
+            if (myUART.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            {
+                statusBar_DeviceConnected.Text = "Device Connected";
+                //MessageBox.Show("Connected");
+            }
+            else
+            {
+                statusBar_DeviceConnected.Text = "Device Disconnected";
+                //MessageBox.Show("Connected Failed");
+            }
+        }
+
+        private void scriptWriteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //todo which is very smilar with the import functions.
+        }
+
+        private void rbt_Valid_on_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbt_Valid_on.Checked)
+            {
+                //GPIO on interface
+            }
+            else
+            {
+                //GPIO off interface
+            }
+        }
+
+        private void rbt_RSTB_On_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbt_RSTB_On.Checked)
+            { }
+            else
+            { }
+        }
+
+        
     }
 }

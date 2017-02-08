@@ -47,6 +47,9 @@ C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.MDGUI.MDRegisterViewTab.resources
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.Properties.Resources.resources
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.exe.config
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.exe
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.pdb
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\DMDongle.dll
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\DMDongle.pdb
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.csprojResolveAssemblyReference.cache
@@ -58,8 +61,5 @@ C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\ob
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.MDGUI.MDRegisterViewTab.resources
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\GeneralRegConfigPlatform.Properties.Resources.resources
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.csproj.GenerateResource.Cache
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.exe.config
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.exe
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\bin\Debug\MDEvaPlatform.pdb
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.exe
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\MDEva\obj\x86\Debug\MDEvaPlatform.pdb
