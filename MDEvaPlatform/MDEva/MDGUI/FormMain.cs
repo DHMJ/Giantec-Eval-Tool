@@ -217,6 +217,14 @@ namespace GeneralRegConfigPlatform.GUI
                 newTab.Dock = DockStyle.Fill;
                 newTab.BorderStyle = BorderStyle.Fixed3D;                
             }
+
+            //Create script tab
+            this.tabCtrlRegView.TabPages.Add("Script");
+            FormScript frm_script = new FormScript(myUART);
+            this.tabCtrlRegView.TabPages[tabCtrlRegView.TabPages.Count - 1].Controls.Add(frm_script);
+            //AllTables.Add(frm_script);
+            frm_script.Dock = DockStyle.Fill;
+            frm_script.BorderStyle = BorderStyle.Fixed3D;
         }
 
         private void selectDongleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -260,12 +268,14 @@ namespace GeneralRegConfigPlatform.GUI
             (sender as ToolStripDropDownItem).Select();
             if (myUART.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
             {
-                statusBar_DeviceConnected.Text = "Device Connected";
+                statusBar_DeviceConnected.Text = "Dongle Connected";
+                statusBar_DeviceConnected.BackColor = Color.Green;
                 //MessageBox.Show("Connected");
             }
             else
             {
-                statusBar_DeviceConnected.Text = "Device Disconnected";
+                statusBar_DeviceConnected.Text = "Dongle Disconnected";
+                statusBar_DeviceConnected.BackColor = Color.Red;
                 //MessageBox.Show("Connected Failed");
             }
         }
@@ -280,19 +290,149 @@ namespace GeneralRegConfigPlatform.GUI
             if (rbt_Valid_on.Checked)
             {
                 //GPIO on interface
+                if (myUART.IsOpen)
+                {
+                    myUART.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
+                }
             }
             else
             {
-                //GPIO off interface
+                //GPIO on interface
+                if (myUART.IsOpen)
+                {
+                    myUART.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
+                }
             }
         }
 
         private void rbt_RSTB_On_CheckedChanged(object sender, EventArgs e)
         {
             if (rbt_RSTB_On.Checked)
-            { }
+            {
+                //GPIO on interface
+                if (myUART.IsOpen)
+                {
+                    myUART.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
+                }
+            }
             else
-            { }
+            {
+                //GPIO on interface
+                if (myUART.IsOpen)
+                {
+                    myUART.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
+                }
+            }
+        }
+
+        private void btn_Reg00_Read_Click(object sender, EventArgs e)
+        {
+            byte value;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg00_Addr.Text, 16);
+            myUART.readRegSingle(address, out value);
+
+            textBox_Reg00_Value.Text = value.ToString("X2");
+        }
+
+        private void btn_Reg00_Write_Click(object sender, EventArgs e)
+        {
+            byte value = 0x00;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg00_Addr.Text, 16);
+            value = Convert.ToByte(textBox_Reg00_Value.Text, 16);
+            if(!myUART.writeRegSingle(address,value))
+                MessageBox.Show("Write Register Failed!","Waning");
+        }
+
+        private void btn_Reg01_Read_Click(object sender, EventArgs e)
+        {
+            byte value;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg01_Addr.Text, 16);
+            myUART.readRegSingle(address, out value);
+
+            textBox_Reg01_Value.Text = value.ToString("X2");
+        }
+
+        private void btn_Reg01_Write_Click(object sender, EventArgs e)
+        {
+            byte value = 0x00;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg01_Addr.Text, 16);
+            value = Convert.ToByte(textBox_Reg01_Value.Text, 16);
+            if (!myUART.writeRegSingle(address, value))
+                MessageBox.Show("Write Register Failed!", "Waning");
+        }
+
+        private void btn_Reg02_Read_Click(object sender, EventArgs e)
+        {
+            byte value;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg02_Addr.Text, 16);
+            myUART.readRegSingle(address, out value);
+
+            textBox_Reg02_Value.Text = value.ToString("X2");
+        }
+
+        private void btn_Reg02_Write_Click(object sender, EventArgs e)
+        {
+            byte value = 0x00;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg02_Addr.Text, 16);
+            value = Convert.ToByte(textBox_Reg02_Value.Text, 16);
+            if (!myUART.writeRegSingle(address, value))
+                MessageBox.Show("Write Register Failed!", "Waning");
+        }
+
+        private void btn_Reg03_Read_Click(object sender, EventArgs e)
+        {
+            byte value;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg03_Addr.Text, 16);
+            myUART.readRegSingle(address, out value);
+
+            textBox_Reg03_Value.Text = value.ToString("X2");
+        }
+
+        private void btn_Reg03_Write_Click(object sender, EventArgs e)
+        {
+            byte value = 0x00;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg03_Addr.Text, 16);
+            value = Convert.ToByte(textBox_Reg03_Value.Text, 16);
+            if (!myUART.writeRegSingle(address, value))
+                MessageBox.Show("Write Register Failed!", "Waning");
+        }
+
+        private void btn_Reg04_Read_Click(object sender, EventArgs e)
+        {
+            byte value;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
+            myUART.readRegSingle(address, out value);
+
+            textBox_Reg04_Value.Text = value.ToString("X2");
+        }
+
+        private void btn_Reg04_Write_Click(object sender, EventArgs e)
+        {
+            byte value = 0x00;
+            byte address = 0x00;
+            address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
+            value = Convert.ToByte(textBox_Reg04_Value.Text, 16);
+            if (!myUART.writeRegSingle(address, value))
+                MessageBox.Show("Write Register Failed!", "Waning");
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_Reg02_Value_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         

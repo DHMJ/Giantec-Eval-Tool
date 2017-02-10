@@ -84,22 +84,23 @@ namespace GeneralRegConfigPlatform.MDGUI
                     btn_SelectedRead_Click(null, null);
                     break;
                 case "&Write":
-                    if (dg.IsOpen)
-                    {
-                        byte[] regAddr = new byte[selectedRegAddr.Count];
-                        byte[] regData = new byte[selectedRegAddr.Count];
-                        for (int ix = 0; ix < selectedRegAddr.Count; ix++)
-                        {
-                            regAddr[ix] = selectedRegAddr[ix];
-                        }
-                        if (dg.readRegBlockSingle(regAddr, regData, regAddr.Length))
-                        {
-                            for (int ix = 0; ix < selectedRegAddr.Count; ix++)
-                            {
-                                regMap[selectedRegAddr[ix]].RegValue = regData[ix];
-                            }
-                        }
-                    }
+                    btnWriteSel_Click(null, null);
+                    //if (dg.IsOpen)
+                    //{
+                    //    byte[] regAddr = new byte[selectedRegAddr.Count];
+                    //    byte[] regData = new byte[selectedRegAddr.Count];
+                    //    for (int ix = 0; ix < selectedRegAddr.Count; ix++)
+                    //    {
+                    //        regAddr[ix] = selectedRegAddr[ix];
+                    //    }
+                    //    if (dg.readRegBlockSingle(regAddr, regData, regAddr.Length))
+                    //    {
+                    //        for (int ix = 0; ix < selectedRegAddr.Count; ix++)
+                    //        {
+                    //            regMap[selectedRegAddr[ix]].RegValue = regData[ix];
+                    //        }
+                    //    }
+                    //}
                     break;
                 case "&Add to customer tab":
                     for (int ix_reg = 0; ix_reg < selectedRegAddr.Count; ix_reg++)
@@ -320,7 +321,8 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     if (byte.Parse(dgvRow.Cells[0].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber) == regAddr)
                     {
-                        dgvRow.Cells[4].Value = regAddr.ToString("X2");
+                        //dgvRow.Cells[4].Value = regAddr.ToString("X2");
+                        dgvRow.Cells[4].Value = regMap[regAddr].RegValue.ToString("X2");
                         return;
                     }
                 }
@@ -383,6 +385,26 @@ namespace GeneralRegConfigPlatform.MDGUI
                         regMap[rdRegAddr[ix]].RegValue = rdData[ix];
                         UpdateRegValueCell(rdRegAddr[ix]);
                     }
+                }
+            }
+        }
+
+        private void btnWriteSel_Click(object sender, EventArgs e)
+        {
+            if (dg.IsOpen)
+            {
+                //byte[] rdRegAddr = new byte[selectedRegAddr.Count];
+                //byte[] rdData = new byte[selectedRegAddr.Count];
+                byte[] tempData = new byte[selectedRegAddr.Count * 2];
+                for (int ix = 0; ix < selectedRegAddr.Count; ix++)
+                {
+                    tempData[ix * 2 + 0] = selectedRegAddr[ix];
+                    tempData[ix * 2 + 1] = regMap[tempData[ix * 2 + 0]].RegValue;
+                }
+                if (!dg.writeRegBlockSingle( tempData ,selectedRegAddr.Count))
+                {
+                    // if read succeeded,then update regmap data and GUI display
+                    MessageBox.Show( "Write Register Failed!", "Warning" );
                 }
             }
         }
@@ -668,5 +690,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
             }
         }
+
+
     }
 }
