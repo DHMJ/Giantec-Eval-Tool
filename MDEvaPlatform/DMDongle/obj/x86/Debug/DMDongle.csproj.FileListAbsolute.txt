@@ -1,9 +1,8 @@
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.dll
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.pdb
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.csprojResolveAssemblyReference.cache
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.dll
-C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.pdb
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.dll
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.pdb
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.dll
 C:\Users\DELL-15\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.pdb
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.dll
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.pdb
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.dll
+C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.pdb

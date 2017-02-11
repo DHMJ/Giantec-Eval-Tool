@@ -142,7 +142,7 @@ namespace GeneralRegConfigPlatform.MDDataBase
                         tempRowItems[3].ToString().Replace("\n","\r\n"), tempReg.RegValue.ToString("X2"));
 
                     // Add row for bitfield: "", BIT, Name, BFValue, ""
-                    tempDT.Rows.Add(new object[] { "",tempRowItems[1].ToString(), tempRowItems[2].ToString(), tempBF.BFValue, ""});
+                    tempDT.Rows.Add(new object[] { "",tempRowItems[1].ToString(), tempRowItems[2].ToString(), tempBF.BFValue.ToString("X2"), ""});
                 }                
             }
 

@@ -425,16 +425,6 @@ namespace GeneralRegConfigPlatform.GUI
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox_Reg02_Value_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         
     }
 }

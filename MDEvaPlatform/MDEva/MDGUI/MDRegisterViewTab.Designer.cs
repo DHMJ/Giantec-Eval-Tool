@@ -58,7 +58,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.panel_RevervedSpace);
             this.splitContainer1.Panel1.Controls.Add(this.pnlSearchTop);
             this.splitContainer1.Panel1MinSize = 260;
-            this.splitContainer1.Size = new System.Drawing.Size(1044, 554);
+            this.splitContainer1.Size = new System.Drawing.Size(612, 280);
             this.splitContainer1.SplitterDistance = 260;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -85,7 +85,7 @@
             this.dgvSearch.ReadOnly = true;
             this.dgvSearch.RowHeadersVisible = false;
             this.dgvSearch.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvSearch.Size = new System.Drawing.Size(236, 482);
+            this.dgvSearch.Size = new System.Drawing.Size(236, 208);
             this.dgvSearch.TabIndex = 23;
             this.dgvSearch.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSearch_CellFormatting);
             this.dgvSearch.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvSearch_RowPrePaint);
@@ -97,7 +97,7 @@
             this.panel_RevervedSpace.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel_RevervedSpace.Location = new System.Drawing.Point(0, 72);
             this.panel_RevervedSpace.Name = "panel_RevervedSpace";
-            this.panel_RevervedSpace.Size = new System.Drawing.Size(24, 482);
+            this.panel_RevervedSpace.Size = new System.Drawing.Size(24, 208);
             this.panel_RevervedSpace.TabIndex = 25;
             // 
             // pnlSearchTop
@@ -144,11 +144,10 @@
             // 
             // MDRegisterViewTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.splitContainer1);
             this.Name = "MDRegisterViewTab";
-            this.Size = new System.Drawing.Size(1044, 554);
+            this.Size = new System.Drawing.Size(612, 280);
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);

@@ -56,7 +56,6 @@
             this.statusBar_VID = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar_PID = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar_BoardType = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabCtrlRegView = new System.Windows.Forms.TabControl();
             this.panel_GPIO = new System.Windows.Forms.Panel();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -102,6 +101,7 @@
             this.rbt_RSTB_Off = new System.Windows.Forms.RadioButton();
             this.rbt_RSTB_On = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabCtrlRegView = new System.Windows.Forms.TabControl();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel_GPIO.SuspendLayout();
@@ -133,7 +133,7 @@
             this.MenuItemHelp});
             this.menu_main.Location = new System.Drawing.Point(0, 0);
             this.menu_main.Name = "menu_main";
-            this.menu_main.Size = new System.Drawing.Size(1230, 24);
+            this.menu_main.Size = new System.Drawing.Size(1264, 24);
             this.menu_main.TabIndex = 4;
             this.menu_main.Text = "menuStrip1";
             // 
@@ -314,9 +314,9 @@
             this.statusBar_VID,
             this.statusBar_PID,
             this.statusBar_BoardType});
-            this.statusBar.Location = new System.Drawing.Point(0, 612);
+            this.statusBar.Location = new System.Drawing.Point(0, 674);
             this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(1230, 24);
+            this.statusBar.Size = new System.Drawing.Size(1264, 24);
             this.statusBar.TabIndex = 7;
             this.statusBar.Text = "statusStrip1";
             // 
@@ -362,17 +362,6 @@
             this.statusBar_BoardType.Size = new System.Drawing.Size(124, 19);
             this.statusBar_BoardType.Text = "Board Type: CDA001";
             // 
-            // tabCtrlRegView
-            // 
-            this.tabCtrlRegView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabCtrlRegView.Location = new System.Drawing.Point(0, 0);
-            this.tabCtrlRegView.MinimumSize = new System.Drawing.Size(890, 515);
-            this.tabCtrlRegView.Name = "tabCtrlRegView";
-            this.tabCtrlRegView.SelectedIndex = 0;
-            this.tabCtrlRegView.Size = new System.Drawing.Size(934, 588);
-            this.tabCtrlRegView.TabIndex = 8;
-            // 
             // panel_GPIO
             // 
             this.panel_GPIO.BackColor = System.Drawing.SystemColors.Control;
@@ -386,7 +375,7 @@
             this.panel_GPIO.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_GPIO.Location = new System.Drawing.Point(0, 0);
             this.panel_GPIO.Name = "panel_GPIO";
-            this.panel_GPIO.Size = new System.Drawing.Size(292, 588);
+            this.panel_GPIO.Size = new System.Drawing.Size(277, 650);
             this.panel_GPIO.TabIndex = 9;
             // 
             // groupBox7
@@ -397,9 +386,9 @@
             this.groupBox7.Controls.Add(this.textBox_Reg04_Addr);
             this.groupBox7.Controls.Add(this.textBox_Reg04_Value);
             this.groupBox7.Controls.Add(this.btn_Reg04_Write);
-            this.groupBox7.Location = new System.Drawing.Point(18, 502);
+            this.groupBox7.Location = new System.Drawing.Point(18, 463);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(245, 86);
+            this.groupBox7.Size = new System.Drawing.Size(245, 79);
             this.groupBox7.TabIndex = 12;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Register";
@@ -407,17 +396,17 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(5, 29);
+            this.label9.Location = new System.Drawing.Point(5, 27);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 13);
+            this.label9.Size = new System.Drawing.Size(59, 12);
             this.label9.TabIndex = 0;
             this.label9.Text = "Addr(Hex)";
             // 
             // btn_Reg04_Read
             // 
-            this.btn_Reg04_Read.Location = new System.Drawing.Point(151, 23);
+            this.btn_Reg04_Read.Location = new System.Drawing.Point(151, 21);
             this.btn_Reg04_Read.Name = "btn_Reg04_Read";
-            this.btn_Reg04_Read.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg04_Read.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg04_Read.TabIndex = 6;
             this.btn_Reg04_Read.Text = "Read";
             this.btn_Reg04_Read.UseVisualStyleBackColor = true;
@@ -426,35 +415,35 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 56);
+            this.label10.Location = new System.Drawing.Point(6, 52);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 13);
+            this.label10.Size = new System.Drawing.Size(65, 12);
             this.label10.TabIndex = 1;
             this.label10.Text = "Value(Hex)";
             // 
             // textBox_Reg04_Addr
             // 
-            this.textBox_Reg04_Addr.Location = new System.Drawing.Point(69, 26);
+            this.textBox_Reg04_Addr.Location = new System.Drawing.Point(69, 24);
             this.textBox_Reg04_Addr.Name = "textBox_Reg04_Addr";
-            this.textBox_Reg04_Addr.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg04_Addr.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg04_Addr.TabIndex = 4;
             this.textBox_Reg04_Addr.Text = "00";
             this.textBox_Reg04_Addr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Reg04_Value
             // 
-            this.textBox_Reg04_Value.Location = new System.Drawing.Point(69, 54);
+            this.textBox_Reg04_Value.Location = new System.Drawing.Point(69, 50);
             this.textBox_Reg04_Value.Name = "textBox_Reg04_Value";
-            this.textBox_Reg04_Value.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg04_Value.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg04_Value.TabIndex = 5;
             this.textBox_Reg04_Value.Text = "00";
             this.textBox_Reg04_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btn_Reg04_Write
             // 
-            this.btn_Reg04_Write.Location = new System.Drawing.Point(151, 55);
+            this.btn_Reg04_Write.Location = new System.Drawing.Point(151, 51);
             this.btn_Reg04_Write.Name = "btn_Reg04_Write";
-            this.btn_Reg04_Write.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg04_Write.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg04_Write.TabIndex = 7;
             this.btn_Reg04_Write.Text = "Write";
             this.btn_Reg04_Write.UseVisualStyleBackColor = true;
@@ -468,9 +457,9 @@
             this.groupBox5.Controls.Add(this.textBox_Reg03_Addr);
             this.groupBox5.Controls.Add(this.textBox_Reg03_Value);
             this.groupBox5.Controls.Add(this.btn_Reg03_Write);
-            this.groupBox5.Location = new System.Drawing.Point(18, 410);
+            this.groupBox5.Location = new System.Drawing.Point(18, 378);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(245, 86);
+            this.groupBox5.Size = new System.Drawing.Size(245, 79);
             this.groupBox5.TabIndex = 11;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Register";
@@ -478,17 +467,17 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 29);
+            this.label5.Location = new System.Drawing.Point(5, 27);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.Size = new System.Drawing.Size(59, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "Addr(Hex)";
             // 
             // btn_Reg03_Read
             // 
-            this.btn_Reg03_Read.Location = new System.Drawing.Point(151, 23);
+            this.btn_Reg03_Read.Location = new System.Drawing.Point(151, 21);
             this.btn_Reg03_Read.Name = "btn_Reg03_Read";
-            this.btn_Reg03_Read.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg03_Read.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg03_Read.TabIndex = 6;
             this.btn_Reg03_Read.Text = "Read";
             this.btn_Reg03_Read.UseVisualStyleBackColor = true;
@@ -497,35 +486,35 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 56);
+            this.label6.Location = new System.Drawing.Point(6, 52);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 13);
+            this.label6.Size = new System.Drawing.Size(65, 12);
             this.label6.TabIndex = 1;
             this.label6.Text = "Value(Hex)";
             // 
             // textBox_Reg03_Addr
             // 
-            this.textBox_Reg03_Addr.Location = new System.Drawing.Point(69, 26);
+            this.textBox_Reg03_Addr.Location = new System.Drawing.Point(69, 24);
             this.textBox_Reg03_Addr.Name = "textBox_Reg03_Addr";
-            this.textBox_Reg03_Addr.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg03_Addr.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg03_Addr.TabIndex = 4;
             this.textBox_Reg03_Addr.Text = "00";
             this.textBox_Reg03_Addr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Reg03_Value
             // 
-            this.textBox_Reg03_Value.Location = new System.Drawing.Point(69, 53);
+            this.textBox_Reg03_Value.Location = new System.Drawing.Point(69, 49);
             this.textBox_Reg03_Value.Name = "textBox_Reg03_Value";
-            this.textBox_Reg03_Value.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg03_Value.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg03_Value.TabIndex = 5;
             this.textBox_Reg03_Value.Text = "00";
             this.textBox_Reg03_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btn_Reg03_Write
             // 
-            this.btn_Reg03_Write.Location = new System.Drawing.Point(151, 52);
+            this.btn_Reg03_Write.Location = new System.Drawing.Point(151, 48);
             this.btn_Reg03_Write.Name = "btn_Reg03_Write";
-            this.btn_Reg03_Write.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg03_Write.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg03_Write.TabIndex = 7;
             this.btn_Reg03_Write.Text = "Write";
             this.btn_Reg03_Write.UseVisualStyleBackColor = true;
@@ -539,9 +528,9 @@
             this.groupBox4.Controls.Add(this.textBox_Reg01_Addr);
             this.groupBox4.Controls.Add(this.textBox_Reg01_Value);
             this.groupBox4.Controls.Add(this.btn_Reg01_Write);
-            this.groupBox4.Location = new System.Drawing.Point(18, 226);
+            this.groupBox4.Location = new System.Drawing.Point(18, 209);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(245, 86);
+            this.groupBox4.Size = new System.Drawing.Size(245, 79);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Register";
@@ -549,17 +538,17 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 29);
+            this.label3.Location = new System.Drawing.Point(5, 27);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "Addr(Hex)";
             // 
             // btn_Reg01_Read
             // 
-            this.btn_Reg01_Read.Location = new System.Drawing.Point(151, 23);
+            this.btn_Reg01_Read.Location = new System.Drawing.Point(151, 21);
             this.btn_Reg01_Read.Name = "btn_Reg01_Read";
-            this.btn_Reg01_Read.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg01_Read.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg01_Read.TabIndex = 6;
             this.btn_Reg01_Read.Text = "Read";
             this.btn_Reg01_Read.UseVisualStyleBackColor = true;
@@ -568,35 +557,35 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 57);
+            this.label4.Location = new System.Drawing.Point(5, 53);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 1;
             this.label4.Text = "Value(Hex)";
             // 
             // textBox_Reg01_Addr
             // 
-            this.textBox_Reg01_Addr.Location = new System.Drawing.Point(69, 26);
+            this.textBox_Reg01_Addr.Location = new System.Drawing.Point(69, 24);
             this.textBox_Reg01_Addr.Name = "textBox_Reg01_Addr";
-            this.textBox_Reg01_Addr.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg01_Addr.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg01_Addr.TabIndex = 4;
             this.textBox_Reg01_Addr.Text = "00";
             this.textBox_Reg01_Addr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Reg01_Value
             // 
-            this.textBox_Reg01_Value.Location = new System.Drawing.Point(69, 52);
+            this.textBox_Reg01_Value.Location = new System.Drawing.Point(69, 48);
             this.textBox_Reg01_Value.Name = "textBox_Reg01_Value";
-            this.textBox_Reg01_Value.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg01_Value.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg01_Value.TabIndex = 5;
             this.textBox_Reg01_Value.Text = "00";
             this.textBox_Reg01_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btn_Reg01_Write
             // 
-            this.btn_Reg01_Write.Location = new System.Drawing.Point(151, 52);
+            this.btn_Reg01_Write.Location = new System.Drawing.Point(151, 48);
             this.btn_Reg01_Write.Name = "btn_Reg01_Write";
-            this.btn_Reg01_Write.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg01_Write.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg01_Write.TabIndex = 7;
             this.btn_Reg01_Write.Text = "Write";
             this.btn_Reg01_Write.UseVisualStyleBackColor = true;
@@ -610,9 +599,9 @@
             this.groupBox6.Controls.Add(this.textBox_Reg02_Addr);
             this.groupBox6.Controls.Add(this.textBox_Reg02_Value);
             this.groupBox6.Controls.Add(this.btn_Reg02_Write);
-            this.groupBox6.Location = new System.Drawing.Point(18, 318);
+            this.groupBox6.Location = new System.Drawing.Point(18, 294);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(245, 86);
+            this.groupBox6.Size = new System.Drawing.Size(245, 79);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Register";
@@ -620,17 +609,17 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 29);
+            this.label7.Location = new System.Drawing.Point(5, 27);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(54, 13);
+            this.label7.Size = new System.Drawing.Size(59, 12);
             this.label7.TabIndex = 0;
             this.label7.Text = "Addr(Hex)";
             // 
             // btn_Reg02_Read
             // 
-            this.btn_Reg02_Read.Location = new System.Drawing.Point(151, 24);
+            this.btn_Reg02_Read.Location = new System.Drawing.Point(151, 22);
             this.btn_Reg02_Read.Name = "btn_Reg02_Read";
-            this.btn_Reg02_Read.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg02_Read.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg02_Read.TabIndex = 6;
             this.btn_Reg02_Read.Text = "Read";
             this.btn_Reg02_Read.UseVisualStyleBackColor = true;
@@ -639,37 +628,35 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 57);
+            this.label8.Location = new System.Drawing.Point(5, 53);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 1;
             this.label8.Text = "Value(Hex)";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // textBox_Reg02_Addr
             // 
-            this.textBox_Reg02_Addr.Location = new System.Drawing.Point(69, 26);
+            this.textBox_Reg02_Addr.Location = new System.Drawing.Point(69, 24);
             this.textBox_Reg02_Addr.Name = "textBox_Reg02_Addr";
-            this.textBox_Reg02_Addr.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg02_Addr.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg02_Addr.TabIndex = 4;
             this.textBox_Reg02_Addr.Text = "00";
             this.textBox_Reg02_Addr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Reg02_Value
             // 
-            this.textBox_Reg02_Value.Location = new System.Drawing.Point(69, 54);
+            this.textBox_Reg02_Value.Location = new System.Drawing.Point(69, 50);
             this.textBox_Reg02_Value.Name = "textBox_Reg02_Value";
-            this.textBox_Reg02_Value.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg02_Value.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg02_Value.TabIndex = 5;
             this.textBox_Reg02_Value.Text = "00";
             this.textBox_Reg02_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Reg02_Value.TextChanged += new System.EventHandler(this.textBox_Reg02_Value_TextChanged);
             // 
             // btn_Reg02_Write
             // 
-            this.btn_Reg02_Write.Location = new System.Drawing.Point(151, 52);
+            this.btn_Reg02_Write.Location = new System.Drawing.Point(151, 48);
             this.btn_Reg02_Write.Name = "btn_Reg02_Write";
-            this.btn_Reg02_Write.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg02_Write.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg02_Write.TabIndex = 7;
             this.btn_Reg02_Write.Text = "Write";
             this.btn_Reg02_Write.UseVisualStyleBackColor = true;
@@ -683,9 +670,9 @@
             this.groupBox3.Controls.Add(this.textBox_Reg00_Addr);
             this.groupBox3.Controls.Add(this.textBox_Reg00_Value);
             this.groupBox3.Controls.Add(this.btn_Reg00_Write);
-            this.groupBox3.Location = new System.Drawing.Point(18, 134);
+            this.groupBox3.Location = new System.Drawing.Point(18, 124);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(245, 86);
+            this.groupBox3.Size = new System.Drawing.Size(245, 79);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Register";
@@ -693,17 +680,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 29);
+            this.label1.Location = new System.Drawing.Point(5, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
+            this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "Addr(Hex)";
             // 
             // btn_Reg00_Read
             // 
-            this.btn_Reg00_Read.Location = new System.Drawing.Point(151, 23);
+            this.btn_Reg00_Read.Location = new System.Drawing.Point(151, 21);
             this.btn_Reg00_Read.Name = "btn_Reg00_Read";
-            this.btn_Reg00_Read.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg00_Read.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg00_Read.TabIndex = 6;
             this.btn_Reg00_Read.Text = "Read";
             this.btn_Reg00_Read.UseVisualStyleBackColor = true;
@@ -712,35 +699,35 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 55);
+            this.label2.Location = new System.Drawing.Point(5, 51);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
+            this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 1;
             this.label2.Text = "Value(Hex)";
             // 
             // textBox_Reg00_Addr
             // 
-            this.textBox_Reg00_Addr.Location = new System.Drawing.Point(69, 26);
+            this.textBox_Reg00_Addr.Location = new System.Drawing.Point(69, 24);
             this.textBox_Reg00_Addr.Name = "textBox_Reg00_Addr";
-            this.textBox_Reg00_Addr.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg00_Addr.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg00_Addr.TabIndex = 4;
             this.textBox_Reg00_Addr.Text = "00";
             this.textBox_Reg00_Addr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Reg00_Value
             // 
-            this.textBox_Reg00_Value.Location = new System.Drawing.Point(69, 52);
+            this.textBox_Reg00_Value.Location = new System.Drawing.Point(69, 48);
             this.textBox_Reg00_Value.Name = "textBox_Reg00_Value";
-            this.textBox_Reg00_Value.Size = new System.Drawing.Size(53, 20);
+            this.textBox_Reg00_Value.Size = new System.Drawing.Size(53, 21);
             this.textBox_Reg00_Value.TabIndex = 5;
             this.textBox_Reg00_Value.Text = "00";
             this.textBox_Reg00_Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btn_Reg00_Write
             // 
-            this.btn_Reg00_Write.Location = new System.Drawing.Point(151, 52);
+            this.btn_Reg00_Write.Location = new System.Drawing.Point(151, 48);
             this.btn_Reg00_Write.Name = "btn_Reg00_Write";
-            this.btn_Reg00_Write.Size = new System.Drawing.Size(75, 23);
+            this.btn_Reg00_Write.Size = new System.Drawing.Size(75, 21);
             this.btn_Reg00_Write.TabIndex = 7;
             this.btn_Reg00_Write.Text = "Write";
             this.btn_Reg00_Write.UseVisualStyleBackColor = true;
@@ -749,9 +736,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.panel1);
-            this.groupBox2.Location = new System.Drawing.Point(150, 15);
+            this.groupBox2.Location = new System.Drawing.Point(150, 14);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(113, 95);
+            this.groupBox2.Size = new System.Drawing.Size(113, 88);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "VALID";
@@ -760,18 +747,18 @@
             // 
             this.panel1.Controls.Add(this.rbt_Valid_off);
             this.panel1.Controls.Add(this.rbt_Valid_on);
-            this.panel1.Location = new System.Drawing.Point(23, 29);
+            this.panel1.Location = new System.Drawing.Point(23, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(71, 51);
+            this.panel1.Size = new System.Drawing.Size(71, 47);
             this.panel1.TabIndex = 2;
             // 
             // rbt_Valid_off
             // 
             this.rbt_Valid_off.AutoSize = true;
             this.rbt_Valid_off.Checked = true;
-            this.rbt_Valid_off.Location = new System.Drawing.Point(3, 27);
+            this.rbt_Valid_off.Location = new System.Drawing.Point(3, 25);
             this.rbt_Valid_off.Name = "rbt_Valid_off";
-            this.rbt_Valid_off.Size = new System.Drawing.Size(45, 17);
+            this.rbt_Valid_off.Size = new System.Drawing.Size(41, 16);
             this.rbt_Valid_off.TabIndex = 1;
             this.rbt_Valid_off.TabStop = true;
             this.rbt_Valid_off.Text = "Low";
@@ -782,7 +769,7 @@
             this.rbt_Valid_on.AutoSize = true;
             this.rbt_Valid_on.Location = new System.Drawing.Point(3, 3);
             this.rbt_Valid_on.Name = "rbt_Valid_on";
-            this.rbt_Valid_on.Size = new System.Drawing.Size(47, 17);
+            this.rbt_Valid_on.Size = new System.Drawing.Size(47, 16);
             this.rbt_Valid_on.TabIndex = 0;
             this.rbt_Valid_on.Text = "High";
             this.rbt_Valid_on.UseVisualStyleBackColor = true;
@@ -791,9 +778,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel2);
-            this.groupBox1.Location = new System.Drawing.Point(18, 15);
+            this.groupBox1.Location = new System.Drawing.Point(18, 14);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(113, 94);
+            this.groupBox1.Size = new System.Drawing.Size(113, 87);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RSTB";
@@ -802,18 +789,18 @@
             // 
             this.panel2.Controls.Add(this.rbt_RSTB_Off);
             this.panel2.Controls.Add(this.rbt_RSTB_On);
-            this.panel2.Location = new System.Drawing.Point(23, 28);
+            this.panel2.Location = new System.Drawing.Point(23, 26);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(71, 51);
+            this.panel2.Size = new System.Drawing.Size(71, 47);
             this.panel2.TabIndex = 4;
             // 
             // rbt_RSTB_Off
             // 
             this.rbt_RSTB_Off.AutoSize = true;
             this.rbt_RSTB_Off.Checked = true;
-            this.rbt_RSTB_Off.Location = new System.Drawing.Point(3, 27);
+            this.rbt_RSTB_Off.Location = new System.Drawing.Point(3, 25);
             this.rbt_RSTB_Off.Name = "rbt_RSTB_Off";
-            this.rbt_RSTB_Off.Size = new System.Drawing.Size(45, 17);
+            this.rbt_RSTB_Off.Size = new System.Drawing.Size(41, 16);
             this.rbt_RSTB_Off.TabIndex = 1;
             this.rbt_RSTB_Off.TabStop = true;
             this.rbt_RSTB_Off.Text = "Low";
@@ -824,7 +811,7 @@
             this.rbt_RSTB_On.AutoSize = true;
             this.rbt_RSTB_On.Location = new System.Drawing.Point(3, 3);
             this.rbt_RSTB_On.Name = "rbt_RSTB_On";
-            this.rbt_RSTB_On.Size = new System.Drawing.Size(47, 17);
+            this.rbt_RSTB_On.Size = new System.Drawing.Size(47, 16);
             this.rbt_RSTB_On.TabIndex = 0;
             this.rbt_RSTB_On.Text = "High";
             this.rbt_RSTB_On.UseVisualStyleBackColor = true;
@@ -843,16 +830,26 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel_GPIO);
-            this.splitContainer1.Size = new System.Drawing.Size(1230, 588);
-            this.splitContainer1.SplitterDistance = 934;
+            this.splitContainer1.Size = new System.Drawing.Size(1264, 650);
+            this.splitContainer1.SplitterDistance = 983;
             this.splitContainer1.TabIndex = 10;
+            // 
+            // tabCtrlRegView
+            // 
+            this.tabCtrlRegView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabCtrlRegView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabCtrlRegView.Location = new System.Drawing.Point(0, 0);
+            this.tabCtrlRegView.Name = "tabCtrlRegView";
+            this.tabCtrlRegView.SelectedIndex = 0;
+            this.tabCtrlRegView.Size = new System.Drawing.Size(983, 650);
+            this.tabCtrlRegView.TabIndex = 8;
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1230, 636);
+            this.ClientSize = new System.Drawing.Size(1264, 698);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menu_main);
@@ -913,7 +910,6 @@
         private System.Windows.Forms.ToolStripStatusLabel statusBar_PID;
         private System.Windows.Forms.ToolStripStatusLabel statusBar_FWVersion;
         private System.Windows.Forms.ToolStripStatusLabel statusBar_BoardType;
-        private System.Windows.Forms.TabControl tabCtrlRegView;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Import;
         private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Export;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
@@ -964,5 +960,6 @@
         private System.Windows.Forms.TextBox textBox_Reg00_Value;
         private System.Windows.Forms.Button btn_Reg00_Write;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TabControl tabCtrlRegView;
     }
 }
