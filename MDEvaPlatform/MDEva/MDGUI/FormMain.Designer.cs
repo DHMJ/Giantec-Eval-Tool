@@ -31,6 +31,8 @@
             this.menu_main = new System.Windows.Forms.MenuStrip();
             this.MenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Open = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Save = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Close = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemFile_Import = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +59,7 @@
             this.statusBar_PID = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar_BoardType = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel_GPIO = new System.Windows.Forms.Panel();
+            this.btn_UpdateGPIO = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btn_Reg04_Read = new System.Windows.Forms.Button();
@@ -102,7 +105,8 @@
             this.rbt_RSTB_On = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabCtrlRegView = new System.Windows.Forms.TabControl();
-            this.btn_UpdateGPIO = new System.Windows.Forms.Button();
+            this.MenuItemFile_Open_Excel = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Open_proj = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel_GPIO.SuspendLayout();
@@ -142,6 +146,8 @@
             // 
             this.MenuItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemFile_Open,
+            this.MenuItemFile_Save,
+            this.MenuItemFile_SaveAs,
             this.MenuItemFile_Close,
             this.toolStripSeparator1,
             this.MenuItemFile_Import,
@@ -156,18 +162,35 @@
             // 
             // MenuItemFile_Open
             // 
+            this.MenuItemFile_Open.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemFile_Open_Excel,
+            this.MenuItemFile_Open_proj});
             this.MenuItemFile_Open.Name = "MenuItemFile_Open";
             this.MenuItemFile_Open.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Open.Text = "&Open";
             this.MenuItemFile_Open.ToolTipText = "Add";
             this.MenuItemFile_Open.Click += new System.EventHandler(this.MenuItemFile_Open_Click);
             // 
+            // MenuItemFile_Save
+            // 
+            this.MenuItemFile_Save.Name = "MenuItemFile_Save";
+            this.MenuItemFile_Save.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_Save.Text = "&Save";
+            this.MenuItemFile_Save.Click += new System.EventHandler(this.MenuItemFile_Save_Click);
+            // 
+            // MenuItemFile_SaveAs
+            // 
+            this.MenuItemFile_SaveAs.Name = "MenuItemFile_SaveAs";
+            this.MenuItemFile_SaveAs.Size = new System.Drawing.Size(177, 22);
+            this.MenuItemFile_SaveAs.Text = "S&ave as..";
+            this.MenuItemFile_SaveAs.Click += new System.EventHandler(this.MenuItemFile_Save_As_Click);
+            // 
             // MenuItemFile_Close
             // 
             this.MenuItemFile_Close.Name = "MenuItemFile_Close";
             this.MenuItemFile_Close.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Close.Text = "&Close";
-            this.MenuItemFile_Close.ToolTipText = "Close";
+            this.MenuItemFile_Close.ToolTipText = "Close current project";
             this.MenuItemFile_Close.Click += new System.EventHandler(this.MenuItemFile_Close_Click);
             // 
             // toolStripSeparator1
@@ -180,6 +203,7 @@
             this.MenuItemFile_Import.Name = "MenuItemFile_Import";
             this.MenuItemFile_Import.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Import.Text = "&Import";
+            this.MenuItemFile_Import.ToolTipText = "Import register configurations from *.mdcfg file";
             this.MenuItemFile_Import.Click += new System.EventHandler(this.MenuItemFile_Import_Click);
             // 
             // MenuItemFile_Export
@@ -187,6 +211,7 @@
             this.MenuItemFile_Export.Name = "MenuItemFile_Export";
             this.MenuItemFile_Export.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Export.Text = "&Export";
+            this.MenuItemFile_Export.ToolTipText = "Export register configurations to *.mdcfg file";
             this.MenuItemFile_Export.Click += new System.EventHandler(this.MenuItemFile_Export_Click);
             // 
             // toolStripSeparator2
@@ -199,7 +224,7 @@
             this.MenuItemFile_Exit.Name = "MenuItemFile_Exit";
             this.MenuItemFile_Exit.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Exit.Text = "E&xit";
-            this.MenuItemFile_Exit.ToolTipText = "Exit";
+            this.MenuItemFile_Exit.ToolTipText = "Exit and save form register settings to project file";
             this.MenuItemFile_Exit.Click += new System.EventHandler(this.MenuItemFile_Exit_Click);
             // 
             // MenuItemFile_ExitWithoutSave
@@ -379,6 +404,16 @@
             this.panel_GPIO.Name = "panel_GPIO";
             this.panel_GPIO.Size = new System.Drawing.Size(277, 650);
             this.panel_GPIO.TabIndex = 9;
+            // 
+            // btn_UpdateGPIO
+            // 
+            this.btn_UpdateGPIO.Location = new System.Drawing.Point(100, 106);
+            this.btn_UpdateGPIO.Name = "btn_UpdateGPIO";
+            this.btn_UpdateGPIO.Size = new System.Drawing.Size(75, 23);
+            this.btn_UpdateGPIO.TabIndex = 13;
+            this.btn_UpdateGPIO.Text = "Update";
+            this.btn_UpdateGPIO.UseVisualStyleBackColor = true;
+            this.btn_UpdateGPIO.Click += new System.EventHandler(this.btn_UpdateGPIO_Click);
             // 
             // groupBox7
             // 
@@ -846,15 +881,19 @@
             this.tabCtrlRegView.Size = new System.Drawing.Size(983, 650);
             this.tabCtrlRegView.TabIndex = 8;
             // 
-            // btn_UpdateGPIO
+            // MenuItemFile_Open_Excel
             // 
-            this.btn_UpdateGPIO.Location = new System.Drawing.Point(100, 106);
-            this.btn_UpdateGPIO.Name = "btn_UpdateGPIO";
-            this.btn_UpdateGPIO.Size = new System.Drawing.Size(75, 23);
-            this.btn_UpdateGPIO.TabIndex = 13;
-            this.btn_UpdateGPIO.Text = "Update";
-            this.btn_UpdateGPIO.UseVisualStyleBackColor = true;
-            this.btn_UpdateGPIO.Click += new System.EventHandler(this.btn_UpdateGPIO_Click);
+            this.MenuItemFile_Open_Excel.Name = "MenuItemFile_Open_Excel";
+            this.MenuItemFile_Open_Excel.Size = new System.Drawing.Size(152, 22);
+            this.MenuItemFile_Open_Excel.Text = "Excel";
+            this.MenuItemFile_Open_Excel.Click += new System.EventHandler(this.MenuItemFile_Open_Excel_Click);
+            // 
+            // MenuItemFile_Open_proj
+            // 
+            this.MenuItemFile_Open_proj.Name = "MenuItemFile_Open_proj";
+            this.MenuItemFile_Open_proj.Size = new System.Drawing.Size(152, 22);
+            this.MenuItemFile_Open_proj.Text = "MD Project";
+            this.MenuItemFile_Open_proj.Click += new System.EventHandler(this.MenuItemFile_Open_proj_Click);
             // 
             // FormMain
             // 
@@ -974,5 +1013,9 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabCtrlRegView;
         private System.Windows.Forms.Button btn_UpdateGPIO;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Save;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_SaveAs;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Open_Excel;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemFile_Open_proj;
     }
 }

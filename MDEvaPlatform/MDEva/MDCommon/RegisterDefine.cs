@@ -6,6 +6,7 @@ using System.Collections;
 
 namespace MD.MDCommon
 {
+    [Serializable]
     public class BitField
     {
         uint mask;        
@@ -143,6 +144,7 @@ namespace MD.MDCommon
         }
     }
 
+    [Serializable]
     public class Register
     {
         /// <summary>
@@ -473,7 +475,8 @@ namespace MD.MDCommon
         //}
         #endregion
     }
-        
+
+    [Serializable]
     public class RegisterMap
     {
         private uint devAddress = 0;

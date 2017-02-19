@@ -9,6 +9,7 @@ using MD.MDCommon;
 
 namespace GeneralRegConfigPlatform.MDDataBase
 {
+    [Serializable]
     class MDDataSet
     {
         DataSet ds_excel;

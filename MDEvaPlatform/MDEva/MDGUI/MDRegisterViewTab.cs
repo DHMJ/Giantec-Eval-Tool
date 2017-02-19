@@ -34,7 +34,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             UpdateSearchedItems("");
         }
 
-        public MDRegisterViewTab(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
+        public MDRegisterViewTab(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _dongle)
         {
             InitializeComponent();
             
@@ -50,7 +50,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             this.splitContainer1.Panel2MinSize = this.Width - 260;
 
             // Add MDRegisterView control
-            mdRegView = new MDRegisterView(dt_reg,_dtCustomer, _regmap, _uart);
+            mdRegView = new MDRegisterView(dt_reg,_dtCustomer, _regmap, _dongle);
             this.splitContainer1.Panel2.Controls.Add(mdRegView);
             mdRegView.Dock = DockStyle.Left;
 

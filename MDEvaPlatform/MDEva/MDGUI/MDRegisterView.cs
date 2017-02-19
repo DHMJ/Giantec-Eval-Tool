@@ -18,7 +18,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         DataTable dt_reg;
         DataTable dt_Customer;
         RegisterMap regMap;
-        DMDongle dg;
+        DMDongle dongle;
         List<byte> regAddrList = new List<byte> { };
         List<byte> selectedRegAddr = new List<byte>();
         byte[] regData;
@@ -32,7 +32,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             InitializeComponent();
         }
 
-        public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _uart)
+        public MDRegisterView(DataTable _dt, DataTable _dtCustomer, RegisterMap _regmap, DMDongle _dongle)
         {
             InitializeComponent();
 
@@ -56,7 +56,7 @@ namespace GeneralRegConfigPlatform.MDGUI
             dt_reg = _dt;
             dt_Customer = _dtCustomer;
             regMap = _regmap;
-            dg = _uart;
+            dongle = _dongle;
             CollectCurrentRegList(_dt);
             BindingDVG(dt_reg);
 
@@ -333,7 +333,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         #region Events
         private void btnReadAll_Click(object sender, EventArgs e)
         {
-            if (dg.IsOpen)
+            if (dongle.IsOpen)
             {
                 byte[] rdRegAddr = new byte[regAddrList.Count];
                 byte[] rdData = new byte[regAddrList.Count];
@@ -341,7 +341,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     rdRegAddr[ix] = regAddrList[ix];
                 }
-                if (dg.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
+                if (dongle.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
                 {
                     // if read succeeded,then update regmap data and GUI display
                     for (int ix = 0; ix < rdData.Length; ix++)
@@ -355,7 +355,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void btnWriteAll_Click(object sender, EventArgs e)
         {
-            if (dg.IsOpen)
+            if (dongle.IsOpen)
             {
                 byte[] wrData = new byte[regAddrList.Count * 2];
                 for (int ix = 0; ix < regAddrList.Count; ix++)
@@ -363,13 +363,13 @@ namespace GeneralRegConfigPlatform.MDGUI
                     wrData[2 * ix] = regAddrList[ix];
                     wrData[2 * ix + 1] = regMap[regAddrList[ix]].RegValue;
                 }
-                dg.writeRegBlockSingle(wrData, regAddrList.Count);
+                dongle.writeRegBlockSingle(wrData, regAddrList.Count);
             }
         }
 
         private void btn_SelectedRead_Click(object sender, EventArgs e)
         {
-            if (dg.IsOpen)
+            if (dongle.IsOpen)
             {
                 byte[] rdRegAddr = new byte[selectedRegAddr.Count];
                 byte[] rdData = new byte[selectedRegAddr.Count];
@@ -377,7 +377,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 {
                     rdRegAddr[ix] = selectedRegAddr[ix];
                 }
-                if (dg.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
+                if (dongle.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
                 {
                     // if read succeeded,then update regmap data and GUI display
                     for (int ix = 0; ix < rdData.Length; ix++)
@@ -391,7 +391,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void btnWriteSel_Click(object sender, EventArgs e)
         {
-            if (dg.IsOpen)
+            if (dongle.IsOpen)
             {
                 //byte[] rdRegAddr = new byte[selectedRegAddr.Count];
                 //byte[] rdData = new byte[selectedRegAddr.Count];
@@ -401,7 +401,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                     tempData[ix * 2 + 0] = selectedRegAddr[ix];
                     tempData[ix * 2 + 1] = regMap[tempData[ix * 2 + 0]].RegValue;
                 }
-                if (!dg.writeRegBlockSingle( tempData ,selectedRegAddr.Count))
+                if (!dongle.writeRegBlockSingle( tempData ,selectedRegAddr.Count))
                 {
                     // if read succeeded,then update regmap data and GUI display
                     MessageBox.Show( "Write Register Failed!", "Warning" );
@@ -681,7 +681,7 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (dg.dongleInit(this.cbPortName.Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            if (dongle.dongleInit(this.cbPortName.Text, DMDongle.VCPGROUP.SC, 0x65, 10))
             {
 
             }

@@ -14,27 +14,141 @@ using GeneralRegConfigPlatform.MDGUI;
 using MD.MDCommon;
 using DMCommunication;
 using System.IO.Ports;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace GeneralRegConfigPlatform.GUI
 {
+    [Serializable]
     public partial class FormMain : Form
     {
+        #region Variable Define
         [DllImport("kernel32")]
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-        public FormMain()
-        {            
-            InitializeComponent();
-        }
-
         DataSet DS_Excel;
         MDDataSet DataSet;
         RegisterMap regMap;
-        FormDongle myDongleForm;
         List<MDRegisterViewTab> AllTables = new List<MDRegisterViewTab> { };
-        DMDongle myUART = new DMDongle();
+        DMDongle myDongle = new DMDongle();
+        List<String> historyProjPath = new List<string> { };
+        int maxHistProjPathCount = 10;
+        String currentProjPath = "";
+        #endregion Define
+
+        #region Funcs
+        public FormMain()
+        {
+            InitializeComponent();
+        }
+
+        private DataSet ImportExcel(string excelFileName)
+        {
+            try
+            {
+                DataTable dtExcel = new DataTable();
+                //数据表
+                DataSet ds = new DataSet();
+                //获取文件扩展名
+                string strExtension = System.IO.Path.GetExtension(excelFileName);
+                string strFileName = System.IO.Path.GetFileName(excelFileName);
+                //Excel的连接
+                OleDbConnection objConn = null;
+                switch (strExtension)
+                {
+                    case ".xls":
+                        objConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" +
+                            excelFileName + ";" + "Extended Properties=\"Excel 8.0;HDR=NO;IMEX=1;\"");
+                        break;
+                    case ".xlsx":
+                        objConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
+                            excelFileName + ";" + "Extended Properties=\"Excel 12.0;HDR=NO;IMEX=1;\"");
+                        break;
+                    default:
+                        objConn = null;
+                        break;
+                }
+
+                if (objConn == null)
+                {
+                    return null;
+                }
+                objConn.Open();
+
+                // Get all sheet name in the excel                
+                ArrayList result = new ArrayList { };
+                DataTable sheetNames = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables,
+                    new object[] { null, null, null, "TABLE" });
+                foreach (DataRow dr in sheetNames.Rows)
+                {
+                    result.Add(dr[2]);
+                }
+
+                // Get all datatable from each sheet and add to ds.
+                ds.Clear();
+                string strSql;
+                foreach (string tName in result)
+                {
+                    strSql = "select * from [" + tName + "]";
+                    OleDbCommand objCmd = new OleDbCommand(strSql, objConn);
+                    OleDbDataAdapter myData = new OleDbDataAdapter(strSql, objConn);
+                    myData.Fill(ds, tName);//填充数据
+                }
+                objConn.Close();
+
+                return ds;
+            }
+            catch { return null; }
+        }
+
+        private void CreateTabs(DataSet _ds)
+        {
+            this.tabCtrlRegView.TabPages.Clear();
+            AllTables.Clear();
+            for (int ix_tab = 0; ix_tab < _ds.Tables.Count; ix_tab++)
+            {
+                this.tabCtrlRegView.TabPages.Add(_ds.Tables[ix_tab].TableName);
+                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab], _ds.Tables["Customer"], DataSet.RegMap, myDongle);
+                this.tabCtrlRegView.TabPages[ix_tab].Controls.Add(newTab);
+                AllTables.Add(newTab);
+                newTab.Dock = DockStyle.Fill;
+                newTab.BorderStyle = BorderStyle.Fixed3D;
+            }
+
+            //Create script tab
+            this.tabCtrlRegView.TabPages.Add("Script");
+            FormScript frm_script = new FormScript(myDongle);
+            this.tabCtrlRegView.TabPages[tabCtrlRegView.TabPages.Count - 1].Controls.Add(frm_script);
+            //AllTables.Add(frm_script);
+            frm_script.Dock = DockStyle.Fill;
+            frm_script.BorderStyle = BorderStyle.Fixed3D;
+        }
+
+        private void SerializeMethod(string path)
+        {
+            //创建一个格式化程序的实例
+            IFormatter formatter = new BinaryFormatter();             //创建一个文件流
+            Stream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, DataSet);
+            stream.Close();
+        }
+
+        private void DeserializeMethod(string path)
+        {
+            //创建一个文件流
+            IFormatter formatter = new BinaryFormatter();
+            Stream destream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);              
+            DataSet = formatter.Deserialize(destream) as MDDataSet;
+            destream.Close();
+
+            //To DO: Add create taps on GUI with dataset
+        }
+        #endregion Funcs
+
+        #region Events
         private void MenuItemFile_Open_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -74,6 +188,67 @@ namespace GeneralRegConfigPlatform.GUI
             }
             else
                 return;           
+        }
+
+        private void MenuItemFile_Open_Excel_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Please select regmap excel file...";
+            ofd.Filter = "xlsx(*.xlsx)|*.xlsx|xls(*.xls)|*.xls|All Files(*.*)|*.*";
+            //ofd.RestoreDirectory = true;
+            ofd.ReadOnlyChecked = true;
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                DS_Excel = ImportExcel(ofd.FileName);
+                if (DS_Excel == null)
+                    return;
+
+                DataSet = new MDDataSet(DS_Excel);
+                regMap = DataSet.RegMap;
+                // Init tabs with created data tables
+                CreateTabs(DataSet.DS_Display);
+            }
+            else
+                return;           
+
+        }
+
+        private void MenuItemFile_Open_proj_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openProj = new OpenFileDialog();
+            openProj.Title = "open an project file and update infomations to GUI...";
+            openProj.Filter = "MDPROJ(.mdproj)|*.mdproj";
+            //importFile.RestoreDirectory = true;
+            if (openProj.ShowDialog() == DialogResult.OK)
+            {
+                currentProjPath = openProj.FileName;
+                DeserializeMethod(currentProjPath);
+            }
+        }
+
+        private void MenuItemFile_Save_Click(object sender, EventArgs e)
+        {
+            // Examine path, if no, then open save file dialog.
+            if(!File.Exists(currentProjPath))            
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Title = "save project file...";
+                sfd.Filter = "MDPROJ(.mdproj)|*.mdproj";
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    currentProjPath = sfd.FileName;
+                    historyProjPath.Add(currentProjPath);
+                    if (historyProjPath.Count > maxHistProjPathCount)
+                        historyProjPath.RemoveAt(0);
+                }
+            }
+
+            SerializeMethod(currentProjPath);
+        }
+
+        private void MenuItemFile_Save_As_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void MenuItemFile_Close_Click(object sender, EventArgs e)
@@ -145,88 +320,6 @@ namespace GeneralRegConfigPlatform.GUI
 
         }
 
-        private DataSet ImportExcel(string excelFileName)
-        {
-            try
-            {
-                DataTable dtExcel = new DataTable();
-                //数据表
-                DataSet ds = new DataSet();
-                //获取文件扩展名
-                string strExtension = System.IO.Path.GetExtension(excelFileName);
-                string strFileName = System.IO.Path.GetFileName(excelFileName);
-                //Excel的连接
-                OleDbConnection objConn = null;
-                switch (strExtension)
-                {
-                    case ".xls":
-                        objConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" +
-                            excelFileName + ";" + "Extended Properties=\"Excel 8.0;HDR=NO;IMEX=1;\"");
-                        break;
-                    case ".xlsx":
-                        objConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
-                            excelFileName + ";" + "Extended Properties=\"Excel 12.0;HDR=NO;IMEX=1;\"");
-                        break;
-                    default:
-                        objConn = null;
-                        break;
-                }
-
-                if (objConn == null)
-                {
-                    return null;
-                }
-                objConn.Open();
-
-                // Get all sheet name in the excel                
-                ArrayList result = new ArrayList { };
-                DataTable sheetNames = objConn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables,
-                    new object[] { null, null, null, "TABLE" });
-                foreach (DataRow dr in sheetNames.Rows)
-                {
-                        result.Add(dr[2]);
-                }
-
-                // Get all datatable from each sheet and add to ds.
-                ds.Clear();
-                string strSql;
-                foreach (string tName in result)
-                {
-                    strSql = "select * from [" + tName + "]";
-                    OleDbCommand objCmd = new OleDbCommand(strSql, objConn);
-                    OleDbDataAdapter myData = new OleDbDataAdapter(strSql, objConn);
-                    myData.Fill(ds, tName);//填充数据
-                }
-                objConn.Close();
-
-                return ds;
-            }
-            catch { return null; }
-        }
-
-        private void CreateTabs(DataSet _ds)
-        {
-            this.tabCtrlRegView.TabPages.Clear();
-            AllTables.Clear();
-            for (int ix_tab = 0; ix_tab < _ds.Tables.Count; ix_tab++)
-            {
-                this.tabCtrlRegView.TabPages.Add(_ds.Tables[ix_tab].TableName);
-                MDRegisterViewTab newTab = new MDRegisterViewTab(_ds.Tables[ix_tab],_ds.Tables["Customer"], DataSet.RegMap, myUART);
-                this.tabCtrlRegView.TabPages[ix_tab].Controls.Add(newTab);
-                AllTables.Add(newTab);
-                newTab.Dock = DockStyle.Fill;
-                newTab.BorderStyle = BorderStyle.Fixed3D;                
-            }
-
-            //Create script tab
-            this.tabCtrlRegView.TabPages.Add("Script");
-            FormScript frm_script = new FormScript(myUART);
-            this.tabCtrlRegView.TabPages[tabCtrlRegView.TabPages.Count - 1].Controls.Add(frm_script);
-            //AllTables.Add(frm_script);
-            frm_script.Dock = DockStyle.Fill;
-            frm_script.BorderStyle = BorderStyle.Fixed3D;
-        }
-
         private void selectDongleToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -259,14 +352,11 @@ namespace GeneralRegConfigPlatform.GUI
                 //this.cbPortName.SelectedIndex = 0;
             }
         }
-
-
-
-
+        
         public void DongleItem_Click(object sender, EventArgs e)
         {
             (sender as ToolStripDropDownItem).Select();
-            if (myUART.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            if (myDongle.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
             {
                 statusBar_DeviceConnected.Text = "Dongle Connected";
                 statusBar_DeviceConnected.BackColor = Color.Green;
@@ -290,17 +380,17 @@ namespace GeneralRegConfigPlatform.GUI
             if (rbt_Valid_on.Checked)
             {
                 //GPIO on interface
-                if (myUART.IsOpen)
+                if (myDongle.IsOpen)
                 {
-                    myUART.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
+                    myDongle.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
                 }
             }
             else
             {
                 //GPIO on interface
-                if (myUART.IsOpen)
+                if (myDongle.IsOpen)
                 {
-                    myUART.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
+                    myDongle.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
                 }
             }
         }
@@ -310,17 +400,17 @@ namespace GeneralRegConfigPlatform.GUI
             if (rbt_RSTB_On.Checked)
             {
                 //GPIO on interface
-                if (myUART.IsOpen)
+                if (myDongle.IsOpen)
                 {
-                    myUART.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
+                    myDongle.setUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
                 }
             }
             else
             {
                 //GPIO on interface
-                if (myUART.IsOpen)
+                if (myDongle.IsOpen)
                 {
-                    myUART.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
+                    myDongle.resetUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
                 }
             }
         }
@@ -330,7 +420,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte value;
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg00_Addr.Text, 16);
-            myUART.readRegSingle(address, out value);
+            myDongle.readRegSingle(address, out value);
 
             textBox_Reg00_Value.Text = value.ToString("X2");
         }
@@ -341,7 +431,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg00_Addr.Text, 16);
             value = Convert.ToByte(textBox_Reg00_Value.Text, 16);
-            if(!myUART.writeRegSingle(address,value))
+            if(!myDongle.writeRegSingle(address,value))
                 MessageBox.Show("Write Register Failed!","Waning");
         }
 
@@ -350,7 +440,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte value;
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg01_Addr.Text, 16);
-            myUART.readRegSingle(address, out value);
+            myDongle.readRegSingle(address, out value);
 
             textBox_Reg01_Value.Text = value.ToString("X2");
         }
@@ -361,7 +451,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg01_Addr.Text, 16);
             value = Convert.ToByte(textBox_Reg01_Value.Text, 16);
-            if (!myUART.writeRegSingle(address, value))
+            if (!myDongle.writeRegSingle(address, value))
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
@@ -370,7 +460,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte value;
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg02_Addr.Text, 16);
-            myUART.readRegSingle(address, out value);
+            myDongle.readRegSingle(address, out value);
 
             textBox_Reg02_Value.Text = value.ToString("X2");
         }
@@ -381,7 +471,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg02_Addr.Text, 16);
             value = Convert.ToByte(textBox_Reg02_Value.Text, 16);
-            if (!myUART.writeRegSingle(address, value))
+            if (!myDongle.writeRegSingle(address, value))
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
@@ -390,7 +480,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte value;
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg03_Addr.Text, 16);
-            myUART.readRegSingle(address, out value);
+            myDongle.readRegSingle(address, out value);
 
             textBox_Reg03_Value.Text = value.ToString("X2");
         }
@@ -401,7 +491,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg03_Addr.Text, 16);
             value = Convert.ToByte(textBox_Reg03_Value.Text, 16);
-            if (!myUART.writeRegSingle(address, value))
+            if (!myDongle.writeRegSingle(address, value))
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
@@ -410,7 +500,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte value;
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
-            myUART.readRegSingle(address, out value);
+            myDongle.readRegSingle(address, out value);
 
             textBox_Reg04_Value.Text = value.ToString("X2");
         }
@@ -421,7 +511,7 @@ namespace GeneralRegConfigPlatform.GUI
             byte address = 0x00;
             address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
             value = Convert.ToByte(textBox_Reg04_Value.Text, 16);
-            if (!myUART.writeRegSingle(address, value))
+            if (!myDongle.writeRegSingle(address, value))
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
@@ -429,7 +519,7 @@ namespace GeneralRegConfigPlatform.GUI
         {
             //To Do: add GPIO status read back functions, and update to GUI
         }
+        #endregion Events
 
-        
     }
 }
