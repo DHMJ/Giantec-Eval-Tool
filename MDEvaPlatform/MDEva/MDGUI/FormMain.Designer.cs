@@ -102,6 +102,7 @@
             this.rbt_RSTB_On = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabCtrlRegView = new System.Windows.Forms.TabControl();
+            this.btn_UpdateGPIO = new System.Windows.Forms.Button();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel_GPIO.SuspendLayout();
@@ -365,6 +366,7 @@
             // panel_GPIO
             // 
             this.panel_GPIO.BackColor = System.Drawing.SystemColors.Control;
+            this.panel_GPIO.Controls.Add(this.btn_UpdateGPIO);
             this.panel_GPIO.Controls.Add(this.groupBox7);
             this.panel_GPIO.Controls.Add(this.groupBox5);
             this.panel_GPIO.Controls.Add(this.groupBox4);
@@ -386,7 +388,7 @@
             this.groupBox7.Controls.Add(this.textBox_Reg04_Addr);
             this.groupBox7.Controls.Add(this.textBox_Reg04_Value);
             this.groupBox7.Controls.Add(this.btn_Reg04_Write);
-            this.groupBox7.Location = new System.Drawing.Point(18, 463);
+            this.groupBox7.Location = new System.Drawing.Point(18, 480);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(245, 79);
             this.groupBox7.TabIndex = 12;
@@ -457,7 +459,7 @@
             this.groupBox5.Controls.Add(this.textBox_Reg03_Addr);
             this.groupBox5.Controls.Add(this.textBox_Reg03_Value);
             this.groupBox5.Controls.Add(this.btn_Reg03_Write);
-            this.groupBox5.Location = new System.Drawing.Point(18, 378);
+            this.groupBox5.Location = new System.Drawing.Point(18, 395);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(245, 79);
             this.groupBox5.TabIndex = 11;
@@ -528,7 +530,7 @@
             this.groupBox4.Controls.Add(this.textBox_Reg01_Addr);
             this.groupBox4.Controls.Add(this.textBox_Reg01_Value);
             this.groupBox4.Controls.Add(this.btn_Reg01_Write);
-            this.groupBox4.Location = new System.Drawing.Point(18, 209);
+            this.groupBox4.Location = new System.Drawing.Point(18, 226);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(245, 79);
             this.groupBox4.TabIndex = 9;
@@ -599,7 +601,7 @@
             this.groupBox6.Controls.Add(this.textBox_Reg02_Addr);
             this.groupBox6.Controls.Add(this.textBox_Reg02_Value);
             this.groupBox6.Controls.Add(this.btn_Reg02_Write);
-            this.groupBox6.Location = new System.Drawing.Point(18, 294);
+            this.groupBox6.Location = new System.Drawing.Point(18, 311);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(245, 79);
             this.groupBox6.TabIndex = 10;
@@ -670,7 +672,7 @@
             this.groupBox3.Controls.Add(this.textBox_Reg00_Addr);
             this.groupBox3.Controls.Add(this.textBox_Reg00_Value);
             this.groupBox3.Controls.Add(this.btn_Reg00_Write);
-            this.groupBox3.Location = new System.Drawing.Point(18, 124);
+            this.groupBox3.Location = new System.Drawing.Point(18, 141);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(245, 79);
             this.groupBox3.TabIndex = 8;
@@ -736,7 +738,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.panel1);
-            this.groupBox2.Location = new System.Drawing.Point(150, 14);
+            this.groupBox2.Location = new System.Drawing.Point(150, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(113, 88);
             this.groupBox2.TabIndex = 3;
@@ -747,7 +749,7 @@
             // 
             this.panel1.Controls.Add(this.rbt_Valid_off);
             this.panel1.Controls.Add(this.rbt_Valid_on);
-            this.panel1.Location = new System.Drawing.Point(23, 27);
+            this.panel1.Location = new System.Drawing.Point(19, 20);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(71, 47);
             this.panel1.TabIndex = 2;
@@ -778,9 +780,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel2);
-            this.groupBox1.Location = new System.Drawing.Point(18, 14);
+            this.groupBox1.Location = new System.Drawing.Point(18, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(113, 87);
+            this.groupBox1.Size = new System.Drawing.Size(106, 87);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RSTB";
@@ -789,7 +791,7 @@
             // 
             this.panel2.Controls.Add(this.rbt_RSTB_Off);
             this.panel2.Controls.Add(this.rbt_RSTB_On);
-            this.panel2.Location = new System.Drawing.Point(23, 26);
+            this.panel2.Location = new System.Drawing.Point(20, 20);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(71, 47);
             this.panel2.TabIndex = 4;
@@ -843,6 +845,16 @@
             this.tabCtrlRegView.SelectedIndex = 0;
             this.tabCtrlRegView.Size = new System.Drawing.Size(983, 650);
             this.tabCtrlRegView.TabIndex = 8;
+            // 
+            // btn_UpdateGPIO
+            // 
+            this.btn_UpdateGPIO.Location = new System.Drawing.Point(100, 106);
+            this.btn_UpdateGPIO.Name = "btn_UpdateGPIO";
+            this.btn_UpdateGPIO.Size = new System.Drawing.Size(75, 23);
+            this.btn_UpdateGPIO.TabIndex = 13;
+            this.btn_UpdateGPIO.Text = "Update";
+            this.btn_UpdateGPIO.UseVisualStyleBackColor = true;
+            this.btn_UpdateGPIO.Click += new System.EventHandler(this.btn_UpdateGPIO_Click);
             // 
             // FormMain
             // 
@@ -961,5 +973,6 @@
         private System.Windows.Forms.Button btn_Reg00_Write;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabCtrlRegView;
+        private System.Windows.Forms.Button btn_UpdateGPIO;
     }
 }

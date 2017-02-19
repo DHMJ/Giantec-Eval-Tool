@@ -425,6 +425,11 @@ namespace GeneralRegConfigPlatform.GUI
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 
+        private void btn_UpdateGPIO_Click(object sender, EventArgs e)
+        {
+            //To Do: add GPIO status read back functions, and update to GUI
+        }
+
         
     }
 }
