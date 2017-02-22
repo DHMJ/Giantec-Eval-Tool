@@ -403,6 +403,38 @@ namespace DMCommunication
             return true;
         }
 
+        public byte readUserIO(USERIOGROUP group, USERIOPIN pin)
+        {
+            byte[] buf = new byte[6];
+            buf[0] = 0x5A;
+            buf[1] = (byte)VCPGROUP.GPIO;
+            buf[2] = 0x04;         //toggle io
+            buf[3] = (byte)group;      //group
+            buf[4] = (byte)pin;         //pin
+            uart.Write(buf, 0, 5);
+
+            uint timeOutCounter = 200;
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
+            {
+                timeOutCounter--;
+                System.Threading.Thread.Sleep(10);
+            }
+
+            if (timeOutCounter != 0)
+            {
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
+                if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.GPIO || readBuf[2] != 0x04)
+                    return 0xFF;
+                else
+                    return readBuf[3];
+            }
+            else
+                return 0xFF;
+
+            //return readBuf[3];
+        }
+
         //------------------------ADCs FUNCTIONS---------------------------------
 
     }

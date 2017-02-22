@@ -522,6 +522,31 @@ namespace GeneralRegConfigPlatform.GUI
         private void btn_UpdateGPIO_Click(object sender, EventArgs e)
         {
             //To Do: add GPIO status read back functions, and update to GUI
+            //GPIO read interface
+            if (myDongle.IsOpen)
+            {
+                byte result = myDongle.readUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_1);
+                if (result == 00)
+                    this.rbt_RSTB_Off.Checked = true;
+                else if (result == 0xFF)
+                {
+                    MessageBox.Show("Read Error!", "Warning");
+                    return;
+                }
+                else
+                    this.rbt_RSTB_On.Checked = true;
+
+                result = myDongle.readUserIO(DMDongle.USERIOGROUP.GROUP_A, DMDongle.USERIOPIN.USR_IO_0);
+                if (result == 00)
+                    this.rbt_Valid_off.Checked = true;
+                else if (result == 0xFF)
+                {
+                    MessageBox.Show("Read Error!", "Warning");
+                    return;
+                }
+                else
+                    this.rbt_Valid_on.Checked = true;
+            }
         }
         #endregion Events
 
