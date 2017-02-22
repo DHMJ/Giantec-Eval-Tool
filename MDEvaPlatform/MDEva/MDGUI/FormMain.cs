@@ -223,6 +223,10 @@ namespace GeneralRegConfigPlatform.GUI
             {
                 currentProjPath = openProj.FileName;
                 DeserializeMethod(currentProjPath);
+
+                regMap = DataSet.RegMap;
+                // Init tabs with created data tables
+                CreateTabs(DataSet.DS_Display);
             }
         }
 

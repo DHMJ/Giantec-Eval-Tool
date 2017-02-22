@@ -169,7 +169,6 @@
             this.MenuItemFile_Open.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Open.Text = "&Open";
             this.MenuItemFile_Open.ToolTipText = "Add";
-            this.MenuItemFile_Open.Click += new System.EventHandler(this.MenuItemFile_Open_Click);
             // 
             // MenuItemFile_Save
             // 
