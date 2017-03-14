@@ -435,7 +435,100 @@ namespace DMCommunication
             //return readBuf[3];
         }
 
-        //------------------------ADCs FUNCTIONS---------------------------------
+        //------------------------BASE FUNCTIONS---------------------------------
+        public byte readSotFlag( )
+        {
+            byte[] buf = new byte[6];
+            buf[0] = 0x5A;
+            buf[1] = (byte)VCPGROUP.BASE;
+            buf[2] = 0x01;         //toggle io
+
+            uart.Write(buf, 0, 3);
+
+            uint timeOutCounter = 200;
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
+            {
+                timeOutCounter--;
+                System.Threading.Thread.Sleep(10);
+            }
+
+            if (timeOutCounter != 0)
+            {
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
+                if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.BASE || readBuf[2] != 0x01)
+                    return 0xFF;
+                else
+                    return readBuf[3];
+            }
+            else
+                return 0xFF;
+
+            //return readBuf[3];
+        }
+
+
+        public bool clearSotFlag()
+        {
+            byte[] buf = new byte[6];
+            buf[0] = 0x5A;
+            buf[1] = (byte)VCPGROUP.BASE;
+            buf[2] = 0x02;         //toggle io
+
+            uart.Write(buf, 0, 3);
+
+            uint timeOutCounter = 200;
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
+            {
+                timeOutCounter--;
+                System.Threading.Thread.Sleep(10);
+            }
+
+            if (timeOutCounter != 0)
+            {
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
+                if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.BASE || readBuf[2] != 0x02 || readBuf[3] != 0xCC)
+                    return false;
+                else
+                    return true;
+            }
+            else
+                return false;
+
+            //return readBuf[3];
+        }
+
+
+        public bool setBin(byte bin )
+        {
+            byte[] buf = new byte[6];
+            buf[0] = 0x5A;
+            buf[1] = (byte)VCPGROUP.BASE;
+            buf[2] = (byte)(0x02 + bin);         //toggle io
+
+            uart.Write(buf, 0, 3);
+
+            uint timeOutCounter = 200;
+            while (uart.BytesToRead == 0 && timeOutCounter > 0)
+            {
+                timeOutCounter--;
+                System.Threading.Thread.Sleep(10);
+            }
+
+            if (timeOutCounter != 0)
+            {
+                byte[] readBuf = new byte[uart.BytesToRead];
+                uart.Read(readBuf, 0, uart.BytesToRead);
+                if (readBuf[0] != 0xA5 || readBuf[1] != (byte)VCPGROUP.BASE || readBuf[2] != (byte)(0x02 + bin) || readBuf[3] != 0xCC)
+                    return false;
+                else
+                    return true;
+            }
+            else
+                return false;
+
+        }
 
     }
 }
