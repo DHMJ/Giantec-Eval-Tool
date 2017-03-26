@@ -10,6 +10,7 @@ using System.IO.Ports;
 using MD.MDCommon;
 using DMCommunication;
 using GeneralRegConfigPlatform.GUI;
+using GeneralRegConfigPlatform.MDDataBase;
 
 namespace GeneralRegConfigPlatform.MDGUI
 {
@@ -36,23 +37,6 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             InitializeComponent();
 
-            //string[] str = SerialPort.GetPortNames();
-            //if (str == null)
-            //{
-            //    //本机没有串口！
-            //    this.cbPortName.SelectedIndex = 0;
-            //}
-            //else
-            //{
-            //    this.cbPortName.Items.Clear();
-
-            //    for (int i = 0; i < str.Length; i++)
-            //        this.cbPortName.Items.Add(str[i]);
-
-            //    this.cbPortName.SelectedIndex = 0;
-            //}
-
-            //mdDVG1.ClearSelection();
             dt_reg = _dt;
             dt_Customer = _dtCustomer;
             regMap = _regmap;
@@ -162,7 +146,9 @@ namespace GeneralRegConfigPlatform.MDGUI
             mdDVG1.Columns[0].ReadOnly = true;
             // Bitfield
             mdDVG1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            mdDVG1.Columns[1].Width = 60;
+            mdDVG1.Columns[1].Width = 120;
+            //mdDVG1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            //mdDVG1.Columns[1].Width = 60;
             mdDVG1.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
             mdDVG1.Columns[1].ReadOnly = true;
             // Name
@@ -175,7 +161,9 @@ namespace GeneralRegConfigPlatform.MDGUI
             mdDVG1.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
             mdDVG1.Columns[3].ReadOnly = false;
             // RegValue
-            mdDVG1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            //mdDVG1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            mdDVG1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            mdDVG1.Columns[1].Width = 110;
             mdDVG1.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
             mdDVG1.Columns[4].ReadOnly = true;
         }
@@ -190,7 +178,6 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         public void CollectCurrentRegList(DataTable _dt)
         {
-            //regAddrList.Clear();
             byte tempAddr = 0;
             foreach (DataRow dr in _dt.Rows)
             {
@@ -234,7 +221,7 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             for (int ix = 0; ix < regAddrList.Count; ix++)
             {
-                UpdateRegValueCell(regAddrList[ix]);
+                UpdateRegValueCell(regMap[regAddrList[ix]]);
             }
         }
 
@@ -252,12 +239,11 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         public void UpdateSelectedRegList(DataGridViewSelectedRowCollection dgvSelectedRC)
         {
-            int ix;
             byte tempAddr;
             string tempBFName;
             foreach (DataGridViewRow dgvRow in dgvSelectedRC)
             {
-                if (dgvRow.Cells[0].Value.ToString() != "")
+                if (dgvRow.Cells[(int)cellIx.regAddr].Value.ToString() != "")
                 {
                     tempAddr = byte.Parse(dgvRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
                     if (!selectedRegAddr.Contains(tempAddr))
@@ -268,7 +254,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 }
                 else
                 {
-                    tempBFName = dgvRow.Cells[2].Value.ToString();
+                    tempBFName = dgvRow.Cells[(int)cellIx.name].Value.ToString();
                     foreach (Register tempReg in regMap.RegList)
                     {
                         if (tempReg.Contain(tempBFName))
@@ -309,20 +295,24 @@ namespace GeneralRegConfigPlatform.MDGUI
             for (int ix_bf = 0; ix_bf < tempReg.BFCount; ix_bf++)
             {
                 tempDGVRow = mdDVG1.Rows[ix_reg + 1 + ix_bf];
-                tempDGVRow.Cells[3].Value = tempReg.GetBFValue(tempDGVRow.Cells[2].Value.ToString()).ToString("X2");
+                tempDGVRow.Cells[(int)cellIx.bfValue].Value = tempReg.GetBFValue(tempDGVRow.Cells[(int)cellIx.name].Value.ToString()).ToString("X2");
             }
         }
 
-        private void UpdateRegValueCell(byte regAddr)
+        private void UpdateRegValueCell(Register updateReg)
         {
             foreach (DataGridViewRow dgvRow in mdDVG1.Rows)
             {
                 if (dgvRow.Cells[0].Value.ToString() != "")
                 {
-                    if (byte.Parse(dgvRow.Cells[0].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber) == regAddr)
+                    if (byte.Parse(dgvRow.Cells[0].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber) == updateReg.RegAddress)
                     {
                         //dgvRow.Cells[4].Value = regAddr.ToString("X2");
-                        dgvRow.Cells[4].Value = regMap[regAddr].RegValue.ToString("X2");
+                        if (updateReg.ByteCount <= 4)       // if byte count <= 4, can update reg value first and then update bf cell in value changed event.
+                            dgvRow.Cells[(int)cellIx.regValue].Value = updateReg.RegValue.ToString("X2");
+                        else                                // if byte count >4, will disable regVale cell and update bf cell directly
+                            UpdateBFValueCells(dgvRow.Index, updateReg.RegAddress);                        
+                        
                         return;
                     }
                 }
@@ -335,20 +325,14 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (dongle.IsOpen)
             {
-                byte[] rdRegAddr = new byte[regAddrList.Count];
-                byte[] rdData = new byte[regAddrList.Count];
+                Register tempReg;
                 for (int ix = 0; ix < regAddrList.Count; ix++)
                 {
-                    rdRegAddr[ix] = regAddrList[ix];
-                }
-                if (dongle.readRegBlockSingle(rdRegAddr, rdData, regAddrList.Count))
-                {
-                    // if read succeeded,then update regmap data and GUI display
-                    for (int ix = 0; ix < rdData.Length; ix++)
-                    {
-                        regMap[rdRegAddr[ix]].RegValue = rdData[ix];
-                        UpdateRegValueCell(rdRegAddr[ix]);
-                    }
+                    tempReg = regMap[regAddrList[ix]];
+                    dongle.readRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount);
+                    
+                    // Update new value to GUI display
+                    UpdateRegValueCell(tempReg);
                 }
             }
         }
@@ -357,13 +341,12 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (dongle.IsOpen)
             {
-                byte[] wrData = new byte[regAddrList.Count * 2];
+                Register tempReg;
                 for (int ix = 0; ix < regAddrList.Count; ix++)
                 {
-                    wrData[2 * ix] = regAddrList[ix];
-                    wrData[2 * ix + 1] = regMap[regAddrList[ix]].RegValue;
+                    tempReg = regMap[regAddrList[ix]];
+                    dongle.writeRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount);
                 }
-                dongle.writeRegBlockSingle(wrData, regAddrList.Count);
             }
         }
 
@@ -371,20 +354,14 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (dongle.IsOpen)
             {
-                byte[] rdRegAddr = new byte[selectedRegAddr.Count];
-                byte[] rdData = new byte[selectedRegAddr.Count];
+                Register tempReg;
                 for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                 {
-                    rdRegAddr[ix] = selectedRegAddr[ix];
-                }
-                if (dongle.readRegBlockSingle(rdRegAddr, rdData, selectedRegAddr.Count))
-                {
-                    // if read succeeded,then update regmap data and GUI display
-                    for (int ix = 0; ix < rdData.Length; ix++)
-                    {
-                        regMap[rdRegAddr[ix]].RegValue = rdData[ix];
-                        UpdateRegValueCell(rdRegAddr[ix]);
-                    }
+                    tempReg = regMap[selectedRegAddr[ix]];
+                    dongle.readRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount);
+
+                    // Update new value to GUI display
+                    UpdateRegValueCell(tempReg);
                 }
             }
         }
@@ -393,18 +370,12 @@ namespace GeneralRegConfigPlatform.MDGUI
         {
             if (dongle.IsOpen)
             {
-                //byte[] rdRegAddr = new byte[selectedRegAddr.Count];
-                //byte[] rdData = new byte[selectedRegAddr.Count];
-                byte[] tempData = new byte[selectedRegAddr.Count * 2];
+                Register tempReg;
                 for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                 {
-                    tempData[ix * 2 + 0] = selectedRegAddr[ix];
-                    tempData[ix * 2 + 1] = regMap[tempData[ix * 2 + 0]].RegValue;
-                }
-                if (!dongle.writeRegBlockSingle( tempData ,selectedRegAddr.Count))
-                {
-                    // if read succeeded,then update regmap data and GUI display
-                    MessageBox.Show( "Write Register Failed!", "Warning" );
+                    tempReg = regMap[selectedRegAddr[ix]];
+                    if(dongle.writeRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount))
+                        MessageBox.Show("Write Register Failed!", "Warning");
                 }
             }
         }
@@ -446,40 +417,6 @@ namespace GeneralRegConfigPlatform.MDGUI
                 return;
 
             UpdateSelectedRegList(dgvSelRC);
-            // Find selected rows which contain regAddr in the first column.
-            //foreach (DataGridViewRow dvgRow in dgvSelRC)
-            //{                
-            //    //if (dvgRow.Cells[0].Value != null && dvgRow.Cells[0].Value.ToString() != "")
-            //    if (dvgRow.Cells[0].Value.ToString() != "")
-            //    {
-            //        selectedRegAddr.Add(byte.Parse(dvgRow.Cells[0].Value.ToString().Replace("0x", ""),
-            //            System.Globalization.NumberStyles.HexNumber));
-            //    }
-            //}
-
-            //// Find regAddr of the selected rows belong to if the first row doesn't have regAddr info
-            ////if (dvgSelRC[0].Cells[0].Value != null && dvgSelRC[0].Cells[0].Value.ToString() == "") 
-            //if (dgvSelRC[0].Cells[0].Value.ToString() == "")
-            //{
-            //    int firstRowIx = mdDVG1.Rows.IndexOf(dgvSelRC[0]);
-            //    while (firstRowIx > 0 && mdDVG1.Rows[firstRowIx].Cells[0].Value.ToString() == "")
-            //    {
-            //        firstRowIx--;
-            //    }
-            //    selectedRegAddr.Add(byte.Parse(mdDVG1.Rows[firstRowIx].Cells[0].Value.
-            //        ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
-            //}
-
-            //if (selectedRegAddr.Count > 1)
-            //{
-            //    selectedRegAddr.Sort();
-            //    while (selectedRegAddr[selectedRegAddr.Count - 1] == selectedRegAddr[selectedRegAddr.Count - 2])
-            //    {
-            //        selectedRegAddr.RemoveAt(selectedRegAddr.Count - 1);
-            //        if (selectedRegAddr.Count == 1)
-            //            break;
-            //    }
-            //} 
 
             // Fill in Description text with Bitfield or Register descriptions.
             string selectedBFName = "";
@@ -506,60 +443,80 @@ namespace GeneralRegConfigPlatform.MDGUI
                 RowSelectedChangeEvent(selectedBFName as object, e);
         }
 
+        /// <summary>
+        /// Set the cell read only properity and "0x" prefix for hex data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mdDVG1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // Just make the diplay value have a 0x prefix, real cell value is the value you enter in
+            /* GUI display sequence: regAddr(0) | bitField(1) | name(2) | bfValue(3) | regValue(4)  */
 
-            if ((e.ColumnIndex < 1 || e.ColumnIndex > 2) && (e.Value.ToString() != ""))
+            // Just make the diplay value have a 0x prefix, real cell value is the value you enter in
+            if ((e.ColumnIndex < (int)cellIx.bitField || e.ColumnIndex > (int)cellIx.name) && (e.Value.ToString() != ""))
             {
                 e.Value = "0x" + e.Value.ToString().Replace("0x", "");
             }
-            //Console.WriteLine(mdDVG1.Rows[0].Cells[4].Value.ToString());
 
-            // set the black cell of bfValue column as readonly
-            if (e.ColumnIndex == 3 && mdDVG1[0, e.RowIndex].Value.ToString() != "")
+            //if(e.Value == "")
+            //    mdDVG1[e.ColumnIndex, e.RowIndex].ReadOnly = true;
+
+            // set the blank cell of bfValue column as readonly
+            if (e.ColumnIndex == (int)cellIx.bfValue && mdDVG1[(int)cellIx.regAddr, e.RowIndex].Value.ToString() != "")
             {
                 mdDVG1[e.ColumnIndex, e.RowIndex].ReadOnly = true;
             }
             // set the regValue cell as editable
-            else if (e.ColumnIndex == 4 && mdDVG1[0, e.RowIndex].Value.ToString() != "")
+            else if (e.ColumnIndex == (int)cellIx.regValue && mdDVG1[(int)cellIx.regAddr, e.RowIndex].Value.ToString() != "")
             {
                 mdDVG1[e.ColumnIndex, e.RowIndex].ReadOnly = false;
             }
+            //else if (e.ColumnIndex == (int)cellIx.regValue && mdDVG1[(int)cellIx.regAddr, e.RowIndex].Value.ToString() != "")
+            //{
+            //    mdDVG1[e.ColumnIndex, e.RowIndex].ReadOnly = false;
+            //}
         }
 
+        /// <summary>
+        /// This event just be triggered when bf value or reg value changed. And will update opposite value(e.g. bf value changed -> update reg value)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mdDVG1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            /* GUI display sequence: regAddr(0) | bitField(1) | name(2) | bfValue(3) | regValue(4)  */
+
             byte tempAddr;
             DataGridViewRow tempRow = mdDVG1.Rows[e.RowIndex];
+            Register tempReg;
             switch (e.ColumnIndex)
             {
-                case 3:         //Bit field value changed
+                case (int)cellIx.bfValue:         //Bit field value changed
                     // Update displayed RegValue and regmap
                     int regRowIx = GetRegRowIx(e.RowIndex);
-                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    regMap[tempAddr].UpdataRegValue(tempRow.Cells[2].Value.ToString(), uint.Parse(tempRow.Cells[3].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber));
-                    this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
-                    mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
-                    this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+                    tempAddr = byte.Parse(mdDVG1[(int)cellIx.regAddr, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    tempReg = regMap[tempAddr];
+                    tempReg.SetBFValue(tempRow.Cells[(int)cellIx.name].Value.ToString(), tempRow.Cells[(int)cellIx.bfValue].Value.ToString().Replace("0x", ""));
 
-                    //// writeto HW, comment now because doesn't auto update.
-                    //if (uart.IsOpen)
-                    //    uart.writeRegSingle(tempAddr, regMap[tempAddr].RegValue);
+                    if (!tempReg.DisplayRegValueCell)  //if byte count of reg <= 4, then update reg Value on GUI
+                    {
+                        this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+                        mdDVG1[4, regRowIx].Value = regMap[tempAddr].RegValue.ToString("X2");
+                        this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+                    }
                     break;
-                case 4:         //Reg Value changed
-                    // Update regmap and BF value in GUI display
-                    tempAddr = byte.Parse(tempRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
-                    this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
 
-                    regMap[tempAddr].RegValue = byte.Parse(tempRow.Cells[4].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                case (int)cellIx.regValue:         //Reg Value changed
+                    // Update regmap and BF value in GUI display
+                    tempAddr = byte.Parse(tempRow.Cells[(int)cellIx.regAddr].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+
+                    this.mdDVG1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
+                    regMap[tempAddr].RegValue = UInt32.Parse(tempRow.Cells[(int)cellIx.regValue].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
                     UpdateBFValueCells(e.RowIndex, tempAddr);
                     this.mdDVG1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.mdDVG1_CellValueChanged);
 
-                    //// writeto HW, comment now because doesn't auto update.
-                    //if (uart.IsOpen)
-                    //    uart.writeRegSingle(tempAddr, regMap[tempAddr].RegValue);
                     break;
+
                 default:
                     break;
             }
@@ -597,13 +554,10 @@ namespace GeneralRegConfigPlatform.MDGUI
 
         private void mdDVG1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-
             if (this.mdDVG1.CurrentCell.ColumnIndex >= 3)
             {
                 e.Control.KeyPress += new KeyPressEventHandler(EditingControl_KeyPress);
             }
-
-
         }
 
         private void EditingControl_KeyPress(object sender, KeyPressEventArgs e)
@@ -636,40 +590,47 @@ namespace GeneralRegConfigPlatform.MDGUI
                 }
             }
         }
-        #endregion Events
 
+        /// <summary>
+        /// This function will decide if the input value reasonable.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mdDVG1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+            /* GUI display sequence: regAddr(0) | bitField(1) | name(2) | bfValue(3) | regValue(4)  */
+
             //Console.WriteLine("Enter Cell Validataing");
             uint tempData;
             byte tempAddr;
             DataGridViewRow tempRow = mdDVG1.Rows[e.RowIndex];
-            if (e.ColumnIndex < 3)
+            if (e.ColumnIndex < (int)cellIx.bfValue)
                 return;
 
             if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString() == "")
             {
+                //e.Cancel = true;
                 return;
             }
 
-            if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString().Length > 4)
-            {
-                e.Cancel = true;
-                return;
-            }
+            //if (tempRow.Cells[e.ColumnIndex].EditedFormattedValue.ToString().Length > 4)
+            //{
+            //    e.Cancel = true;
+            //    return;
+            //}
 
             switch (e.ColumnIndex)
             {
                 case 3:         //Bit field value changing
                     int regRowIx = GetRegRowIx(e.RowIndex);
-                    tempAddr = byte.Parse(mdDVG1[0, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    tempData = uint.Parse(mdDVG1[e.ColumnIndex, e.RowIndex].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    if (tempData > regMap[tempAddr][tempRow.Cells[2].Value.ToString()].BFMaxValue)
+                    tempAddr = byte.Parse(mdDVG1[(int)cellIx.regAddr, regRowIx].Value.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    tempData = UInt32.Parse(mdDVG1[e.ColumnIndex, e.RowIndex].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    if (tempData > regMap[tempAddr][tempRow.Cells[(int)cellIx.name].Value.ToString()].BFMaxValue)
                         e.Cancel = true;
                     break;
                 case 4:         //Reg Value changed
-                    tempData = uint.Parse(tempRow.Cells[4].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                    tempAddr = byte.Parse(tempRow.Cells[0].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
+                    tempData = UInt32.Parse(tempRow.Cells[(int)cellIx.regValue].EditedFormattedValue.ToString().Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+                    tempAddr = byte.Parse(tempRow.Cells[(int)cellIx.regAddr].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
                     if (tempData > regMap[tempAddr].RegMaxValue)
                         e.Cancel = true;
                     break;
@@ -691,6 +652,15 @@ namespace GeneralRegConfigPlatform.MDGUI
             }
         }
 
+        private void MDRegisterView_Load(object sender, EventArgs e)
+        {
+            txtDescriptions.Width = this.Width - this.panel1.Width - 2;
+        }
+
+        #endregion Events
+
+
 
     }
+        
 }

@@ -1,0 +1,11 @@
+1. regmap 里面分类 Test Registers有三组，名字一模一样。
+	a. 这三组显示的时候要在一个Tab下吗？是的话后面的Description把所有的寄存器放一起。
+		目前前面Regmap寄存器里的寄存器个数和后面描述的都对应不起来
+	b. 如果要单独显示，把名字修改下，保证不重名
+
+2. Audio Engine Registers 在regmap里显示的和后面的描述对应不起来
+	a. Regmap 里没26个bit分成两行（非常奇怪，一行8bit，一行24bit），第一行 Reserved + bit[25:24], 第二行 bit[23:0]
+	b. Description 里显示为一行， bit[25:0]
+需要把Regmap里改成和Description里的一致，直接一行32bit搞定
+
+3. 所有的BitField和寄存器名字，必须要做regmap和Description 里的每个寄存器名字及bitfield名字一致。这个最重要了

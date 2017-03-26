@@ -31,6 +31,8 @@
             this.menu_main = new System.Windows.Forms.MenuStrip();
             this.MenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Open = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Open_Excel = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemFile_Open_proj = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemFile_Close = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,8 +107,6 @@
             this.rbt_RSTB_On = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabCtrlRegView = new System.Windows.Forms.TabControl();
-            this.MenuItemFile_Open_Excel = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemFile_Open_proj = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_main.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel_GPIO.SuspendLayout();
@@ -169,6 +169,20 @@
             this.MenuItemFile_Open.Size = new System.Drawing.Size(177, 22);
             this.MenuItemFile_Open.Text = "&Open";
             this.MenuItemFile_Open.ToolTipText = "Add";
+            // 
+            // MenuItemFile_Open_Excel
+            // 
+            this.MenuItemFile_Open_Excel.Name = "MenuItemFile_Open_Excel";
+            this.MenuItemFile_Open_Excel.Size = new System.Drawing.Size(133, 22);
+            this.MenuItemFile_Open_Excel.Text = "Excel";
+            this.MenuItemFile_Open_Excel.Click += new System.EventHandler(this.MenuItemFile_Open_Excel_Click);
+            // 
+            // MenuItemFile_Open_proj
+            // 
+            this.MenuItemFile_Open_proj.Name = "MenuItemFile_Open_proj";
+            this.MenuItemFile_Open_proj.Size = new System.Drawing.Size(133, 22);
+            this.MenuItemFile_Open_proj.Text = "MD Project";
+            this.MenuItemFile_Open_proj.Click += new System.EventHandler(this.MenuItemFile_Open_proj_Click);
             // 
             // MenuItemFile_Save
             // 
@@ -880,20 +894,6 @@
             this.tabCtrlRegView.Size = new System.Drawing.Size(983, 650);
             this.tabCtrlRegView.TabIndex = 8;
             // 
-            // MenuItemFile_Open_Excel
-            // 
-            this.MenuItemFile_Open_Excel.Name = "MenuItemFile_Open_Excel";
-            this.MenuItemFile_Open_Excel.Size = new System.Drawing.Size(152, 22);
-            this.MenuItemFile_Open_Excel.Text = "Excel";
-            this.MenuItemFile_Open_Excel.Click += new System.EventHandler(this.MenuItemFile_Open_Excel_Click);
-            // 
-            // MenuItemFile_Open_proj
-            // 
-            this.MenuItemFile_Open_proj.Name = "MenuItemFile_Open_proj";
-            this.MenuItemFile_Open_proj.Size = new System.Drawing.Size(152, 22);
-            this.MenuItemFile_Open_proj.Text = "MD Project";
-            this.MenuItemFile_Open_proj.Click += new System.EventHandler(this.MenuItemFile_Open_proj_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -904,7 +904,8 @@
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menu_main);
             this.Name = "FormMain";
-            this.Text = "MainGUI";
+            this.Text = "MainGUI v1.1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menu_main.ResumeLayout(false);
             this.menu_main.PerformLayout();
             this.statusBar.ResumeLayout(false);

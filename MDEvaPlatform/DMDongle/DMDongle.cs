@@ -163,7 +163,7 @@ namespace DMCommunication
             buf[3] = (byte)count;      //reg addr
             for (byte i = 0; i < count; i++)
             {
-                buf[4 + i*2] = data[i*2 + 0];         //length = 1
+                buf[4 + i*2] = data[i*2 + 0];      //length = 1
                 buf[5 + i*2] = data[i*2 + 1];      //reg value
             }
 
@@ -249,6 +249,7 @@ namespace DMCommunication
 
             for (int i = 0; i < count; i++)
                 buf[5 + i] = data[i];
+
             uart.Write(buf, 0, 5 + count);
 
             uint timeOutCounter = 200;

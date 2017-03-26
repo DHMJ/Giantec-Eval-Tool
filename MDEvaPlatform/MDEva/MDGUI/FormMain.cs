@@ -166,25 +166,6 @@ namespace GeneralRegConfigPlatform.GUI
                 regMap = DataSet.RegMap;
                 // Init tabs with created data tables
                 CreateTabs(DataSet.DS_Display);
-
-                #region Test
-                //Form1 testform = new Form1();
-                //testform.BindingDVG(DataSet.DS_Display.Tables[0]);
-                //testform.Show();
-                #endregion Test
-
-                //dataGridView1.AutoGenerateColumns = true;
-                //dataGridView1.Dock = DockStyle.Fill;
-                //this.dataGridView1.DataSource = DataSet.DS_Display.Tables[0];
-
-                #region Comment out Reference code
-                //dataGridView1.AutoGenerateColumns = true;
-                //dataGridView1.Dock = DockStyle.Fill;
-                //this.dataGridView1.DataSource = DS_Excel.Tables[1];
-
-                //dataGridView1.Rows[2].Cells[0].AdjustCellBorderStyle
-                //object test = this.dataGridView1.DataBindings;
-                #endregion 
             }
             else
                 return;           

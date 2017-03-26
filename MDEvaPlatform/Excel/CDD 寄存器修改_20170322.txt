@@ -1,0 +1,6 @@
+1. reg26 bit[14:0] or bit[14:8] + bit[7:0] ?
+2. 0x1F,0x26,0x27,0x28, 0x63, 0xAF, 0xb0-b3, and lots of test registers' default value are null
+3. Reg0x27 contain "byte2[7],byte0[7:2]	PWM_FRAME_ERR_CNT	internal PWM frame counter value, read only" ?? I seams wrong, I deleted it.
+4. LOGIC_BIST1/2 reg address in regmap are 0x7A/0x7B while in Test Registers Description sheet are 0x7E/0x7F.  I used 0x7E/0x7F, please confirm
+5. LOGIC_BIST1: it has 2 PWM_BIST_MUX bitfield. 
+
