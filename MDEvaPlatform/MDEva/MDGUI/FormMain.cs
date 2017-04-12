@@ -341,7 +341,8 @@ namespace GeneralRegConfigPlatform.GUI
         public void DongleItem_Click(object sender, EventArgs e)
         {
             (sender as ToolStripDropDownItem).Select();
-            if (myDongle.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            //if (myDongle.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.SC, 0x65, 10))
+            if (myDongle.dongleInit((sender as ToolStripDropDownItem).Text, DMDongle.VCPGROUP.I2C, 0x1A, 5))
             {
                 statusBar_DeviceConnected.Text = "Dongle Connected";
                 statusBar_DeviceConnected.BackColor = Color.Green;
@@ -482,21 +483,44 @@ namespace GeneralRegConfigPlatform.GUI
 
         private void btn_Reg04_Read_Click(object sender, EventArgs e)
         {
-            byte value;
-            byte address = 0x00;
-            address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
-            myDongle.readRegSingle(address, out value);
+            byte length = 0x00;
+            byte startAddress = 0x00;
+            byte[] tempData;
+            this.richTextBox_Reg_Window.Text = "";
 
-            textBox_Reg04_Value.Text = value.ToString("X2");
+            startAddress = Convert.ToByte(textBox_Reg_StartAddr.Text, 16);
+            length = Convert.ToByte(textBox_Reg_Length.Text, 16);
+
+            tempData = new byte[length];
+
+            myDongle.readRegBurst(startAddress, tempData, length);
+
+            for (int i = 0; i < length - 1; i++ )
+                this.richTextBox_Reg_Window.Text = tempData[i].ToString("X2") + "-";
+            this.richTextBox_Reg_Window.Text = tempData[length - 1].ToString("X2");
         }
 
         private void btn_Reg04_Write_Click(object sender, EventArgs e)
         {
-            byte value = 0x00;
-            byte address = 0x00;
-            address = Convert.ToByte(textBox_Reg04_Addr.Text, 16);
-            value = Convert.ToByte(textBox_Reg04_Value.Text, 16);
-            if (!myDongle.writeRegSingle(address, value))
+            byte length = 0x00;
+            byte startAddress = 0x00;
+            string[] tempParam;
+            byte[] tempData;
+
+            startAddress = Convert.ToByte(textBox_Reg_StartAddr.Text, 16);
+            length = Convert.ToByte(textBox_Reg_Length.Text, 16);
+
+            tempParam = this.richTextBox_Reg_Window.Text.Split(":;-".ToCharArray());
+
+            if(length > tempParam.Length)
+                length = Convert.ToByte(tempParam.Length);
+            
+            tempData = new byte[length];
+
+            for(int i=0; i < length; i++)
+                tempData[i] = Convert.ToByte(tempParam[i],16);
+
+            if (!myDongle.writeRegBurst(startAddress, tempData ,length))
                 MessageBox.Show("Write Register Failed!", "Waning");
         }
 

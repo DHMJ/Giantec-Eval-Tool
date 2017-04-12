@@ -41,3 +41,14 @@ C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.csproj.GenerateResource.Cache
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.exe
 C:\Users\Administrator\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.pdb
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.exe.config
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.exe
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\bin\Debug\Sc Test.pdb
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\bin\Debug\DMDongle.dll
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\bin\Debug\DMDongle.pdb
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.csprojResolveAssemblyReference.cache
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc_Test.Form1.resources
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc_Test.Properties.Resources.resources
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.csproj.GenerateResource.Cache
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.exe
+C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\Sc Test\obj\x86\Debug\Sc Test.pdb
