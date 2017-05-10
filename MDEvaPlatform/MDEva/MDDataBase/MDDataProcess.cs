@@ -305,7 +305,7 @@ namespace GeneralRegConfigPlatform.MDDataBase
                     if (tempBF == null)
                     {
                         MessageBox.Show("Can't find " + tempRowItems[(int)itemIx_BF_Crazy.bfName].ToString()
-                            + " in register " + tempReg.RegAddress.ToString("X2"));
+                            + " in register 0x" + tempReg.RegAddress.ToString("X2"));
                         continue;
                     }
                     // Initialize bit field
