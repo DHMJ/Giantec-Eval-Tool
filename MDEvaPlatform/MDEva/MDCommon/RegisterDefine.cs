@@ -23,7 +23,7 @@ namespace MD.MDCommon
             bfName = name;
 
             // if no bits info inputed
-            bits = _bits.Trim("[]".ToCharArray());
+            bits = _bits;
             if (bits == null || bits.Length == 0 || name == "")
                 return;
 
@@ -105,7 +105,7 @@ namespace MD.MDCommon
             bfName = name;
 
             // if no bits info inputed
-            bits = _bits.Trim("[]".ToCharArray());
+            bits = _bits.Replace(",", "\r\n"); ; //_bits.Replace("[","").Replace("]","");
             if (bits == null || bits.Length == 0 || name == "")
                 return;
 
@@ -123,8 +123,8 @@ namespace MD.MDCommon
             byteCountOfReg = (byteCountOfReg > 4) ? 4 : byteCountOfReg;         // if byteCountOfReg > 4, will just use 4 instead
             if (byteCount == 1)     // this bf length is less than 8bits
             {
-                // Normal registger, each reg contains 8 bits value, bits should like [x:y] or [x]
-                if (bits_inByte.Length <= 5)
+                // Normal registger, each reg contains 8 bits value, bits should like [x:y] sor [x]
+                if (bits_inByte[0].Length <= 5)
                 {
                     bits_ix = bits_inByte[0].Trim("[]".ToCharArray()).Split(':');
                     int.TryParse(bits_ix[0], out endBit);
