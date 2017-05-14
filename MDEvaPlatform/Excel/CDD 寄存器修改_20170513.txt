@@ -1,0 +1,4 @@
+1. Test Registers Description: register 0xFE 下有两行描述为  FS_128K, FS_64K. 不知道属于哪个寄存器，我删了
+2. Reg 0x78, Reg0x79 删了
+3. 寄存器0x27中 PWM_FRAME_ERR_CNT物理地址不连续，不支持，我删除了，请重新单独命名
+byte2[7],byte0[7:2]	PWM_FRAME_ERR_CNT	internal PWM frame counter value, read only

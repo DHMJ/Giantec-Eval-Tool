@@ -48,3 +48,9 @@ Temporary Items
 *.cache
 *.cache
 MDEvaPlatform/MDEvaPlatform.suo
+*.dll
+*.dll
+*.dll
+MDEvaPlatform/MDEva/bin/Debug/DMDongle.dll
+*.dll
+MDEvaPlatform/Excel/~$CDD001_A1_RegisterMap v0.5_20170514.xlsx
