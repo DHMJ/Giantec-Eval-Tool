@@ -12,3 +12,8 @@ C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\D
 C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.csprojResolveAssemblyReference.cache
 C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.dll
 C:\Users\Hao\Documents\GitHub\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.pdb
+C:\Users\Work\Documents\Github\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.dll
+C:\Users\Work\Documents\Github\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\bin\x86\Debug\DMDongle.pdb
+C:\Users\Work\Documents\Github\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.dll
+C:\Users\Work\Documents\Github\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.pdb
+C:\Users\Work\Documents\Github\Giantec-Eval-Tool\MDEvaPlatform\DMDongle\obj\x86\Debug\DMDongle.csprojResolveAssemblyReference.cache
