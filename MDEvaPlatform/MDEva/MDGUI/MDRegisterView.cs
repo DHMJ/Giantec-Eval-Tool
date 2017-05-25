@@ -374,7 +374,7 @@ namespace GeneralRegConfigPlatform.MDGUI
                 for (int ix = 0; ix < selectedRegAddr.Count; ix++)
                 {
                     tempReg = regMap[selectedRegAddr[ix]];
-                    if(dongle.writeRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount))
+                    if(!dongle.writeRegBurst(tempReg.RegAddress, tempReg.ByteValue, tempReg.ByteCount))
                         MessageBox.Show("Write Register Failed!", "Warning");
                 }
             }
