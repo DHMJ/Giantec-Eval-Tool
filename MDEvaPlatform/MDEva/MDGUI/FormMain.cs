@@ -496,8 +496,8 @@ namespace GeneralRegConfigPlatform.GUI
             myDongle.readRegBurst(startAddress, tempData, length);
 
             for (int i = 0; i < length - 1; i++ )
-                this.richTextBox_Reg_Window.Text = tempData[i].ToString("X2") + "-";
-            this.richTextBox_Reg_Window.Text = tempData[length - 1].ToString("X2");
+                this.richTextBox_Reg_Window.AppendText(tempData[i].ToString("X2") + "-");
+            this.richTextBox_Reg_Window.AppendText(tempData[length - 1].ToString("X2"));
         }
 
         private void btn_Reg04_Write_Click(object sender, EventArgs e)
